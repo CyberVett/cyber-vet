@@ -1,6 +1,5 @@
 import React, { StrictMode } from 'react';
 import App from 'next/app';
-import Router from 'next/router';
 
 import { ReactQueryDevtools } from 'react-query-devtools';
 import 'normalize.css';
