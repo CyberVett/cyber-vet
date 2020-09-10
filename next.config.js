@@ -9,8 +9,6 @@ console.log('************************************');
 const path = require('path');
 // Webpack plugins
 const webpack = require('webpack');
-
-
 // Next Plugins
 const withPlugins = require('next-compose-plugins');
 
@@ -44,7 +42,7 @@ const nextConfig = {
     });
     // File loader
     config.module.rules.push({
-      test: /\.(png|jpg|gif)$/,
+      test: /\.(png|jpg|gif)$/i,
       use: [
         {
           loader: 'file-loader',
@@ -52,6 +50,7 @@ const nextConfig = {
             name: '[name]_[hash].[ext]',
             outputPath: 'static/images',
             publicPath: '/_next/static/images',
+            esModule: false,
           },
         },
       ],
