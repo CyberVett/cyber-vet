@@ -17,7 +17,8 @@ const withPlugins = require('next-compose-plugins');
 const nextConfig = {
   distDir: 'build',
   poweredByHeader: false,
-
+  // Target must be serverless
+  target: 'serverless',
   /**
    * Custom webpack configuration for Next
    */
