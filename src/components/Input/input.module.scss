@@ -1,0 +1,110 @@
+@import "../../../styles/variable";
+
+%inputItems {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #bdbdbd;
+  padding: 15px;
+  outline: none;
+}
+
+%inputItems:disabled {
+  background-color: rgba($color: #B8B6B6, $alpha: .1);
+  cursor: not-allowed;
+}
+
+.input {
+  @extend %inputItems;
+}
+
+.select {
+  @extend %inputItems;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 3px;
+  display: block;
+  width: 100%;
+}
+
+.multiSelect {
+  @extend %inputItems;
+  padding: 4px;
+  > div > div > div {
+    border:  0 !important;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+
+  %inputItems {
+    margin-top: 5px;
+  }
+}
+
+.inputGroupHorizontal {
+  flex-direction: row;
+  align-items: center;
+
+  %inputItems {
+    height: 100%;
+    margin-left: auto;
+    width: 340px;
+    // flex: 1;
+    // margin-right: 10px;
+    // margin-top: 0;
+  }
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.formErrors {
+  background-color: transparentize($color: $color-red, $amount: .7);
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.formSuccess {
+  background-color: rgba(108, 186, 45, 0.16);
+  border-radius: 3px;
+  padding: 10px;
+  color: $color-green;
+}
+
+.formErrorItem {
+  display: block;
+  font-size: 14px;
+
+  &:not(:last-child) {
+    margin-bottom: 10px
+  }
+}
+
+.checkboxItem {
+  padding: 5px 0;
+
+  input {
+    margin-right: 10px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+}
+
+.closeButton {
+  margin-left: auto;
+  padding: 4px;
+  color: green;
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -1,0 +1,32 @@
+
+.table {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 20px;
+  width: 100%;
+
+  td,
+  th {
+    border-bottom: 1px solid rgba(64, 102, 34, 0.1);
+    padding: 15px;
+  }
+
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+
+  th {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    color: #707070;
+    font-size: 14px;
+  }
+}

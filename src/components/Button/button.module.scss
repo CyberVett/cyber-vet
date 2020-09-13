@@ -1,0 +1,57 @@
+@import "../../../styles/variable";
+
+.button {
+  border: 1px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 8px 0;
+  font-weight: 600;
+  padding: 12px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: .3s background-color ease-in-out;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: grey;
+    border-color: grey;
+    cursor: not-allowed;
+  }
+}
+
+.basic {
+  background-color: transparent;
+  border-color: transparent;
+  color: $color-blue;
+}
+
+.outline {
+  background-color: $color-white;
+  border-color: $color-blue;
+  color: $color-blue;
+}
+
+.primary {
+  background-color: $color-blue;
+  border-color: $color-blue;
+  color: $color-white;
+}
+
+// .custom {
+//   background-color: $color-green-dark;
+//   border-color: $color-green-dark;
+//   color: #fff;
+// }
+
+.fullWidth {
+  width: 100%;
+}
+
+.loading {
+  cursor: not-allowed;
+  pointer-events: none;
+}

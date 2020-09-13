@@ -4,7 +4,7 @@ import App from 'next/app';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import 'normalize.css';
 
-import '../styles/globals.css'
+import '../styles/globals.scss'
 import Layout from '../src/components/Layout/layout';
 
 class Root extends App<{}, {}> {
