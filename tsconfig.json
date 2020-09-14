@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "allowJs": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
@@ -16,8 +17,14 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "typeRoots": ["./src/types", "./node_modules/@types/"]
+  },
+  "paths": {
+    "*": [
+      "*"
+    ]
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "pages/auth/login.js"]
+  "include": [ "next-env.d.ts", "**/*.ts", "**/*.tsx", "src", "src/**/*.ts",]
 }

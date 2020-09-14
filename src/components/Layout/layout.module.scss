@@ -1,3 +1,5 @@
+@import "../../../styles/variable";
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -10,5 +12,199 @@
   flex: 1;
 }
 
+.nav {
+  background: $color-blue;
+  padding: 4px 20px;
+  display: flex;
+  z-index: -1;
+
+  &Left {
+    display: flex;
+    width: 240px;
+
+    >svg {
+      margin: auto;
+    }
+  }
+
+  &Right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    width: 480px;
+
+    >svg {
+      margin: auto;
+    }
+  }
+}
+
+.userSection {
+
+  >span {
+    color: $color-white;
+    margin-right: 4px;
+  }
+}
 
 
+.sideMenu {
+  width: 240px;
+  background-color: $color-blue;
+  padding: 10px 0px;
+  border-top: .5px solid $color-white;
+}
+
+.mainWrapper {
+  display: flex;
+
+  >div {
+    padding: 24px;
+    flex: 1;
+  }
+}
+
+.wrapper {
+  width: 100%;
+}
+
+.dashboardWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbarWrapper {
+  composes: wrapper;
+  background-color: $color-white;
+  padding: 0;
+  color: #fff;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  margin: 0 auto;
+  padding: 0 10px;
+  max-width: 1280px;
+}
+
+.profile {
+  align-items: center;
+  padding: 15px 0;
+
+  &:hover {
+    .dropdown {
+      display: block;
+    }
+  }
+}
+
+.logo {
+  height: 35px;
+}
+
+.topbarRightItems {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  color: $color-black;
+}
+
+.searchForm {
+  margin-right: 32px;
+
+  input {
+    background-color: rgba(255, 255, 255, .2);
+    border: none;
+    color: rgba(255, 255, 255, .8);
+    font-size: 14px;
+    height: 40px;
+    width: 300px;
+  }
+
+  ::placeholder {
+    color: rgba(255, 255, 255, .8);
+  }
+}
+
+.avatar {
+  $dimensions: 32px;
+  position: relative;
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: $dimensions/2;
+  height: $dimensions;
+  width: $dimensions;
+}
+
+.navWrapper {
+  composes: wrapper;
+  background-color: #fff;
+  box-shadow: inset 0 -1px 0 0 rgba(63, 144, 53, 0.116);
+  margin-bottom: 24px;
+}
+
+.navList {
+  color: $color-white;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0 auto 0 0;
+  padding: 0;
+
+  >li {
+    padding: 8px 0px 8px 16px;
+  }
+
+  &Child {
+    composes: navList;
+    margin-left: auto;
+    width: 200px;
+    >li >a {
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+
+      >svg {
+        margin-left: auto;
+        width: 8px;
+        height: 12px;
+      }
+    }
+  }
+}
+
+.navItem {
+  color: inherit;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 20px 0;
+  text-decoration: none;
+
+}
+
+.navItemActive {
+  color: $color-blue;
+  border-radius: 10px 0px 0px 10px;
+  background-color: $color-white;
+
+
+  // >svg {
+  //   background: $color-blue-light;
+  //   border-radius: 10px;
+  // }
+
+  path {
+    fill: currentColor;
+  }
+
+}
+
+.navItemIcon {
+  margin: 0px 8px;
+
+  path {
+    fill: currentColor;
+  }
+}
