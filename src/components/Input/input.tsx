@@ -181,18 +181,6 @@ export const Select: React.SFC<React.DetailedHTMLProps<React.SelectHTMLAttribute
   );
 };
 
-export const Multiselect: React.SFC<IMultiSelectProps> = ({ options, selected, onSelectedChanged, ...props }) => {
-  return (
-    <div className={composeClasses(styles.multiSelect, props.className)}>
-      <MultiSelect
-        options={options}
-        selected={selected}
-        onSelectedChanged={onSelectedChanged}
-      />
-    </div>
-  );
-};
-
 export const InputGroup: React.SFC<{
   className?: string;
   horizontal?: boolean;
