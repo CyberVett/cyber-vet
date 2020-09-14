@@ -9,7 +9,7 @@ import { InputGroup, Label, Input } from 'components/Input/input';
 
 import styles from './forgotPassword.module.scss';
 
-const Login: React.FunctionComponent = () => {
+const ForgotPassword: React.FunctionComponent = () => {
   return (
     <div className={styles.container}>
       <img src={require('../../assets/images/login-background.png')} alt="background logo" />
@@ -24,11 +24,11 @@ const Login: React.FunctionComponent = () => {
             </InputGroup>
             <Button type={ButtonTypes.primary}>Reset Password</Button>
           </form>
-          <div style={{textAlign:'center'}}>Remember Password&#63; <Link href="/auth/login">Login</Link></div>
+          <div style={{textAlign:'center'}}>Remember Password&#63; <Link href="/auth/login"><span style={{color: '#1E638F'}}>Login</span></Link></div>
         </Card>
       </div>
     </div>
   )
 };
 
-export default Login;
+export default ForgotPassword;

@@ -28,7 +28,7 @@ const Login: React.FunctionComponent = () => {
             </InputGroup>
             <Button type={ButtonTypes.primary}>Login</Button>
           </form>
-          <div style={{textAlign:'center'}}><Link href="/auth/forgot-password">Forgot Password&nbsp;&#63;</Link></div>
+          <div style={{textAlign:'center'}}><Link href="/auth/forgot-password"><span style={{color: '#1E638F'}}>Forgot Password&nbsp;&#63;</span></Link></div>
         </Card>
       </div>
     </div>
