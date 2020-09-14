@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { ReactComponent as LogoIcon } from 'assets/icons/logo-white.svg'
+import { ReactComponent as LogoIcon } from 'assets/icons/logo-white.svg';
 
 import Card from '../../components/Card/card';
 import Button, { ButtonTypes } from 'components/Button/button';

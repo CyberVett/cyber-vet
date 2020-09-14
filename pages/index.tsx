@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { ReactComponent as Loader } from 'assets/icons/loader.svg'
+import { ReactComponent as Loader } from 'assets/icons/loader.svg';
 import styles from '../styles/home.module.scss'
 
 export default function Home() {
