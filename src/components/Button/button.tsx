@@ -51,6 +51,7 @@ const Button: React.SFC<IButtonProps> = ({
   };
 
   return (
+    // @ts-ignore
     <Element {...props}>
       {
         loading
