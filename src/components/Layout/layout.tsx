@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 
 import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
