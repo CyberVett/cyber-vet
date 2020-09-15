@@ -171,7 +171,7 @@ const SideNav = () => {
                 </Link>
               </li>
               {
-                ((router as any).asPath.includes(item.href) && item.childMenu?.length > 0) &&
+                ((router as any).asPath.includes(item.href) && (item.childMenu && item?.childMenu?.length > 0)) &&
                 <ul className={styles.navListChild}>
                   {
                     item.childMenu?.map(child => (
