@@ -146,7 +146,7 @@ const navLinks = [
 ];
 
 const SideNav = () => {
-s  const router = useRouter();
+ const router = useRouter();
 
   return (
     <aside className={styles.sideMenu}>
