@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import omit from 'lodash.omit';
+import * as yup from 'yup'; // for everything
 
 import { composeClasses, formatPhoneNumber } from 'lib/utils';
-import yup from 'lib/yup';
 
 import styles from './input.module.scss';
 

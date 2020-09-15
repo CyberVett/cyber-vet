@@ -10,7 +10,7 @@ export const composeClasses = (...styles: (string | boolean | undefined)[]): str
     // currently accepting only +234 numbers
     const isValidNumber = /^[+]?[234][0-9]{12}$/
     const startsWithPlus =/^\+/
-    const startsWithZero =/^0/
+    // const startsWithZero =/^0/
     const isLocalNumber = /^0[789][01]\d{8}$/
     const isLocalWithoutZero = /^[789][01]\d{8}$/
     const isLandLine = /^0?[0-9]{8}$/

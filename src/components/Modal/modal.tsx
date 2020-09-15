@@ -1,6 +1,7 @@
 import React, { ReactType } from 'react';
 
 import styles from './modal.module.scss';
+import { composeClasses } from 'lib/utils';
 
 interface IModalProps {
   closeModal: () => void;

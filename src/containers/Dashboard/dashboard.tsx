@@ -1,15 +1,15 @@
-import React from 'react';
+// import React from 'react';
 
-import styles from './dashboard.module.scss';
+// import styles from './dashboard.module.scss';
 
-const Dashboard: React.FunctionComponent = () => {
-  return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-       hellow
-      </div>
-    </div>
-  )
-};
+// const Dashboard: React.FunctionComponent = () => {
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.wrapper}>
+//        hellow
+//       </div>
+//     </div>
+//   )
+// };
 
-export default Dashboard;
+export default {};
