@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
 import { ReactComponent as AnimalFoot } from 'assets/icons/paw.svg';
