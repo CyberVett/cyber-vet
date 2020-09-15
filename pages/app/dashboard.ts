@@ -1,2 +1,1 @@
-// export { default } from 'containers/Dashboard/dashboard';
-export default {};
+export { default } from 'containers/Dashboard/dashboard';
