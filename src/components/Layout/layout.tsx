@@ -146,8 +146,7 @@ const navLinks = [
 ];
 
 const SideNav = () => {
-  const [showChildMenu, toggleShowChildMenu] = useState(false);
-  const router = useRouter();
+s  const router = useRouter();
 
   return (
     <aside className={styles.sideMenu}>
