@@ -1,5 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import Button, { ButtonTypes } from '../Button/button';
+import { composeClasses } from '../../lib/utils';
 
 import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
 import { ReactComponent as AnimalFoot } from 'assets/icons/paw.svg';
@@ -18,15 +22,13 @@ import { ReactComponent as NotificationIcon } from 'assets/icons/notification.sv
 import { ReactComponent as RightArrow } from 'assets/icons/rightArrow.svg';
 
 import styles from './layout.module.scss';
-import Button, { ButtonTypes } from '../Button/button';
-import { composeClasses } from '../../lib/utils';
-import Link from 'next/link';
+import { chdir } from 'process';
 
 const TopNav = () => {
   return (
     <nav className={styles.nav}>
       <div className={styles.navLeft}>
-        <LogoIcon />
+        <Link href="/"><LogoIcon /></Link>
         <SettingIcon />
       </div>
       <div className={styles.navRight}>
@@ -58,17 +60,17 @@ const navLinks = [
     childMenu: [
       {
         href: '/app/patient/list',
-        id: 1,
+        id: 100,
         name: 'patient list',
       },
       {
         href: '/app/patient/add',
-        id: 2,
+        id: 200,
         name: 'add new patient',
       },
       {
         href: '/app/patient/referred',
-        id: 3,
+        id: 300,
         name: 'referred patient',
       }
     ]
@@ -81,22 +83,22 @@ const navLinks = [
     childMenu: [
       {
         href: '/app/diagnostic/lab/requested',
-        id: 1,
+        id: 400,
         name: 'test requested',
       },
       {
         href: '/app/diagnostic/lab/completed',
-        id: 2,
+        id: 500,
         name: 'test completed',
       },
       {
         href: '/app/diagnostic/xray/requested',
-        id: 3,
+        id: 600,
         name: 'xray requested',
       },
       {
         href: '/app/diagnostic/xray/completed',
-        id: 3,
+        id: 700,
         name: 'xray completed',
       }
     ]
@@ -133,12 +135,12 @@ const navLinks = [
     childMenu: [
       {
         href: '/app/admin/staff/list',
-        id: 1,
+        id: 800,
         name: 'Staff list',
       },
       {
         href: '/app/admin/staff/add',
-        id: 2,
+        id: 900,
         name: 'add new staff',
       }
     ]
@@ -146,7 +148,7 @@ const navLinks = [
 ];
 
 const SideNav = () => {
- const router = useRouter();
+  const router = useRouter();
 
   return (
     <aside className={styles.sideMenu}>
@@ -159,6 +161,7 @@ const SideNav = () => {
               >
                 <Link href={item.href}>
                   <a
+                    key={item.id}
                     className={composeClasses(
                       styles.navItem,
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -178,7 +181,7 @@ const SideNav = () => {
                       <>
                         <li key={child.id}>
                           <Link href={child.href}>
-                            <a>{child.name}&nbsp;<RightArrow /></a>
+                            <a key={item.id}>{child.name}&nbsp;<RightArrow /></a>
                           </Link>
                         </li>
                       </>
@@ -194,14 +197,23 @@ const SideNav = () => {
   );
 };
 
-const Layout: React.SFC = ({ children }) => {
+interface ILayout {
+  showDashboard: boolean;
+};
+
+const Layout: React.FC<ILayout> = ({ children, showDashboard, ...rest }) => {
   return (
     <>
-      <TopNav />
-      <main className={styles.mainWrapper}>
-        <SideNav />
-        <div>{children}</div>
-      </main>
+      {
+        showDashboard ?
+          <React.Fragment {...rest}>
+            <TopNav />
+            <main className={styles.mainWrapper}>
+              <SideNav />
+              <div>{children}</div>
+            </main>
+          </React.Fragment> : <React.Fragment {...rest}>{children}</React.Fragment>
+      }
     </>
   );
 };

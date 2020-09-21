@@ -14,7 +14,6 @@ class Root extends App<{}, {}> {
 
     const layoutProps = pageProps.layout || {};
     layoutProps.showDashboard = router.asPath && router.asPath.includes('/app/');
-
     return (
       <StrictMode>
         <Layout {...layoutProps}>
@@ -23,7 +22,7 @@ class Root extends App<{}, {}> {
             key={router.route}
           />
         </Layout>
-        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen />}
+        {/* {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen />} */}
       </StrictMode>
     );
   }
