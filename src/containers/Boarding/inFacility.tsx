@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Input } from 'components/Input/input';
-import Card, { CardHeader } from 'components/Card/card';
+import Card from 'components/Card/card';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Table from 'components/Table/table';
 import { BoardingHeaders, SampleBoardingData } from 'config/constants';
-import styles from './boarding.module.scss';
+// import styles from './boarding.module.scss';
 
 const Boarding: React.FunctionComponent = () => {
   return (
