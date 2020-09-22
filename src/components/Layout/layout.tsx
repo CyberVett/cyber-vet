@@ -22,7 +22,6 @@ import { ReactComponent as NotificationIcon } from 'assets/icons/notification.sv
 import { ReactComponent as RightArrow } from 'assets/icons/rightArrow.svg';
 
 import styles from './layout.module.scss';
-import { chdir } from 'process';
 
 const TopNav = () => {
   return (

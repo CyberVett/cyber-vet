@@ -1,0 +1,24 @@
+.cardBody {
+  padding: 16px;
+  margin-right: 240px;
+  margin-left: 72px;
+
+  >div>input {
+    width: 480px !important;
+  }
+
+  &Patient {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-column-gap: 20px;
+    margin-left: 72px;
+
+    >div>div>input {
+      width: 480px !important;
+    }
+  }
+}
+
+.button {
+  
+}

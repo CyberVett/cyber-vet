@@ -40,7 +40,9 @@ const Dashboard: React.FunctionComponent = () => {
         <div>
           <Card className={styles.contactCard}>
             <div className={styles.contactCardPhoto}>
-              <div></div>
+              <div>
+                <img src={require('../../assets/images/photo.png')} alt="admin photo"/>
+              </div>
               <h3>Dr. Fatunde Oluwande</h3>
               <p>Administrator</p>
             </div>

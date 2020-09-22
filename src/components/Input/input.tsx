@@ -157,7 +157,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps>(({ handleIn
   );
 });
 
-export const TextArea: React.SFC<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>> = (props) => {
+export const TextArea: React.FC<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>> = (props) => {
   const classes = composeClasses(styles.input, props.className);
 
   return (
@@ -171,7 +171,7 @@ export const TextArea: React.SFC<React.DetailedHTMLProps<React.TextareaHTMLAttri
   );
 };
 
-export const Select: React.SFC<React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>> = (props) => {
+export const Select: React.FC<React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>> = (props) => {
   return (
 
     <select
@@ -181,7 +181,7 @@ export const Select: React.SFC<React.DetailedHTMLProps<React.SelectHTMLAttribute
   );
 };
 
-export const InputGroup: React.SFC<{
+export const InputGroup: React.FC<{
   className?: string;
   horizontal?: boolean;
 }> = ({ children, className, horizontal }) => {
@@ -197,7 +197,7 @@ export const InputGroup: React.SFC<{
   );
 };
 
-export const Label: React.SFC<React.DetailedHTMLProps<React.LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>> = ({ children, className, ...rest }) => {
+export const Label: React.FC<React.DetailedHTMLProps<React.LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>> = ({ children, className, ...rest }) => {
   const classes = composeClasses(styles.label, className);
 
   return (
@@ -211,7 +211,7 @@ export const Label: React.SFC<React.DetailedHTMLProps<React.LabelHTMLAttributes<
   );
 };
 
-export const FormErrors: React.SFC<{
+export const FormErrors: React.FC<{
   className?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errors: any[] | string;
@@ -250,7 +250,7 @@ export const FormErrors: React.SFC<{
   );
 };
 
-export const FormMessages: React.SFC<{
+export const FormMessages: React.FC<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   messages: any[] | string;
 }> = ({ messages }) => {
