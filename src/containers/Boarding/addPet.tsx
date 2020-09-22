@@ -6,7 +6,7 @@ import Card, { CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 import Button from 'components/Button/button';
 
-import styles from './patient.module.scss';
+import styles from './boarding.module.scss';
 
 const AddPatient: React.FunctionComponent = () => {
   return (

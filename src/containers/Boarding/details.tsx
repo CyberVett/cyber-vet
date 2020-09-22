@@ -4,7 +4,7 @@ import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Card, { CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 
-import styles from './patient.module.scss';
+import styles from './boarding.module.scss';
 
 const BoardingDetails: React.FunctionComponent = () => {
   return (
