@@ -15,6 +15,7 @@ export const AuthContext = React.createContext<IAuthContext>({
   loggedIn: false,
   logoutUser: () => { },
   user: null,
+  // @ts-ignore
   updateUser: (IUser: any) => {},
   accessToken: '',
 });

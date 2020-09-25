@@ -14,6 +14,7 @@ const requestClient = axios.create({
 requestClient.interceptors.request.use(
     ((requestConfig) => {
         // Get the request route
+        // @ts-ignore
         const requestRoute = requestConfig?.url.substr(requestConfig?.baseURL);
         
 
@@ -27,7 +28,8 @@ requestClient.interceptors.request.use(
 
         // Else, update the request to get the user token from the localstorage
         const user = localStorage.getItem(config.storageKeys.auth);
-        const accessToken = user.token;
+        // @ts-ignore
+        const accessToken = user.accessToken;
         const requestConfigWithToken = Object.assign({}, requestConfig);
         requestConfigWithToken.headers['Authorization'] = accessToken;
 
