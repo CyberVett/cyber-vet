@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { ReactComponent as FolderIcon } from '../../assets/icons/folder.svg';
 import { ReactComponent as PawIcon } from '../../assets/icons/paw.svg';
@@ -8,8 +8,10 @@ import Card, { CardHeader } from 'components/Card/card';
 import Button from 'components/Button/button';
 
 import styles from './dashboard.module.scss';
+import { AuthContext } from 'contexts/auth';
 
 const Dashboard: React.FunctionComponent = () => {
+  const { staff, role } = useContext(AuthContext)
   return (
     <div className={styles.container}>
       <div>
@@ -41,10 +43,10 @@ const Dashboard: React.FunctionComponent = () => {
           <Card className={styles.contactCard}>
             <div className={styles.contactCardPhoto}>
               <div>
-                <img src={require('../../assets/images/photo.png')} alt="admin photo"/>
+                <img src={require('../../assets/images/photo.png')} alt="admin photo" />
               </div>
-              <h3>Dr. Fatunde Oluwande</h3>
-              <p>Administrator</p>
+              <h3>{staff?.title} {staff?.firstName} {staff?.lastName}</h3>
+              <p>{role}</p>
             </div>
             <h4>0</h4>
             <p>Patient</p>

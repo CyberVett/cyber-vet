@@ -22,6 +22,9 @@ class Root extends App<{}, IAppState> {
     loggedIn: false,
     user: null,
     accessToken: '',
+    hospital: null,
+    role: '',
+    staff: null,
   }
 
   public componentDidMount() {
@@ -32,6 +35,9 @@ class Root extends App<{}, IAppState> {
         loggedIn: true,
         user: JSON.parse(storedKey),
         accessToken: JSON.parse(storedKey).accessToken,
+        hospital: JSON.parse(storedKey).info.hospital,
+        role: JSON.parse(storedKey).role,
+        staff: JSON.parse(storedKey).info.staff,
       });
     } else {
       // If the user is not logged in and is in a dashboard page, redirect the user to login
@@ -52,6 +58,9 @@ class Root extends App<{}, IAppState> {
       loggedIn: false,
       user: null,
       accessToken: '',
+      hospital: null,
+      role: '',
+      staff: null,
     }, () => this.postLogoutAction());
   };
 
@@ -74,7 +83,10 @@ class Root extends App<{}, IAppState> {
       user: {
         ...userData,
       },
-      accessToken: userData.accessToken
+      accessToken: userData.accessToken,
+      hospital: userData.info.hospital,
+      role: userData.role,
+      staff: userData.info.staff,
     }, () => {      
       if (this.state.loggedIn) {
         localStorage.setItem(config.storageKeys.auth, JSON.stringify(this.state.user));
@@ -98,6 +110,9 @@ class Root extends App<{}, IAppState> {
           updateUser: (userDetails: any) => this.updateUser(userDetails),
           user: this.state.user,
           accessToken: this.state.accessToken,
+          hospital: this.state.hospital,
+          role: this.state.role,
+          staff: this.state.staff,
         }}
         >
         <Layout {...layoutProps}>

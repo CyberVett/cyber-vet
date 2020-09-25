@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -22,8 +22,11 @@ import { ReactComponent as NotificationIcon } from 'assets/icons/notification.sv
 import { ReactComponent as RightArrow } from 'assets/icons/rightArrow.svg';
 
 import styles from './layout.module.scss';
+import { AuthContext } from 'contexts/auth';
 
 const TopNav = () => {
+  const { hospital, staff } = useContext(AuthContext)
+
   return (
     <nav className={styles.nav}>
       <div className={styles.navLeft}>
@@ -31,12 +34,12 @@ const TopNav = () => {
         <SettingIcon />
       </div>
       <div className={styles.navRight}>
-        <Button type={ButtonTypes.outline}>Dr Kayode Clinic</Button>
+        <Button type={ButtonTypes.outline}>{hospital?.name}</Button>
         <NotificationIcon />
         <HelpIcon />
         <AvatarIcon />
         <div className={styles.userSection}>
-          <span>Fola Agoro</span>
+          <span>{staff?.firstName} {staff?.lastName}</span>
           <DropDownIcon />
         </div>
       </div>
@@ -148,7 +151,6 @@ const navLinks = [
 
 const SideNav = () => {
   const router = useRouter();
-
   return (
     <aside className={styles.sideMenu}>
       <ul className={styles.navList}>

@@ -1,4 +1,4 @@
-import { IUser } from './../types/user';
+import { IUser, IHospital, IStaff } from './../types/user';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 
@@ -8,7 +8,9 @@ interface IAuthContext {
   updateUser: (authData: IUser) => void;
   user: IUser | null;
   accessToken: string;
-
+  hospital: IHospital | null;
+  role: string;
+  staff: IStaff | null;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
@@ -18,5 +20,8 @@ export const AuthContext = React.createContext<IAuthContext>({
   // @ts-ignore
   updateUser: (IUser: any) => {},
   accessToken: '',
+  hospital: null,
+  role: '',
+  staff: null,
 });
 
