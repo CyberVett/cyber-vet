@@ -128,4 +128,4 @@ export const SampleBoardingData = [
     duration: '16/08/2020 - 1/09/2020',
     status: 'returned'
   },
-]
+];

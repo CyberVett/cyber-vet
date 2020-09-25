@@ -27,9 +27,10 @@ requestClient.interceptors.request.use(
         }
 
         // Else, update the request to get the user token from the localstorage
-        const user = localStorage.getItem(config.storageKeys.auth);
         // @ts-ignore
-        const accessToken = user.accessToken;
+        const user = JSON.parse(localStorage?.getItem(config.storageKeys.auth));
+        // @ts-ignore
+        const accessToken = `Bearer ${user.accessToken}`;
         const requestConfigWithToken = Object.assign({}, requestConfig);
         requestConfigWithToken.headers['Authorization'] = accessToken;
 

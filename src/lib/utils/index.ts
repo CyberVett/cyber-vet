@@ -29,4 +29,8 @@ export const composeClasses = (...styles: (string | boolean | undefined)[]): str
         formattedPhoneNo = '';
     }
     return formattedPhoneNo
-}
+};
+
+export const getAge = (dob: Date | string) => {
+  return new Date().getFullYear() - new Date(dob).getFullYear();
+};

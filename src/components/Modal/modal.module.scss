@@ -1,3 +1,5 @@
+@import '../../../styles/variable';
+
 .container {
   align-items: center;
   display: flex;
@@ -17,6 +19,7 @@
   position: absolute;
   top: 0;
   width: 100%;
+  backdrop-filter: blur(5px);
 }
 
 .modal {
@@ -68,7 +71,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  color: $color-green;
+  color: $color-red;
   width: 25px;
   height: 20px;
   cursor: pointer;

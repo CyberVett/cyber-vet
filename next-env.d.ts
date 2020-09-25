@@ -15,3 +15,5 @@ declare module "*.png" {
   const value: any;
   export default value;
 }
+
+declare module '@khanacademy/react-multi-select';

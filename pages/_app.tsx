@@ -4,6 +4,7 @@ import Router from 'next/router';
 
 import { ReactQueryDevtools } from 'react-query-devtools';
 import 'normalize.css';
+import 'react-day-picker/lib/style.css';
 
 import '../styles/globals.scss'
 import Layout from '../src/components/Layout/layout';
