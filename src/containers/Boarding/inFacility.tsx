@@ -7,12 +7,12 @@ import Button, { ButtonTypes } from 'components/Button/button';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Table from 'components/Table/table';
 import { BoardingHeaders, SampleBoardingData } from 'config/constants';
-// import styles from './boarding.module.scss';
+import styles from './boarding.module.scss';
 
 const Boarding: React.FunctionComponent = () => {
   return (
     <div>
-      <div >
+      <div className={styles.topHeader} >
         <h2>Pet boarding</h2>
         <Input />
         <Button type={ButtonTypes.primary}>Board new pet</Button>

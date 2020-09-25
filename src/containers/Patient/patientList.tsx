@@ -1,53 +1,60 @@
 import React from 'react';
 
-import { Input, InputGroup, Label } from 'components/Input/input';
-import Card, { CardHeader, CardTabs } from 'components/Card/card';
-import { PatientTabs } from 'config/constants';
-import Button from 'components/Button/button';
+import { Input } from 'components/Input/input';
+import Card from 'components/Card/card';
+import { PatientHeaders, SamplePatientData } from 'config/constants';
+import Button, { ButtonTypes } from 'components/Button/button';
 
-import styles from './patient.module.scss';
+import Table from 'components/Table/table';
+import styles from './patient.module.scss'
 
-const Dashboard: React.FunctionComponent = () => {
+const PatientList: React.FunctionComponent = () => {
   return (
-    <div className={styles.container}>
+    <div>
+      <div className={styles.topHeader}>
+        <h2>Pet boarding</h2>
+        <Input />
+        <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new patient</Button>
+      </div>
       <div>
-        <div>
-          <Input />
-        </div>
-        <div>
-          <Card>
-            <CardHeader>Add new patients</CardHeader>
-            <CardTabs items={PatientTabs} />
-            <InputGroup horizontal>
-              <Label>Title</Label>
-              <Input />
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>First Name</Label>
-              <Input />
-            </InputGroup >
-            <InputGroup horizontal>
-              <Label>Last Name</Label>
-              <Input />
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Address</Label>
-              <Input />
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Phone No:</Label>
-              <Input />
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Email</Label>
-              <Input />
-            </InputGroup>
-            <Button>Continue</Button> <Button>Cancel</Button>
-          </Card>
-        </div>
+        <Card>
+          <Table
+            data={SamplePatientData}
+            headers={PatientHeaders}
+            renderRow={(row) => (
+              <tr key={row.id}>
+                <td>{row.patientNo}</td>
+                <td>{row.clientName}</td>
+                <td>{row.patientName}</td>
+                <td>{row.specie}</td>
+                <td>{row.breed}</td>
+                <td>{
+                  actionButton(row.status)
+                }</td>
+              </tr>
+            )} />
+        </Card>
       </div>
     </div>
-  );
+  )
 };
 
-export default Dashboard;
+const actionButton = (status: string) => {
+  if (status === 'returned') {
+    return (
+      <div>
+        <Button>Edit</Button>
+        <Button>Check In</Button>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <Button>Edit</Button>
+        <Button>Check Out</Button>
+      </div>
+    )
+  }
+};
+
+export default PatientList;

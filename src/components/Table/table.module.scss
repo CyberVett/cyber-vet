@@ -1,3 +1,4 @@
+@import '../../../styles/variable';
 
 .table {
   max-width: 100%;
@@ -17,6 +18,10 @@
       border-bottom: none;
     }
   }
+  tr {
+    background-color: $color-white;
+    margin: 8px 0;
+  }
 
   th {
     font-size: 12px;
@@ -26,7 +31,7 @@
   }
 
   td {
-    color: #707070;
+    color: $color-black;
     font-size: 14px;
   }
 }

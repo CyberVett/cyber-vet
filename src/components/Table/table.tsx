@@ -15,9 +15,9 @@ const Table: React.FC<{
 }> = ({ data = [], headers = [], renderRow }) => {
     return (
 
-      <table className={styles.table}>
+      <table className={styles.table} cellSpacing={0}>
         <thead>
-          <tr>
+          {/* <tr> */}
             {
               headers.map(header => (
                 <th key={header.id} className={composeClasses(header.className)}>
@@ -25,7 +25,7 @@ const Table: React.FC<{
                 </th>
               ))
             }
-          </tr>
+          {/* </tr> */}
         </thead>
 
         <tbody>

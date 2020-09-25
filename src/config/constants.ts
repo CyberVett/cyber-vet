@@ -129,3 +129,77 @@ export const SampleBoardingData = [
     status: 'returned'
   },
 ];
+
+export const PatientHeaders = [
+  {
+    id: 1,
+    label: 'Patient\'s No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Specie',
+  },
+  {
+    id: 5,
+    label: 'Breed',
+  },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+  {
+    id: 8,
+    label: '',
+  },
+];
+
+export const SamplePatientData = [
+  {
+    id: 1,
+    patientNo: 'SAC01/16/08/2020',
+    clientName: 'Mr Ololade Mayowa',
+    patientName: 'Damara',
+    specie:'Canine',
+    breed:'Rottweiler',
+  },
+  {
+    id: 2,
+    patientNo: 'SAC01/16/08/2020',
+    clientName: 'Mr Ololade Mayowa',
+    patientName: 'Damara',
+    specie:'Canine',
+    breed:'Rottweiler',
+  },
+  {
+    id: 3,
+    patientNo: 'SAC01/16/08/2020',
+    clientName: 'Mr Ololade Mayowa',
+    patientName: 'Damara',
+    specie:'Canine',
+    breed:'Rottweiler',
+  },
+  {
+    id: 4,
+    patientNo: 'SAC01/16/08/2020',
+    clientName: 'Mr Ololade Mayowa',
+    patientName: 'Damara',
+    specie:'Canine',
+    breed:'Rottweiler',
+  },
+  {
+    id: 5,
+    patientNo: 'SAC01/16/08/2020',
+    clientName: 'Mr Ololade Mayowa',
+    patientName: 'Damara',
+    specie:'Canine',
+    breed:'Rottweiler',
+  },
+];
