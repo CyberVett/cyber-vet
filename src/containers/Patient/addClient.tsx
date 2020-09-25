@@ -179,7 +179,7 @@ const AddClient: React.FunctionComponent = () => {
                 <FormErrors errors={error} />
                 <FormMessages messages={response} />
                 <div className={styles.button}>
-                  <Button htmlType="submit">Continue</Button> <Button href="/app/dashboard">Cancel</Button>
+                  <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Cancel</Button>
                 </div>
               </form>
             </div>

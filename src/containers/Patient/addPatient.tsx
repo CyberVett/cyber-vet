@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
+import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import SectionHeader, { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
@@ -59,7 +59,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [response, setResponse] = useState('');
   const [error, setError] = useState('');
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any } }) => {
@@ -365,6 +364,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   </InputGroup>
                 </div>
               </div>
+              <FormErrors errors={error} />
               <div className={styles.button}>
                 <Button
                   htmlType="sumbit"

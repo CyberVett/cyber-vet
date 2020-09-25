@@ -3,7 +3,7 @@ import React from 'react';
 import { Input, InputGroup, Label } from 'components/Input/input';
 import SectionHeader, { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardTabs } from 'components/Card/card';
-import { PatientTabs } from 'config/constants';
+import { BoardingTabs } from 'config/constants';
 import Button from 'components/Button/button';
 
 import styles from './boarding.module.scss';
@@ -14,7 +14,7 @@ const AddPatient: React.FunctionComponent = () => {
       <div>
         <div>
           <Card>
-            <CardTabs items={PatientTabs} />
+            <CardTabs items={BoardingTabs} />
             <SectionHeader title="Add New Patient" />
             <SubSectionHeader title="Signalment" />
             <div className={styles.cardBodyPatient}>
