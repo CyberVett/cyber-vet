@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-import { ReactComponent as Loader } from 'assets/icons/loader.svg';
+import { ReactComponent as Loader } from 'assets/icons/loading.svg';
 
 import styles from './button.module.scss';
 import { composeClasses } from '../../lib/utils';
