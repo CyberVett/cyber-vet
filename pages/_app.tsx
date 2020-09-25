@@ -9,7 +9,6 @@ import '../styles/globals.scss'
 import Layout from '../src/components/Layout/layout';
 import config from 'config';
 import { AuthContext } from 'contexts/auth';
-import { userInfo } from 'os';
 
 interface IAppState {
   loggedIn: boolean;
@@ -107,7 +106,7 @@ class Root extends App<{}, IAppState> {
           />
         </Layout>
         </AuthContext.Provider>
-        {/* {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen />} */}
+        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen />}
       </StrictMode>
     );
   }
