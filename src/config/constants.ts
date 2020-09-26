@@ -130,6 +130,29 @@ export const SampleBoardingData = [
   },
 ];
 
+export const HospitalHeaders = [
+  {
+    id: 1,
+    label: 'Name',
+  },
+  {
+    id: 2,
+    label: 'email',
+  },
+  {
+    id: 3,
+    label: 'Phone No:',
+  },
+  {
+    id: 4,
+    label: 'Role',
+  },
+  {
+    id: 5,
+    label: 'Review',
+  },
+];
+
 export const PatientHeaders = [
   {
     id: 1,
@@ -158,6 +181,29 @@ export const PatientHeaders = [
   {
     id: 8,
     label: '',
+  },
+];
+
+export const DashboardPatientHeaders = [
+  {
+    id: 1,
+    label: 'Patient\'s No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Specie',
+  },
+  {
+    id: 5,
+    label: 'Breed',
   },
 ];
 

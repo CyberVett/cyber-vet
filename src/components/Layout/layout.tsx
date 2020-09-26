@@ -136,12 +136,12 @@ const navLinks = [
     name: 'Administration',
     childMenu: [
       {
-        href: '/app/admin/staff/list',
+        href: '/app/admin',
         id: 800,
         name: 'Staff list',
       },
       {
-        href: '/app/admin/staff/add',
+        href: '/app/admin/add',
         id: 900,
         name: 'add new staff',
       }

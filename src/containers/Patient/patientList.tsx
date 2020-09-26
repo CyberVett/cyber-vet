@@ -1,31 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Input } from 'components/Input/input';
 import Card from 'components/Card/card';
-import { PatientHeaders, SamplePatientData } from 'config/constants';
+import { Input } from 'components/Input/input';
+import { PatientHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
+import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
+
 import Table from 'components/Table/table';
-import styles from './patient.module.scss'
+import requestClient from 'lib/requestClient';
+
+import styles from './patient.module.scss';
 
 const PatientList: React.FunctionComponent = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    requestClient.get('patients')
+      .then(response => {
+        setLoading(false);
+        if (response.status === 201 && response.statusText === 'Created') {
+          setData(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  },[]);
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>Pet boarding</h2>
+        <h2>Patient List</h2>
         <Input />
         <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new patient</Button>
       </div>
       <div>
         <Card>
+        {loading ? <Loader /> :
           <Table
-            data={SamplePatientData}
+            data={data}
             headers={PatientHeaders}
             renderRow={(row) => (
               <tr key={row.id}>
                 <td>{row.patientNo}</td>
-                <td>{row.clientName}</td>
-                <td>{row.patientName}</td>
+                <td>{row.Client.title}. {row.Client.firstName} {row.Client.firstName}</td>
+                <td>{row.name}</td>
                 <td>{row.specie}</td>
                 <td>{row.breed}</td>
                 <td>{
@@ -33,13 +54,14 @@ const PatientList: React.FunctionComponent = () => {
                 }</td>
               </tr>
             )} />
+          }
         </Card>
       </div>
     </div>
   )
 };
 
-const actionButton = (status: string) => {
+export const actionButton = (status: string) => {
   if (status === 'returned') {
     return (
       <div>
