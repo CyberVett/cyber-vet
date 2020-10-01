@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import requestClient from 'lib/requestClient';
 import { formatDistance } from "date-fns";
 
 /* Combine a number of classes removing undefined values
@@ -33,10 +35,37 @@ export const formatPhoneNumber = (phoneNo: string) => {
   return formattedPhoneNo
 };
 
-export const getAge = (dob: Date | string): string => {  
-  if(dob) {
+export const getAge = (dob: Date | string): string => {
+  if (dob) {
     return formatDistance(new Date(), new Date(dob));
   }
   return 'enter date of birth';
-
 };
+
+// export const uploadToCloudinary = (imgToUpload: string) => {
+//   const [percentage, setPercentage] = useState(0);
+//   const [imgUrl, setImgUrl] = useState('');
+
+//   useEffect(() => {
+//     let formData = new FormData();
+//     formData.append('image', imgToUpload);
+//     requestClient.post('images', formData, {
+//       onUploadProgress: (ProgressEvent) => {
+//         const { loaded, total } = ProgressEvent;
+//         setPercentage(Math.floor((loaded * 100) / total));
+//       }
+//     })
+//       .then(res => {
+//         console.log(res);
+//       })
+//       .catch(err => {
+//         console.log(err);
+//       });
+//       return () => { };
+//   },[])
+
+//   return {
+//     percentage,
+//     imgUrl
+//   }
+// }

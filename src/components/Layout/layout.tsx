@@ -207,13 +207,13 @@ const Layout: React.FC<ILayout> = ({ children, showDashboard, ...rest }) => {
     <>
       {
         showDashboard ?
-          <React.Fragment {...rest}>
+          <div className={styles.mainGrid} {...rest}>
             <TopNav />
-            <main className={styles.mainWrapper}>
+            <main>
               <SideNav />
-              <div>{children}</div>
+              <div className={styles.mainWrapper}>{children}</div>
             </main>
-          </React.Fragment> : <React.Fragment {...rest}>{children}</React.Fragment>
+          </div> : <React.Fragment {...rest}>{children}</React.Fragment>
       }
     </>
   );

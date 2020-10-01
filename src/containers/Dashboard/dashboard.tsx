@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ReactComponent as FolderIcon } from '../../assets/icons/folder.svg';
 import { ReactComponent as PawIcon } from '../../assets/icons/paw.svg';
 import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
+import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
 
 import { Input } from 'components/Input/input';
 import Card, { CardHeader } from 'components/Card/card';
@@ -37,8 +38,11 @@ const Dashboard: React.FunctionComponent = () => {
   return (
     <div className={styles.container}>
       <div>
-        <div>
-          <Input />
+        <div className={styles.searchBar}>
+        <SearchIcon />
+          <Input
+          placeholder="Search Patients"
+          />
         </div>
         <div>
           <Card>

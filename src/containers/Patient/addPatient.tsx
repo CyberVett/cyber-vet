@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Error from 'next/error';
 import { NextPage, NextPageContext } from 'next';
 
@@ -8,10 +8,12 @@ import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 import Button from 'components/Button/button';
 
+
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
 import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
+import ProgressBar from 'components/ProgressBar/progressBar';
 
 interface IAddPatient {
   clientId: string;
@@ -59,14 +61,16 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     vaccination: '',
     vaccineUsed: '',
     treatmentWarnings: '',
-    imageUrl: 'https://via.placeholder.com/150',
+    imageUrl: '',
     otherSpecie: '',
     otherPurposeOfKepping: '',
     otherVaccination: '',
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
+  const fileInput = useRef();
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any } }) => {
     event.persist();
@@ -74,6 +78,30 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
       ...input,
       [event.target.name]: event.target.value
     }));
+  };
+
+  const handleFileChange = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    let formData = new FormData();
+   //  @ts-ignore
+    formData.append('image', fileInput?.current?.files[0]);
+    requestClient.post('images', formData, {
+      onUploadProgress: (ProgressEvent) => {
+        const { loaded, total } = ProgressEvent;
+        setPercentage(Math.floor((loaded * 100) / total));
+      }
+    })
+      .then(res => {
+        setLoading(false);
+        patientInput.imageUrl = res.data.imageUrl;
+        console.log( 'yh',patientInput.imageUrl);
+        
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err);
+      });
   };
 
   const submitPatientForm = (e: any) => {
@@ -241,9 +269,36 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 </Select>
               </InputGroup>
             </div>
-            <div>
-              Photo
+            <div style={{ margin: '0 auto' }}>
+              <div className={styles.PhotoBox}>
+                <div>
+                {
+                  patientInput.imageUrl !== '' ?
+                  <img src={patientInput.imageUrl} alt="patient photo" /> :
+                  <img src={require('../../assets/images/paw.png')} alt="patient photo" />
+                 
+                }
                 </div>
+                <Input
+                  hidden
+                  //  @ts-ignore
+                  ref={fileInput}
+                  type="file"
+                  accept="image/gif, image/jpeg, image/png"
+                  onChange={handleFileChange}
+                />
+                <Button onClick={(event: any) => {
+                  event.preventDefault();
+                  //  @ts-ignore
+                  fileInput?.current?.click();
+                }}>Browse</Button>
+              </div>
+              {
+              //  @ts-ignore
+              fileInput?.current?.files.length > 0 &&
+                <ProgressBar key={0} bgcolor="#1E638F" completed={percentage} />
+              }
+            </div>
           </div>
           <hr />
           <SubSectionHeader title="animal history" />

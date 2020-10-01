@@ -6,11 +6,13 @@ import { PatientHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
+import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
 
 import Table from 'components/Table/table';
 import requestClient from 'lib/requestClient';
 
 import styles from './patient.module.scss';
+import dashboardStyles from '../Dashboard/dashboard.module.scss';
 
 const PatientList: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
@@ -33,7 +35,12 @@ const PatientList: React.FunctionComponent = () => {
     <div>
       <div className={styles.topHeader}>
         <h2>Patient List</h2>
-        <Input />
+        <div className={dashboardStyles.searchBar}>
+        <SearchIcon />
+          <Input 
+            placeholder="Search for clients or Patients"
+          />
+          </div>
         <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new patient</Button>
       </div>
       <div>
@@ -45,7 +52,7 @@ const PatientList: React.FunctionComponent = () => {
             renderRow={(row) => (
               <tr key={row.id}>
                 <td>{row.patientNo}</td>
-                <td>{row.Client.title}. {row.Client.firstName} {row.Client.firstName}</td>
+                <td>{row.Client.title}. {row.Client.firstName} {row.Client.lastName}</td>
                 <td>{row.name}</td>
                 <td>{row.specie}</td>
                 <td>{row.breed}</td>

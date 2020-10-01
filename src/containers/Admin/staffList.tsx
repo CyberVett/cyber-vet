@@ -7,11 +7,13 @@ import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
 import { ReactComponent as FolderIcon } from '../../assets/icons/folder.svg';
+import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
 
 import Table from 'components/Table/table';
 import requestClient from 'lib/requestClient';
 
 import styles from './admin.module.scss';
+import dashboardStyles from '../Dashboard/dashboard.module.scss';
 
 const HospitalList: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
@@ -20,7 +22,6 @@ const HospitalList: React.FunctionComponent = () => {
   useEffect(() => {
     requestClient.get('staff')
       .then(response => {
-        console.log(response);
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           setData(response.data.data);
@@ -35,7 +36,12 @@ const HospitalList: React.FunctionComponent = () => {
     <div>
       <div className={styles.topHeader}>
         <h2>Hospital Staff List</h2>
-        <Input />
+        <div className={dashboardStyles.searchBar}>
+        <SearchIcon />
+          <Input 
+            placeholder="Search Staff"
+          />
+          </div>
         <Button type={ButtonTypes.primary} href="/app/admin/add">Add new staff</Button>
       </div>
       <div>

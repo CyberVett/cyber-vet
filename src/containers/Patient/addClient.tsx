@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 
 import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
-import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 import Button from 'components/Button/button';
@@ -60,7 +59,6 @@ const AddClient: React.FunctionComponent = () => {
     })
       .then(response => {
         setLoading(false);
-        console.log(response);
         if (response.status === 201 && response.statusText === 'Created') {
           setResponse(response.data.message);
           const { id } = response.data.data;

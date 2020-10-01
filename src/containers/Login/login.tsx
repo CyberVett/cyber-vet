@@ -55,8 +55,6 @@ const Login: React.FunctionComponent = () => {
       "password": loginInput.password,
     })
       .then(response => {
-        console.log(response);
-        
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK' && response.data.data.role !== userRoles.SUPER_ADMINISTRATOR) {
           setResponse(response.data.message);
