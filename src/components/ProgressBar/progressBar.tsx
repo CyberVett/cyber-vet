@@ -32,8 +32,12 @@ const ProgressBar = (props: IProps) => {
 
   return (
     <div style={containerStyles}>
-      <div style={fillerStyles}>
-        <span style={labelStyles}>{`${completed}%`}</span>
+      <div 
+      //  @ts-ignore
+      style={fillerStyles}>
+        <span 
+        //  @ts-ignore
+        style={labelStyles}>{`${completed}%`}</span>
       </div>
     </div>
   );
