@@ -232,8 +232,7 @@ export const FormErrors: React.FC<{
   errors: any[] | string;
 }> = ({ className, errors }) => {
   const classes = composeClasses(styles.formErrors, className);
-  const [showErrorBox, toggleErrorBox] = useState(true);
-
+  const [showErrorBox, toggleErrorBox] = useState(true);  
   useEffect(() => {
     toggleErrorBox(true);
   }, [errors])
@@ -252,7 +251,7 @@ export const FormErrors: React.FC<{
                 <span
                   className={styles.formErrorItem}
                   key={err.message}
-                >{err.message}
+                >{err}
                 </span>
               ))
               : <span className={styles.formErrorItem}>{errors}</span>

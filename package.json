@@ -13,6 +13,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.20.0",
+    "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "lodash.omit": "^4.5.0",
     "next": "9.5.3",

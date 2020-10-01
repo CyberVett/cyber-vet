@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Error from 'next/error';
-import { NextPage, NextPageContext } from 'next';
+import { NextPage } from 'next';
 
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
@@ -13,7 +12,7 @@ import requestClient from 'lib/requestClient';
 import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 
-interface IAddPatient {
+interface IEditPatient {
   clientId: string;
   name: string;
   specie: string;
@@ -38,9 +37,9 @@ interface IAddPatient {
   otherVaccination: string;
 }
 
-const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
+const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
 
-  const [patientInput, setPatientInput] = useState<IAddPatient>({
+  const [patientInput, setPatientInput] = useState<IEditPatient>({
     clientId: clientId,
     name: '',
     specie: '',
@@ -115,7 +114,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
-  return (!clientId ? <Error statusCode={404} title="No client found, kindly register a client, before adding a new patient" /> :
+  return (
     <div>
       <Card>
         <CardHeader>Add New Patient</CardHeader>
@@ -426,11 +425,4 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   );
 };
 
-AddPatient.getInitialProps = async ({ query }: NextPageContext) => {
-  const clientId = (query && query.id) as string;
-  return {
-    clientId,
-  };
-}
-
-export default AddPatient;
+export default EditPatient;

@@ -64,14 +64,14 @@ const PatientList: React.FunctionComponent = () => {
 export const actionButton = (status: string) => {
   if (status === 'returned') {
     return (
-      <div>
+      <div style={{display: 'flex'}}>
         <Button>Edit</Button>
         <Button>Check In</Button>
       </div>
     )
   } else {
     return (
-      <div>
+      <div style={{display: 'flex'}}>
         <Button>Edit</Button>
         <Button>Check Out</Button>
       </div>

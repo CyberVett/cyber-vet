@@ -205,6 +205,14 @@ export const DashboardPatientHeaders = [
     id: 5,
     label: 'Breed',
   },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+  {
+    id: 8,
+    label: '',
+  },
 ];
 
 export const SamplePatientData = [
@@ -249,3 +257,12 @@ export const SamplePatientData = [
     breed:'Rottweiler',
   },
 ];
+
+export const userRoles = {
+  ADMINISTRATOR: 'ADMINISTRATOR',
+  LAB_TECHNOLOGIST: 'LAB_TECHNOLOGIST',
+  RECORD_OFFICER: 'RECORD_OFFICER',
+  SUPER_ADMINISTRATOR: 'SUPER_ADMINISTRATOR',
+  VETERINARY_ASSISTANT: 'VETERINARY_ASSISTANT',
+  VETERINARY_DOCTOR: 'VETERINARY_DOCTOR'
+}

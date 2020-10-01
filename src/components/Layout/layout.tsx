@@ -66,7 +66,7 @@ const navLinks = [
         name: 'patient list',
       },
       {
-        href: '/app/patient/add',
+        href: '/app/patient/add/client',
         id: 200,
         name: 'add new patient',
       },

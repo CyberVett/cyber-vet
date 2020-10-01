@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
-import Card, { CardTabs } from 'components/Card/card';
+import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 import Button from 'components/Button/button';
 
@@ -85,8 +85,8 @@ const AddClient: React.FunctionComponent = () => {
       <div>
         <div>
           <Card>
+            <CardHeader>Add New Client</CardHeader>
             <CardTabs items={PatientTabs} />
-            <SectionHeader title="Add New Client" />
             <div className={styles.cardBody}>
               <form onSubmit={(e) => { submitClientForm(e) }}>
                 <InputGroup horizontal>
@@ -170,7 +170,6 @@ const AddClient: React.FunctionComponent = () => {
                     autoComplete="true"
                     handleInputChange={handleInputChange}
                     name="email"
-                    required
                     type="email"
                     validation={InputValidationTypes.email}
                     value={clientInput.email}

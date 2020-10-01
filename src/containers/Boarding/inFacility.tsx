@@ -58,7 +58,6 @@ const actionButton = (status: string) => {
       </div>
     )
   }
-}
-
+};
 
 export default Boarding;

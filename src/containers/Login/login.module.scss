@@ -50,4 +50,29 @@
     font-weight: 500;
   }
 }
+.passwordBox {
+  position: relative;
+  justify-content: space-between;
+}
 
+%password {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 18px;
+  right: 12px;
+}
+
+.showPassword {
+  @extend %password;
+  path {
+    fill: grey;
+  }
+}
+
+.hidePassword {
+ @extend %password;
+ path {
+  fill: black;
+}
+}

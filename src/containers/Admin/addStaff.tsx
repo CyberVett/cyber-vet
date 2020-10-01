@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
 
-import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
+import { FormErrors,Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Card from 'components/Card/card';
 import Button from 'components/Button/button';
