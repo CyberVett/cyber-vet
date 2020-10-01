@@ -74,6 +74,7 @@ const AddStaff: React.FunctionComponent = () => {
     e.preventDefault();
     setLoading(true);
     let formData = new FormData();
+    //  @ts-ignore
     formData.append('image', fileInput?.current?.files[0]);
     requestClient.post('images', formData, {
       onUploadProgress: (ProgressEvent) => {

@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import requestClient from 'lib/requestClient';
 import { formatDistance } from "date-fns";
 
 /* Combine a number of classes removing undefined values
