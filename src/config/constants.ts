@@ -184,6 +184,33 @@ export const PatientHeaders = [
   },
 ];
 
+export const ClientHeaders = [
+  {
+    id: 1,
+    label: 'Client\'s No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Address',
+  },
+  {
+    id: 4,
+    label: 'phone no',
+  },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+  {
+    id: 8,
+    label: '',
+  },
+];
+
 export const DashboardPatientHeaders = [
   {
     id: 1,

@@ -61,7 +61,7 @@ const Dashboard: React.FunctionComponent = () => {
                         <td>{row.name}</td>
                         <td>{row.specie}</td>
                         <td>{row.breed}</td>
-                        <td>{actionButton(row.status)}</td>
+                        <td>{actionButton(row.status, row.id)}</td>
                       </tr>
                     )} />
                 </>

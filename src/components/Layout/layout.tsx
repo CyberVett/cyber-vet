@@ -74,6 +74,11 @@ const navLinks = [
         href: '/app/patient/referred',
         id: 300,
         name: 'referred patient',
+      },
+      {
+        href: '/app/client',
+        id: 400,
+        name: 'Client List',
       }
     ]
   },

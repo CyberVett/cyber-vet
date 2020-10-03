@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
-import Card, { CardHeader, CardTabs } from 'components/Card/card';
-import { PatientTabs } from 'config/constants';
+import Card, { CardHeader } from 'components/Card/card';
 import Button from 'components/Button/button';
 
 import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
+import { NextPage, NextPageContext } from 'next';
 
-interface IAddClient {
+interface IEditClient {
   title: string;
   firstName: string;
   lastName: string;
@@ -20,9 +20,9 @@ interface IAddClient {
   phoneNumber: string;
 }
 
-const AddClient: React.FunctionComponent = () => {
+const EditClient: NextPage<{ clientId: string }> = (clientId) => {
 
-  const [clientInput, setClientInput] = useState<IAddClient>({
+  const [clientInput, setClientInput] = useState<IEditClient>({
     title: '',
     firstName: '',
     lastName: '',
@@ -44,6 +44,22 @@ const AddClient: React.FunctionComponent = () => {
     }));
   };
 
+  useEffect(() => {
+    setLoading(true);    
+    requestClient.get(`clients/${clientId.clientId}`)
+      .then(response => {        
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setClientInput(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+        setError(error.response.data.data.message);
+      })
+  }, []);
+
   const submitClientForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -61,20 +77,20 @@ const AddClient: React.FunctionComponent = () => {
         setLoading(false);
         if (response.status === 201 && response.statusText === 'Created') {
           setResponse(response.data.message);
-          const { id } = response.data.data;
-          Router.push({
-            pathname: '/app/patient/add',
-            query: { id: id }
-          });
+          setTimeout(() => {
+            Router.push({
+              pathname: '/app/client',
+            });
+          }, 2000);
         } else {
           setLoading(false);
-          setError(response.data.message);
+          setError(response.data.data.message);
         }
       })
       .catch(error => {
         setLoading(false);
-        setError(error.response.data.message);
-        console.log('error', error);
+        setError(error.response.data.data.message);
+        console.log('error', error.response);
       })
   };
 
@@ -83,8 +99,7 @@ const AddClient: React.FunctionComponent = () => {
       <div>
         <div>
           <Card>
-            <CardHeader>Add New Client</CardHeader>
-            <CardTabs items={PatientTabs} />
+            <CardHeader>Edit Client</CardHeader>
             <div className={styles.cardBody}>
               <form onSubmit={(e) => { submitClientForm(e) }}>
                 <InputGroup horizontal>
@@ -187,4 +202,11 @@ const AddClient: React.FunctionComponent = () => {
   );
 };
 
-export default AddClient;
+EditClient.getInitialProps = async ({ query }: NextPageContext) => {
+  const clientId = (query && query.clientId) as string;  
+  return {
+    clientId
+  }
+}
+
+export default EditClient;

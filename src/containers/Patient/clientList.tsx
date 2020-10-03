@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { PatientHeaders } from 'config/constants';
+import { ClientHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
@@ -14,16 +14,15 @@ import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
 
-const PatientList: React.FunctionComponent = () => {
+const ClientList: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    requestClient.get('patients')
-      .then(response => {
+    requestClient.get('clients')
+      .then(response => {        
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
-
           setData(response.data.data);
         }
       })
@@ -35,7 +34,7 @@ const PatientList: React.FunctionComponent = () => {
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>Patient List</h2>
+        <h2>Client List</h2>
         <div className={dashboardStyles.searchBar}>
         <SearchIcon />
           <Input 
@@ -49,17 +48,14 @@ const PatientList: React.FunctionComponent = () => {
         {loading ? <Loader /> :
           <Table
             data={data}
-            headers={PatientHeaders}
+            headers={ClientHeaders}
             renderRow={(row) => (
               <tr key={row.id}>
                 <td>{row.id}</td>
-                <td>{row.Client.title}. {row.Client.firstName} {row.Client.lastName}</td>
-                <td>{row.name}</td>
-                <td>{row.specie}</td>
-                <td>{row.breed}</td>
-                <td>{
-                  actionButton(row.status, row.id)
-                }</td>
+                <td>{row.title}. {row.firstName} {row.lastName}</td>
+                <td>{row.address}</td>
+                <td>{row.phoneNumber}</td>
+                <td><Button href={`/app/client/edit/${row.id}`}>edit</Button> <Button >Open</Button></td>
               </tr>
             )} />
           }
@@ -69,22 +65,4 @@ const PatientList: React.FunctionComponent = () => {
   )
 };
 
-export const actionButton = (status: string, id: string) => {
-  if (status === 'returned') {
-    return (
-      <div style={{display: 'flex'}}>
-        <Button href={`/app/patient/edit/${id}`}>Edit</Button>
-        <Button>Check In</Button>
-      </div>
-    )
-  } else {
-    return (
-      <div style={{display: 'flex'}}>
-        <Button href={`/app/patient/edit/${id}`}>Edit</Button>
-        <Button>Check Out</Button>
-      </div>
-    )
-  }
-};
-
-export default PatientList;
+export default ClientList;

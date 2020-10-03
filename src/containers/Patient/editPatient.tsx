@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { NextPage } from 'next';
+import React, { useEffect, useRef, useState } from 'react';
+import { NextPage, NextPageContext } from 'next';
 
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
-import Card, { CardHeader, CardTabs } from 'components/Card/card';
-import { PatientTabs } from 'config/constants';
+import Card, { CardHeader } from 'components/Card/card';
 import Button from 'components/Button/button';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
 import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
+import ProgressBar from 'components/ProgressBar/progressBar';
+import  Router  from 'next/router';
 
 interface IEditPatient {
   clientId: string;
@@ -37,10 +38,10 @@ interface IEditPatient {
   otherVaccination: string;
 }
 
-const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
+const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const [patientInput, setPatientInput] = useState<IEditPatient>({
-    clientId: clientId,
+    clientId: '',
     name: '',
     specie: '',
     breed: '',
@@ -58,14 +59,17 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     vaccination: '',
     vaccineUsed: '',
     treatmentWarnings: '',
-    imageUrl: 'https://via.placeholder.com/150',
+    imageUrl: '',
     otherSpecie: '',
     otherPurposeOfKepping: '',
     otherVaccination: '',
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
+  const fileInput = useRef();
+
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any } }) => {
     event.persist();
@@ -75,11 +79,51 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     }));
   };
 
+  useEffect(() => {
+    setLoading(true);
+    requestClient.get(`patients/${patientId}`)
+
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setPatientInput(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+        setError(error.response.data.data.message);
+      })
+  }, []);
+
+  const handleFileChange = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    let formData = new FormData();
+   //  @ts-ignore
+    formData.append('image', fileInput?.current?.files[0]);
+    requestClient.post('images', formData, {
+      onUploadProgress: (ProgressEvent) => {
+        const { loaded, total } = ProgressEvent;
+        setPercentage(Math.floor((loaded * 100) / total));
+      }
+    })
+      .then(res => {
+        setLoading(false);
+        patientInput.imageUrl = res.data.imageUrl;        
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
   const submitPatientForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    requestClient.post('patients', {
-      "clientId": patientInput.clientId,
+    requestClient.put(`patients/${patientId}`, {
+      // @ts-ignore
+      "clientId": patientInput.clientId.clientId,
       "name": patientInput.name,
       "specie": patientInput.specie === "Others" ? patientInput.otherSpecie : patientInput.specie,
       "breed": patientInput.breed,
@@ -102,7 +146,7 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 200 && response.statusText === 'OK') {
           setShowModal(true);
         } else {
           setLoading(false);
@@ -117,8 +161,7 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   return (
     <div>
       <Card>
-        <CardHeader>Add New Patient</CardHeader>
-        <CardTabs items={PatientTabs} />
+        <CardHeader>Edit Patient</CardHeader>
         <SubSectionHeader title="Signalment" />
         <form onSubmit={e => submitPatientForm(e)}>
           <div className={styles.cardBodyPatient}>
@@ -213,7 +256,6 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   autoComplete="true"
                   onChange={handleInputChange}
                   name="dob"
-                  required
                   type="date"
                   value={patientInput.dob}
                 />
@@ -240,9 +282,36 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 </Select>
               </InputGroup>
             </div>
-            <div>
-              Photo
+            <div style={{ margin: '0 auto' }}>
+              <div className={styles.PhotoBox}>
+                <div>
+                  {
+                    patientInput.imageUrl !== '' ?
+                      <img src={patientInput.imageUrl} alt="patient photo" /> :
+                      <img src={require('../../assets/images/paw.png')} alt="patient photo" />
+
+                  }
                 </div>
+                <Input
+                  hidden
+                  //  @ts-ignore
+                  ref={fileInput}
+                  type="file"
+                  accept="image/gif, image/jpeg, image/png"
+                  onChange={handleFileChange}
+                />
+                <Button onClick={(event: any) => {
+                  event.preventDefault();
+                  //  @ts-ignore
+                  fileInput?.current?.click();
+                }}>Browse</Button>
+              </div>
+              {
+                //  @ts-ignore
+                fileInput?.current?.files.length > 0 &&
+                <ProgressBar key={0} bgcolor="#1E638F" completed={percentage} />
+              }
+            </div>
           </div>
           <hr />
           <SubSectionHeader title="animal history" />
@@ -411,18 +480,28 @@ const EditPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
             <Button
               htmlType="sumbit"
               loading={loading}
-            >Continue</Button><Button href="/app/dashboard">Cancel</Button>
+            >Continue</Button><Button href="/app/patient">Cancel</Button>
           </div>
         </form>
         <Modal
           visible={showModal}
-          title="New Patient Added"
-          subtitle="New Patient has been added successfully"
-          closeModal={() => { setShowModal(false) }}
+          title="Patient Details Updated"
+          subtitle="New Patient  details has been successfully updated"
+          closeModal={() => { 
+            setShowModal(false);
+            Router.push('/app/patient')
+           }}
         />
       </Card>
     </div>
   );
+};
+
+EditPatient.getInitialProps = async ({ query }: NextPageContext) => {
+  const patientId = (query && query.patientId) as string;
+  return {
+    patientId
+  }
 };
 
 export default EditPatient;

@@ -14,7 +14,9 @@ import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
 
-const PatientList: React.FunctionComponent = () => {
+// FIXME: no endpoint available
+// TODO: Fix view to view all patients belonging to a client
+const ClientPatientList: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +34,7 @@ const PatientList: React.FunctionComponent = () => {
         console.log(error);
       })
   },[]);
+
   return (
     <div>
       <div className={styles.topHeader}>
@@ -87,4 +90,4 @@ export const actionButton = (status: string, id: string) => {
   }
 };
 
-export default PatientList;
+export default ClientPatientList;

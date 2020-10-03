@@ -11,6 +11,7 @@ import Modal from 'components/Modal/modal';
 
 import styles from './admin.module.scss';
 import patientStyles from '../Patient/patient.module.scss';
+import { NextPage, NextPageContext } from 'next';
 
 interface IAccount {
   accountId: string;
@@ -35,9 +36,10 @@ interface IAddStaff {
   password: string;
   role: string;
   imageUrl: string;
+  accountId: string;
 }
 
-const AddStaff: React.FunctionComponent = () => {
+const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
   const [staffInput, setStaffInput] = useState<IAddStaff>({
     account: {
       accountId: '',
@@ -53,7 +55,8 @@ const AddStaff: React.FunctionComponent = () => {
     password: '',
     role: '',
     email: '',
-    imageUrl: ''
+    imageUrl: '',
+    accountId: '',
   });
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<IRole[]>([]);
@@ -95,6 +98,22 @@ const AddStaff: React.FunctionComponent = () => {
 
   useEffect(() => {
     setLoading(true);
+    requestClient.get(`staff/${staffId}`)
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setStaffInput(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+        setError(error.response.data.data.message);
+      })
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
     requestClient.get('roles')
       .then(response => {
         setLoading(false);
@@ -105,34 +124,34 @@ const AddStaff: React.FunctionComponent = () => {
       .catch(error => {
         setLoading(false);
         console.log(error);
+        setError(error.response.data.data.message);
       })
   }, [])
+
 
   const submitStaffForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    requestClient.post('staff', {
-      "account": {
-        "accountId": staffInput.email,
-        "password": staffInput.password,
-        "role": staffInput.role
-      },
+    requestClient.put(`staff/${staffId}`, {
       "title": staffInput.title,
       "firstName": staffInput.firstName,
       "lastName": staffInput.lastName,
       "otherName": staffInput.otherName,
       "gender": staffInput.gender,
-      "phoneNumber": staffInput.phoneNumber,
-      "imageUrl": staffInput.imageUrl
+      "phoneNumber": staffInput.phoneNumber
     })
       .then(response => {
+        console.log(response);
+
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 200 && response.statusText === 'OK') {
           // setResponse(response.data.message);
           setShowModal(true);
-          Router.push({
-            pathname: '/app/admin',
-          });
+          setTimeout(() => {
+            Router.push({
+              pathname: '/app/admin',
+            });
+          }, 3000);
         } else {
           setLoading(false);
           setError(response.data.message);
@@ -141,7 +160,6 @@ const AddStaff: React.FunctionComponent = () => {
       .catch(error => {
         setLoading(false);
         setError(error.response.data.message);
-        console.log('error', error);
       })
   };
 
@@ -150,7 +168,7 @@ const AddStaff: React.FunctionComponent = () => {
       <div>
         <div>
           <Card>
-            <SectionHeader title="Add New Staff" />
+            <SectionHeader title="Edit Staff" ><Button>Revoke Access</Button></SectionHeader>
             <div className={styles.formBody}>
               <form onSubmit={(e) => { submitStaffForm(e) }}>
                 <div className={patientStyles.cardBodyPatient}>
@@ -204,8 +222,8 @@ const AddStaff: React.FunctionComponent = () => {
                         value={staffInput.gender}
                       >
                         <option value="">Select a gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                       </Select>
                     </InputGroup>
                     <InputGroup horizontal>
@@ -217,19 +235,7 @@ const AddStaff: React.FunctionComponent = () => {
                         required
                         type="email"
                         validation={InputValidationTypes.email}
-                        value={staffInput.email}
-                      />
-                    </InputGroup>
-                    <InputGroup horizontal>
-                      <Label>Password</Label>
-                      <Input
-                        autoComplete="true"
-                        handleInputChange={handleInputChange}
-                        name="password"
-                        required
-                        type="password"
-                        validation={InputValidationTypes.freeText}
-                        value={staffInput.password}
+                        value={staffInput.accountId}
                       />
                     </InputGroup>
                     <InputGroup horizontal>
@@ -286,22 +292,22 @@ const AddStaff: React.FunctionComponent = () => {
                     </div>
                     {
                       //  @ts-ignore
-                    fileInput?.current?.files.length > 0 &&
+                      fileInput?.current?.files.length > 0 &&
                       <ProgressBar key={0} bgcolor="#1E638F" completed={percentage} />
                     }
                   </div>
                   <FormErrors errors={error} />
                   {/* <FormMessages messages={response} /> */}
                   <div className={styles.button}>
-                    <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Cancel</Button>
+                    <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Remove Staff</Button>
                   </div>
                 </div>
               </form>
             </div>
             <Modal
               visible={showModal}
-              title="New Staff Added"
-              subtitle="New Staff has been added successfully"
+              title="Staff Details Updated"
+              subtitle="Staff has been successfully updated"
               closeModal={() => { setShowModal(false) }}
             />
           </Card>
@@ -311,4 +317,11 @@ const AddStaff: React.FunctionComponent = () => {
   );
 };
 
-export default AddStaff;
+EditStaff.getInitialProps = async ({ query }: NextPageContext) => {
+  const staffId = (query && query.staffId) as string;
+  return {
+    staffId
+  }
+}
+
+export default EditStaff;

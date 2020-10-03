@@ -46,7 +46,7 @@ const HospitalList: React.FunctionComponent = () => {
       </div>
       <div>
         <Card>
-          {loading ? <Loader /> : data.length > 3 ?
+          {loading ? <Loader /> : data.length > 0 ?
             <Table
               data={data}
               headers={HospitalHeaders}
@@ -55,8 +55,8 @@ const HospitalList: React.FunctionComponent = () => {
                   <td>{row.title}. {row.firstName} {row.lastName}</td>
                   <td>{row.accountId}</td>
                   <td>{row.phoneNumber}</td>
-                  <td>{row.Role}</td>
-                  <td><Button>Open</Button></td>
+                  <td>{row.role}</td>
+                  <td><Button href={`/app/admin/edit/${row.id}`}>Open</Button></td>
                 </tr>
               )} /> : <div className={styles.cardBody}>
               <FolderIcon />
