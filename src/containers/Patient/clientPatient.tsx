@@ -20,7 +20,7 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    requestClient.get(`patients/${clientId}`)
+    requestClient.get(`patients/client/${clientId}`)
       .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
@@ -37,7 +37,7 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>{`Mr Adebayo/${clientId}`}</h2>
+        <h2>{`Client No: ${clientId}`}</h2>
         <div className={dashboardStyles.searchBar}>
         <SearchIcon />
           <Input 

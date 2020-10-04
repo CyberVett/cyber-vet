@@ -25,7 +25,7 @@ const Dashboard: React.FunctionComponent = () => {
     requestClient.get('patients')
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 200 && response.statusText === 'OK') {
           setPatientData(response.data.data);
         }
       })
@@ -56,7 +56,7 @@ const Dashboard: React.FunctionComponent = () => {
                     headers={DashboardPatientHeaders}
                     renderRow={(row) => (
                       <tr key={row.id}>
-                        <td>{row.patientNo}</td>
+                        <td>{row.id}</td>
                         <td>{row.Client.title}. {row.Client.firstName} {row.Client.firstName}</td>
                         <td>{row.name}</td>
                         <td>{row.specie}</td>

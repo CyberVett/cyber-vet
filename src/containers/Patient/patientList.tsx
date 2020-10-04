@@ -47,6 +47,7 @@ const PatientList: React.FunctionComponent = () => {
       <div>
         <Card>
         {loading ? <Loader /> :
+          data.length > 0 ?
           <Table
             data={data}
             headers={PatientHeaders}
@@ -61,8 +62,8 @@ const PatientList: React.FunctionComponent = () => {
                   actionButton(row.status, row.id)
                 }</td>
               </tr>
-            )} />
-          }
+            )}/> : <h2>No Patient Record Found</h2>
+            }
         </Card>
       </div>
     </div>
