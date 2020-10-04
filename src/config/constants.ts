@@ -184,6 +184,29 @@ export const PatientHeaders = [
   },
 ];
 
+export const ClientPatientHeaders = [
+  {
+    id: 1,
+    label: 'Patient\'s No',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Specie',
+  },
+  {
+    id: 5,
+    label: 'Breed',
+  },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+];
+
 export const ClientHeaders = [
   {
     id: 1,

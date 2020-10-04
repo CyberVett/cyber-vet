@@ -91,8 +91,8 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
       })
       .catch(error => {
         setLoading(false);
-        console.log(error);
-        setError(error.response.data.data.message);
+        console.log(error.response);
+        setError(error.response.data.message);
       })
   }, []);
 

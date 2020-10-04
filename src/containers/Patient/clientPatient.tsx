@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { PatientHeaders } from 'config/constants';
+import { ClientPatientHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
@@ -13,15 +13,14 @@ import requestClient from 'lib/requestClient';
 
 import styles from './patient.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
+import { NextPage, NextPageContext } from 'next';
 
-// FIXME: no endpoint available
-// TODO: Fix view to view all patients belonging to a client
-const ClientPatientList: React.FunctionComponent = () => {
+const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    requestClient.get('patients')
+    requestClient.get(`patients/${clientId}`)
       .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
@@ -38,31 +37,28 @@ const ClientPatientList: React.FunctionComponent = () => {
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>Patient List</h2>
+        <h2>{`Mr Adebayo/${clientId}`}</h2>
         <div className={dashboardStyles.searchBar}>
         <SearchIcon />
           <Input 
             placeholder="Search for clients or Patients"
           />
           </div>
-        <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new patient</Button>
+        <Button type={ButtonTypes.primary} href={`/app/patient/add?id=${clientId}`}>Add new patient</Button>
       </div>
       <div>
         <Card>
         {loading ? <Loader /> :
           <Table
             data={data}
-            headers={PatientHeaders}
+            headers={ClientPatientHeaders}
             renderRow={(row) => (
               <tr key={row.id}>
                 <td>{row.id}</td>
-                <td>{row.Client.title}. {row.Client.firstName} {row.Client.lastName}</td>
                 <td>{row.name}</td>
                 <td>{row.specie}</td>
                 <td>{row.breed}</td>
-                <td>{
-                  actionButton(row.status, row.id)
-                }</td>
+                <td><Button>Check In</Button></td>
               </tr>
             )} />
           }
@@ -89,5 +85,12 @@ export const actionButton = (status: string, id: string) => {
     )
   }
 };
+ClientPatientList.getInitialProps = async ({ query }: NextPageContext) => {
+  const clientId = (query && query.clientId) as string;  
+  return {
+    clientId
+  }
+}
+
 
 export default ClientPatientList;

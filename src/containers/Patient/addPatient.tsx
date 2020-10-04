@@ -14,6 +14,7 @@ import requestClient from 'lib/requestClient';
 import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
+import Router from 'next/router';
 
 interface IAddPatient {
   clientId: string;
@@ -284,6 +285,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   ref={fileInput}
                   type="file"
+                  required
                   accept="image/gif, image/jpeg, image/png"
                   onChange={handleFileChange}
                 />
@@ -474,7 +476,10 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
           visible={showModal}
           title="New Patient Added"
           subtitle="New Patient has been added successfully"
-          closeModal={() => { setShowModal(false) }}
+          closeModal={() => { 
+            setShowModal(false);
+            Router.push('/app/patient');
+          }}
         />
       </Card>
     </div>
