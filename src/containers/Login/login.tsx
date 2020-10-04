@@ -64,7 +64,7 @@ const Login: React.FunctionComponent = () => {
           Router.push(redirectUrl || defaultPath);
         } if((response.status === 200 && response.statusText === 'OK' && response.data.data.role === userRoles.SUPER_ADMINISTRATOR)){
           setLoading(false);
-          setError(['This is the Client portal, to login in as an admin, please visit the adminn portal']);
+          setError(['This is the Client portal, to login in as an admin, please visit the Admin portal']);
         } else {
           setLoading(false);
           setError([response.data.message, 'Please check your login credentials and try again']);

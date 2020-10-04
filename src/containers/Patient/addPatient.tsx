@@ -95,9 +95,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     })
       .then(res => {
         setLoading(false);
-        patientInput.imageUrl = res.data.imageUrl;
-        console.log( 'yh',patientInput.imageUrl);
-        
+        patientInput.imageUrl = res.data.imageUrl;        
       })
       .catch(err => {
         setLoading(false);
