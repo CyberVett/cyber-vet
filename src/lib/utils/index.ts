@@ -67,3 +67,11 @@ export const getAge = (dob: Date | string): string => {
 //     imgUrl
 //   }
 // }
+
+// export const formatDate = (dob: Date | string): string => {
+//   if (dob) {
+//     const date = new Date(dob);
+//     utcToZonedTime(date, timeZone);
+//   }
+//   return 'enter date of birth';
+// };

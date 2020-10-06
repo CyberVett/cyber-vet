@@ -56,14 +56,14 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
       .catch(error => {
         setLoading(false);
         console.log(error);
-        setError(error.response.data.data.message);
+        setError(error.response.data.message);
       })
   }, []);
 
   const submitClientForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    requestClient.post('clients', {
+    requestClient.put(`clients/${clientId.clientId}`, {
       "title": clientInput.title,
       "firstName": clientInput.firstName,
       "lastName": clientInput.lastName,
@@ -75,7 +75,7 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 200 && response.statusText === 'OK') {
           setResponse(response.data.message);
           setTimeout(() => {
             Router.push({
@@ -84,12 +84,12 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
           }, 2000);
         } else {
           setLoading(false);
-          setError(response.data.data.message);
+          setError(response.data.message);
         }
       })
       .catch(error => {
         setLoading(false);
-        setError(error.response.data.data.message);
+        setError(error.response.data.message);
         console.log('error', error.response);
       })
   };

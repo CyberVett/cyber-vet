@@ -12,6 +12,7 @@ import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import  Router  from 'next/router';
+import { ISpecies } from './addPatient';
 
 interface IEditPatient {
   clientId: string;
@@ -39,7 +40,7 @@ interface IEditPatient {
 }
 
 const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
-
+  const [species, setSpecies] = useState<ISpecies[]>([]);
   const [patientInput, setPatientInput] = useState<IEditPatient>({
     clientId: '',
     name: '',
@@ -95,6 +96,21 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
         setError(error.response.data.message);
       })
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    requestClient.get('settings/species')
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setSpecies(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }, [])
 
   const handleFileChange = (e: any) => {
     e.preventDefault();
@@ -214,15 +230,17 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
               }
               <InputGroup horizontal>
                 <Label>Breed</Label>
-                <Input
-                  autoComplete="true"
-                  handleInputChange={handleInputChange}
+                <Select
+                  onChange={handleInputChange}
                   name="breed"
                   required
-                  type="text"
-                  validation={InputValidationTypes.text}
                   value={patientInput.breed}
-                />
+                >
+                  <option value="">select a Breed</option>
+                  {
+                    species.length > 0 && species.map(specie => <option key={species.indexOf(specie)} value={specie.name}>{specie.name}</option>)
+                  }
+                </Select>
               </InputGroup>
               <InputGroup horizontal>
                 <Label>Gender</Label>
@@ -257,7 +275,8 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                   onChange={handleInputChange}
                   name="dob"
                   type="date"
-                  value={patientInput.dob}
+                  // @ts-ignore
+                  value={new Date(patientInput.dob)}
                 />
               </InputGroup>
               <InputGroup horizontal>

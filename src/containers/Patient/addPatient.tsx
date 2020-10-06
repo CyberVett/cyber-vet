@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Error from 'next/error';
 import { NextPage, NextPageContext } from 'next';
 
@@ -16,6 +16,9 @@ import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
 
+export interface ISpecies {
+  name: string;
+}
 interface IAddPatient {
   clientId: string;
   name: string;
@@ -69,6 +72,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [species, setSpecies] = useState<ISpecies[]>([]);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
   const fileInput = useRef();
@@ -81,11 +85,26 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     }));
   };
 
+  useEffect(() => {
+    setLoading(true);
+    requestClient.get('settings/species')
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setSpecies(response.data.data);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }, []);
+
   const handleFileChange = (e: any) => {
     e.preventDefault();
     setLoading(true);
     let formData = new FormData();
-   //  @ts-ignore
+    //  @ts-ignore
     formData.append('image', fileInput?.current?.files[0]);
     requestClient.post('images', formData, {
       onUploadProgress: (ProgressEvent) => {
@@ -95,7 +114,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
     })
       .then(res => {
         setLoading(false);
-        patientInput.imageUrl = res.data.imageUrl;        
+        patientInput.imageUrl = res.data.imageUrl;
       })
       .catch(err => {
         setLoading(false);
@@ -197,17 +216,19 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   />
                 </InputGroup>
               }
-              <InputGroup horizontal>
+                <InputGroup horizontal>
                 <Label>Breed</Label>
-                <Input
-                  autoComplete="true"
-                  handleInputChange={handleInputChange}
+                <Select
+                  onChange={handleInputChange}
                   name="breed"
                   required
-                  type="text"
-                  validation={InputValidationTypes.text}
                   value={patientInput.breed}
-                />
+                >
+                  <option value="">select a Breed</option>
+                  {
+                    species.length > 0 && species.map(specie => <option key={species.indexOf(specie)} value={specie.name}>{specie.name}</option>)
+                  }
+                </Select>
               </InputGroup>
               <InputGroup horizontal>
                 <Label>Gender</Label>
@@ -271,12 +292,12 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
             <div style={{ margin: '0 auto' }}>
               <div className={styles.PhotoBox}>
                 <div>
-                {
-                  patientInput.imageUrl !== '' ?
-                  <img src={patientInput.imageUrl} alt="patient photo" /> :
-                  <img src={require('../../assets/images/paw.png')} alt="patient photo" />
-                 
-                }
+                  {
+                    patientInput.imageUrl !== '' ?
+                      <img src={patientInput.imageUrl} alt="patient photo" /> :
+                      <img src={require('../../assets/images/paw.png')} alt="patient photo" />
+
+                  }
                 </div>
                 <Input
                   hidden
@@ -294,8 +315,8 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 }}>Browse</Button>
               </div>
               {
-              //  @ts-ignore
-              fileInput?.current?.files.length > 0 &&
+                //  @ts-ignore
+                fileInput?.current?.files.length > 0 &&
                 <ProgressBar key={0} bgcolor="#1E638F" completed={percentage} />
               }
             </div>
@@ -474,7 +495,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
           visible={showModal}
           title="New Patient Added"
           subtitle="New Patient has been added successfully"
-          closeModal={() => { 
+          closeModal={() => {
             setShowModal(false);
             Router.push('/app/patient');
           }}
