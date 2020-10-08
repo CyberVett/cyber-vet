@@ -14,7 +14,7 @@ import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
 import Table from 'components/Table/table';
 import { DashboardPatientHeaders } from 'config/constants';
-import { actionButton } from 'containers/Patient/patientList';
+// import { actionButton } from 'containers/Patient/patientList';
 
 const Dashboard: React.FunctionComponent = () => {
   const { staff, role } = useContext(AuthContext);
@@ -61,7 +61,8 @@ const Dashboard: React.FunctionComponent = () => {
                         <td>{row.name}</td>
                         <td>{row.specie}</td>
                         <td>{row.breed}</td>
-                        <td>{actionButton(row.status, row.id)}</td>
+                        <td><Button>Check In</Button></td>
+                        {/* <td>{actionButton(row.status, row.id)}</td> */}
                       </tr>
                     )} />
                 </>

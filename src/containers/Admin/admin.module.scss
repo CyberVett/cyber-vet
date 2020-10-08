@@ -34,3 +34,34 @@
   padding: 8px 0;
   align-items: center;
 }
+
+.passwordBox {
+  position: relative;
+  justify-content: space-between;
+
+  >div>input {
+    width: 480px !important;
+  }
+}
+
+%password {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 18px;
+  right: 12px;
+}
+
+.showPassword {
+  @extend %password;
+  path {
+    fill: grey;
+  }
+}
+
+.hidePassword {
+ @extend %password;
+ path {
+  fill: black;
+}
+}

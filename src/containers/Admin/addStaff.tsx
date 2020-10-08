@@ -8,6 +8,7 @@ import Button from 'components/Button/button';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import requestClient from 'lib/requestClient';
 import Modal from 'components/Modal/modal';
+import { ReactComponent as EyeIcon } from 'assets/icons/eye.svg'
 
 import styles from './admin.module.scss';
 import patientStyles from '../Patient/patient.module.scss';
@@ -57,6 +58,7 @@ const AddStaff: React.FunctionComponent = () => {
   });
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<IRole[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
@@ -220,17 +222,21 @@ const AddStaff: React.FunctionComponent = () => {
                         value={staffInput.email}
                       />
                     </InputGroup>
-                    <InputGroup horizontal>
+                    <InputGroup horizontal className={styles.passwordBox}>
                       <Label>Password</Label>
-                      <Input
-                        autoComplete="true"
-                        handleInputChange={handleInputChange}
-                        name="password"
-                        required
-                        type="password"
-                        validation={InputValidationTypes.freeText}
-                        value={staffInput.password}
-                      />
+                      <div>
+                        <Input
+                          autoComplete="true"
+                          handleInputChange={handleInputChange}
+                          name="password"
+                          required
+                          type={!showPassword ? 'password' : 'text'}
+                          validation={InputValidationTypes.freeText}
+                          value={staffInput.password}
+                        />
+                        <EyeIcon
+                          className={showPassword ? styles.showPassword : styles.hidePassword} onClick={() => { setShowPassword(!showPassword) }} />
+                      </div>
                     </InputGroup>
                     <InputGroup horizontal>
                       <Label>Phone No:</Label>

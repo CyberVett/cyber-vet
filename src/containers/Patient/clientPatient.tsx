@@ -44,7 +44,7 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
             placeholder="Search for clients or Patients"
           />
           </div>
-        <Button type={ButtonTypes.primary} href={`/app/patient/add?id=${clientId}`}>Add new patient</Button>
+        <Button type={ButtonTypes.primary} href={`/app/client/add/patient?id=${clientId}`}>Add new patient</Button>
       </div>
       <div>
         <Card>

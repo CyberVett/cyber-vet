@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
-import Error from 'next/error';
 import { NextPage, NextPageContext } from 'next';
 
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
-import Card, { CardHeader, CardTabs } from 'components/Card/card';
-import { PatientTabs } from 'config/constants';
+import Card, { CardHeader } from 'components/Card/card';
 import Button from 'components/Button/button';
 
 
@@ -44,7 +42,7 @@ interface IAddPatient {
   otherVaccination: string;
 }
 
-const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
+const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
 
   const [patientInput, setPatientInput] = useState<IAddPatient>({
     clientId: clientId,
@@ -161,11 +159,10 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
-  return (!clientId ? <Error statusCode={404} title="No client found, kindly register a client, before adding a new patient" /> :
+  return (
     <div>
       <Card>
         <CardHeader>Add New Patient</CardHeader>
-        <CardTabs items={PatientTabs} />
         <SubSectionHeader title="Signalment" />
         <form onSubmit={e => submitPatientForm(e)}>
           <div className={styles.cardBodyPatient}>
@@ -505,14 +502,14 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
           subtitle="New Patient has been added successfully"
           closeModal={() => {
             setShowModal(false);
-            Router.push('/app/patient');
+            Router.push('/app/client');
           }}
         >
           <Button 
           className={styles.centerButton}
           onClick={() => {
             setShowModal(false);
-            Router.push('/app/patient');
+            Router.push('/app/client');
           }}>OK, Go back to patient list</Button>
         </Modal>
       </Card>
@@ -520,11 +517,11 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   );
 };
 
-AddPatient.getInitialProps = async ({ query }: NextPageContext) => {
+AddPatientToClient.getInitialProps = async ({ query }: NextPageContext) => {
   const clientId = (query && query.id) as string;
   return {
     clientId,
   };
 }
 
-export default AddPatient;
+export default AddPatientToClient;
