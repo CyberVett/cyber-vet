@@ -1,6 +1,7 @@
 import React from "react";
 import { NextPage, NextPageContext } from "next";
 
+import Button from "components/Button/button";
 // import {
 //   FormErrors,
 //   Input,
@@ -76,6 +77,19 @@ const PatientDetails = () => {
           Status: <span className="status">Alive</span>
         </div>
       </div>
+    </div>
+  );
+};
+
+const CheckinItem = (props) => {
+  return (
+    <div className="checkin__item">
+      <div className="checkin__item--head">
+        <div className="item__head--title">{props.title}</div>
+        <div className="item__head--actions">{props.actions}</div>
+      </div>
+
+      <div className="checkin__item--content">{props.children}</div>
     </div>
   );
 };
@@ -245,6 +259,41 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
               <PatientDetails />
               <div style={{ padding: "1rem" }}>
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+              </div>
+              <div className="checkin__items">
+                <div>
+                  <form className="checkin-form">
+                    <div className="form-item">
+                      <label>Check In</label>
+
+                      <input type="text" defaultValue={new Date()} />
+                    </div>
+
+                    <div className="form-item">
+                      <label>Visit Type</label>
+
+                      <select>
+                        {[{ value: "Follow Up", label: "Follow Up" }].map(
+                          (opt) => {
+                            return (
+                              <option value={opt.value}>{opt.label}</option>
+                            );
+                          }
+                        )}
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <CheckinItem
+                  title="Physical Examination"
+                  actions={
+                    <>
+                      <Button>Add New Results</Button>
+                    </>
+                  }
+                >
+                  <div>This is the children</div>
+                </CheckinItem>
               </div>
             </div>
           </div>
