@@ -10,10 +10,9 @@ import { NextPage, NextPageContext } from "next";
 //   Select,
 // } from "components/Input/input";
 // import { SubSectionHeader } from "components/SectionHeader/sectionHeader";
-// import Card, { CardHeader } from "components/Card/card";
 // import Button from "components/Button/button";
 
-// import styles from "./patient.module.scss";
+import styles from "./patient.module.scss";
 // import requestClient from "lib/requestClient";
 // import { getAge } from "lib/utils";
 // import Modal from "components/Modal/modal";
@@ -45,6 +44,41 @@ import { NextPage, NextPageContext } from "next";
 //   otherPurposeOfKepping: string;
 //   otherVaccination: string;
 // }
+
+const PatientDetails = () => {
+  return (
+    <div className="patient__details">
+      <div className="patient__details--info">
+        <div className="patient__info--title">Client's Name</div>
+        <div className="patient__info--value">Mr Oladele Mayowa</div>
+        <div className="patient__info--title">Patient Name</div>
+        <div className="patient__info--value">Demara</div>
+        <div className="patient__info--title">Specie</div>
+        <div className="patient__info--value">Canine</div>
+        <div className="patient__info--title">Breed</div>
+        <div className="patient__info--value">Rottweiler</div>
+        <div className="patient__info--title">Sex</div>
+        <div className="patient__info--value">Male</div>
+
+        <div className="patient__info--title">Age</div>
+        <div className="patient__info--value">1 year, 2 Months, 21 Days</div>
+
+        <div className="patient__info--title">Date Registered</div>
+        <div className="patient__info--value">16/08/2020</div>
+        <div className="patient__info--title">Number of visit</div>
+        <div className="patient__info--value">0</div>
+      </div>
+
+      <div className="patient__details--img">
+        <img src="https://res.cloudinary.com/dzgdxmfjw/image/upload/v1601793472/zuk4vuzk2epspzrsyphf.jpg" />
+
+        <div>
+          Status: <span className="status">Alive</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   //   const [species, setSpecies] = useState<ISpecies[]>([]);
@@ -195,7 +229,29 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   //         setError(error.response.data.message);
   //       });
   //   };
-  return <div>Patient Checkin</div>;
+  return (
+    <div className="patient__checkin">
+      <div className="patient__checkin__container">
+        <div className="patient__checkin__container--header">
+          <h1>Patient Check In</h1>
+        </div>
+        <div className="patient__checkin__container--content">
+          <div className="checkin__card">
+            <div className="checkin__card--header">
+              <span>Signalment</span>
+              <span>Patient No: SAC01/16/08/2020</span>
+            </div>
+            <div className="checkin__card--body">
+              <PatientDetails />
+              <div style={{ padding: "1rem" }}>
+                <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 PatientCheckIn.getInitialProps = async ({ query }: NextPageContext) => {

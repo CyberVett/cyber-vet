@@ -1,0 +1,52 @@
+.patient__checkin {
+  &__container {
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      * {
+        font-size: 1.5rem;
+      }
+    }
+    &--content {
+      border: 1px solid grey;
+    }
+  }
+  .checkin__card {
+    &--header {
+      padding: 1rem;
+
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid grey;
+    }
+  }
+
+  .patient__details {
+    .patient__info {
+      &--title {
+        grid-column: 1/3;
+      }
+      &--value {
+        grid-column: 3/13;
+      }
+    }
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    &--info {
+      width: 100%;
+      margin-right: 1rem;
+      height: 100%;
+      display: grid;
+      grid-gap: 0.8rem;
+      grid-template-columns: repeat(1fr, 12);
+    }
+    &--img {
+      img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  }
+}
