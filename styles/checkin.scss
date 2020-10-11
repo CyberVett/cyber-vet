@@ -1,3 +1,5 @@
+@import "variable";
+
 .patient__checkin {
   &__container {
     &--header {
@@ -10,6 +12,10 @@
     &--content {
       border: 1px solid grey;
     }
+    &--footer {
+      display: flex;
+      justify-content: center;
+    }
   }
   .checkin__card {
     &--header {
@@ -19,6 +25,26 @@
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid grey;
+    }
+  }
+
+  .exam__result {
+    &__list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-rows: repeat(11, max-content);
+      grid-template-columns: repeat(2, 50%);
+      grid-gap: 1rem;
+    }
+    &__item {
+      grid-template-columns: 55% 45%;
+      display: grid;
+      &--name {
+        font-size: 15px;
+        color: $color-blue;
+      }
     }
   }
 
@@ -59,6 +85,10 @@
       display: grid;
       row-gap: 1rem;
       flex-direction: column;
+      select,
+      input {
+        width: 100%;
+      }
     }
   }
 
@@ -74,6 +104,68 @@
     }
     &--content {
       padding: 1rem;
+    }
+  }
+  .checkin__modal__content {
+    background-color: #ebf5fd;
+    &--header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border-bottom: 1px solid gray;
+      .content {
+        &__title {
+          font-size: 1.5rem;
+        }
+        &__date {
+          display: inline-flex;
+          justify-content: space-between;
+          align-items: center;
+          // font-size: 0.8rem;
+          input {
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+    &--body {
+      padding: 1rem;
+    }
+  }
+
+  .physical__examination__form {
+    display: grid;
+    row-gap: 1rem;
+    column-gap: 2rem;
+    grid-template-columns: auto auto auto;
+    .divider {
+      height: 1px;
+      border-top: 1px solid grey;
+      grid-column: 1/4;
+    }
+    &--input {
+      display: grid;
+      row-gap: 1rem;
+      input {
+        padding: 1rem;
+      }
+    }
+    &--buttons {
+      grid-column: 1/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      :last-child {
+        margin-left: 1rem;
+      }
+    }
+  }
+  [class^="modal_container"] {
+    z-index: 200;
+    [class^="modal_modal"] {
+      background: #ebf5fd;
     }
   }
 }

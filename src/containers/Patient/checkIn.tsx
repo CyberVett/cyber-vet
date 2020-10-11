@@ -1,50 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NextPage, NextPageContext } from "next";
-
+import Modal from "components/Modal/modal";
 import Button from "components/Button/button";
-// import {
-//   FormErrors,
-//   Input,
-//   InputGroup,
-//   InputValidationTypes,
-//   Label,
-//   Select,
-// } from "components/Input/input";
-// import { SubSectionHeader } from "components/SectionHeader/sectionHeader";
-// import Button from "components/Button/button";
-
-import styles from "./patient.module.scss";
-// import requestClient from "lib/requestClient";
-// import { getAge } from "lib/utils";
-// import Modal from "components/Modal/modal";
-// import ProgressBar from "components/ProgressBar/progressBar";
-// import Router from "next/router";
-// import { ISpecies } from "./addPatient";
-
-// interface IEditPatient {
-//   clientId: string;
-//   name: string;
-//   specie: string;
-//   breed: string;
-//   gender: string;
-//   colour: string;
-//   dob: string;
-//   status: string;
-//   ageWhenAcquired: string;
-//   source: string;
-//   flockHerdSize: string;
-//   purposeOfKepping: string;
-//   typeOfFood: string;
-//   waterSource: string;
-//   managementSystem: string;
-//   vaccination: string;
-//   vaccineUsed: string;
-//   treatmentWarnings: string;
-//   imageUrl: string;
-//   otherSpecie: string;
-//   otherPurposeOfKepping: string;
-//   otherVaccination: string;
-// }
 
 const PatientDetails = () => {
   return (
@@ -94,155 +51,299 @@ const CheckinItem = (props) => {
   );
 };
 
+const CheckInModalContent = (props) => {
+  return (
+    <div className="checkin__modal__content">
+      <div className="checkin__modal__content--header">
+        <span className="content__title">{props.title}</span>
+        <span className="content__date">
+          Date Recorded
+          <input defaultValue={props.date} disabled />
+        </span>
+      </div>
+      <div className="checkin__modal__content--body">{props.children}</div>
+    </div>
+  );
+};
+
+const PhysicalExaminationModal = (props) => {
+  const handleAddResult = (e) => {
+    e.preventDefault();
+    console.log("Clicked");
+    props.onAddResult(physicalExamination);
+  };
+  const [physicalExamination, setPhysicalExamination] = useState({
+    rectalTemperature: "",
+    respiratoryRate: "",
+    pulseRate: "",
+    prepuceVulvaExamination: "",
+    ocularMucousMembrane: "",
+    rectalExamination: "",
+    lamenessLocation: "",
+    anyLameness: "",
+    lungsSound: "",
+    natureOfBreathing: "",
+    consistencyOfFeaces: "",
+    natureOfDiarrhea: "",
+    anyDiarrhea: "",
+    conformation: "",
+    generalDisposation: "",
+    ectoParasites: "",
+    locationOfLesion: "",
+    natureOfLesion: "",
+    integementFur: "",
+    nasalCavity: "",
+    oralMucousMembrane: "",
+  });
+  const handleInputChange = (event: {
+    persist: () => void;
+    target: { name: any; value: any };
+  }) => {
+    event.persist();
+    setPhysicalExamination((input: any) => ({
+      ...input,
+      [event.target.name]: event.target.value,
+    }));
+  };
+  return (
+    <CheckInModalContent
+      title="Physical Examination Result"
+      date="16/08/2020 12:46 PM"
+    >
+      <form className="physical__examination__form">
+        <div className="physical__examination__form--input">
+          <label>Rectal Temperatur (°C)</label>
+          <input
+            type="text"
+            name={physicalExamination.rectalTemperature}
+            defaultValue="38.5 °C"
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Respiratory Rate (cycle/min)</label>
+          <input
+            type="text"
+            value={physicalExamination.respiratoryRate}
+            name="respiratoryRate"
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Pulse Rate (Beat/min)</label>
+          <input
+            type="text"
+            value={physicalExamination.pulseRate}
+            onChange={handleInputChange}
+            name="pulseRate"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Ocular Mucous Membrane</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            name="ocularMucousMembrane"
+            value={physicalExamination.ocularMucousMembrane}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Oral Mucous Membrane</label>
+          <input
+            onChange={handleInputChange}
+            type="text"
+            name="oralMucousMembrane"
+            value={physicalExamination.oralMucousMembrane}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Nasal Cavity</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            name="nasalCavity"
+            value={physicalExamination.nasalCavity}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Integument Fur</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={physicalExamination.integementFur}
+            name="integumentFur"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Nature of lesion</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="None"
+            value={physicalExamination.natureOfLesion}
+            name="natureOfLesion"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Location of lesion</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="None"
+            value={physicalExamination.locationOfLesion}
+            name="locationOfLesion"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Ectoparasites</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Tick, Lice"
+            value={physicalExamination.ectoParasites}
+            name="ectoParasites"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>General Disposation</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Active"
+            value={physicalExamination.generalDisposation}
+            name="generalDisposation"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Conformation</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={physicalExamination.conformation}
+            name="conformation"
+          />
+        </div>
+        <div className="divider" />
+        <div className="physical__examination__form--input">
+          <label>Any Diarrhea</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={physicalExamination.anyDiarrhea}
+            name="anyDiarrhea"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Nature of Diarrhea</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={physicalExamination.natureOfDiarrhea}
+            name="natureOfDiarrhea"
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Consistency of feaces</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Normal"
+            value={physicalExamination.consistencyOfFeaces}
+            name="consistencyOfFeaces"
+          />
+        </div>
+        <div className="physical__examination__form--input">
+          <label>Nature of Breathing</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            name="natureOfBreathing"
+            value={physicalExamination.natureOfBreathing}
+          />
+        </div>
+        <div className="physical__examination__form--input">
+          <label>Lungs Sound</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Normal"
+            name="lungsSound"
+            value={physicalExamination.lungsSound}
+          />
+        </div>
+        <div className="physical__examination__form--input">
+          <label>Any Lameness</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Yes"
+            name="anyLameness"
+            value={physicalExamination.anyLameness}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Lameness Location</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Right fore limb"
+            name="lamenessLocation"
+            value={physicalExamination.lamenessLocation}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Rectal Examination</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            defaultValue="Normal"
+            name="rectalExamination"
+            value={physicalExamination.rectalExamination}
+          />
+        </div>
+
+        <div className="physical__examination__form--input">
+          <label>Prepuce/Vulva Examination</label>
+          <input
+            type="text"
+            onChange={handleInputChange}
+            name="prepuceVulvaExamination"
+            value={physicalExamination.prepuceVulvaExamination}
+          />
+        </div>
+        <div className="physical__examination__form--buttons">
+          <Button onClick={handleAddResult}>Add Result</Button>
+          <Button onClick={props.onCancel}>Cancel</Button>
+        </div>
+      </form>
+    </CheckInModalContent>
+  );
+};
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
-  //   const [species, setSpecies] = useState<ISpecies[]>([]);
-  //   const [patientInput, setPatientInput] = useState<IEditPatient>({
-  //     clientId: "",
-  //     name: "",
-  //     specie: "",
-  //     breed: "",
-  //     gender: "",
-  //     colour: "",
-  //     dob: "",
-  //     status: "",
-  //     ageWhenAcquired: "",
-  //     source: "",
-  //     flockHerdSize: "",
-  //     purposeOfKepping: "",
-  //     typeOfFood: "",
-  //     waterSource: "",
-  //     managementSystem: "",
-  //     vaccination: "",
-  //     vaccineUsed: "",
-  //     treatmentWarnings: "",
-  //     imageUrl: "",
-  //     otherSpecie: "",
-  //     otherPurposeOfKepping: "",
-  //     otherVaccination: "",
-  //   });
-  //   const [loading, setLoading] = useState(false);
-  //   const [showModal, setShowModal] = useState(false);
-  //   const [percentage, setPercentage] = useState(0);
-  //   const [error, setError] = useState("");
-  //   const fileInput = useRef();
+  const [physicalExaminationResult, setPhysicalExaminationResult] = useState(
+    {}
+  );
+  const [showModal, setShowModal] = useState(false);
+  const handleAddResult = (data) => {
+    setPhysicalExaminationResult(data);
+    setShowModal(false);
+  };
 
-  //   const handleInputChange = (event: {
-  //     persist: () => void;
-  //     target: { name: any; value: any };
-  //   }) => {
-  //     event.persist();
-  //     setPatientInput((input: any) => ({
-  //       ...input,
-  //       [event.target.name]: event.target.value,
-  //     }));
-  //   };
-
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     requestClient
-  //       .get(`patients/${patientId}`)
-
-  //       .then((response) => {
-  //         setLoading(false);
-  //         if (response.status === 200 && response.statusText === "OK") {
-  //           setPatientInput(response.data.data);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setLoading(false);
-  //         console.log(error.response);
-  //         setError(error.response.data.message);
-  //       });
-  //   }, []);
-
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     requestClient
-  //       .get("settings/species")
-  //       .then((response) => {
-  //         setLoading(false);
-  //         if (response.status === 200 && response.statusText === "OK") {
-  //           setSpecies(response.data.data);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setLoading(false);
-  //         console.log(error);
-  //       });
-  //   }, []);
-
-  //   const handleFileChange = (e: any) => {
-  //     e.preventDefault();
-  //     setLoading(true);
-  //     let formData = new FormData();
-  //     //  @ts-ignore
-  //     formData.append("image", fileInput?.current?.files[0]);
-  //     requestClient
-  //       .post("images", formData, {
-  //         onUploadProgress: (ProgressEvent) => {
-  //           const { loaded, total } = ProgressEvent;
-  //           setPercentage(Math.floor((loaded * 100) / total));
-  //         },
-  //       })
-  //       .then((res) => {
-  //         setLoading(false);
-  //         patientInput.imageUrl = res.data.imageUrl;
-  //       })
-  //       .catch((err) => {
-  //         setLoading(false);
-  //         console.log(err);
-  //       });
-  //   };
-
-  //   const submitPatientForm = (e: any) => {
-  //     e.preventDefault();
-  //     setLoading(true);
-  //     requestClient
-  //       .put(`patients/${patientId}`, {
-  //         // @ts-ignore
-  //         clientId: patientInput.clientId.clientId,
-  //         name: patientInput.name,
-  //         specie:
-  //           patientInput.specie === "Others"
-  //             ? patientInput.otherSpecie
-  //             : patientInput.specie,
-  //         breed: patientInput.breed,
-  //         gender: patientInput.gender,
-  //         colour: patientInput.colour,
-  //         dob: patientInput.dob,
-  //         status: patientInput.status,
-  //         ageWhenAcquired: patientInput.ageWhenAcquired,
-  //         source: patientInput.source,
-  //         flockHerdSize: patientInput.flockHerdSize,
-  //         purposeOfKepping:
-  //           patientInput.purposeOfKepping === "5"
-  //             ? patientInput.otherPurposeOfKepping
-  //             : patientInput.purposeOfKepping,
-  //         typeOfFood: patientInput.typeOfFood,
-  //         waterSource: patientInput.waterSource,
-  //         managementSystem: patientInput.managementSystem,
-  //         vaccination:
-  //           patientInput.vaccination === "4"
-  //             ? patientInput.otherVaccination
-  //             : patientInput.vaccination,
-  //         vaccineUsed: patientInput.vaccineUsed,
-  //         treatmentWarnings: patientInput.treatmentWarnings,
-  //         imageUrl: patientInput.imageUrl,
-  //       })
-  //       .then((response) => {
-  //         setLoading(false);
-  //         if (response.status === 200 && response.statusText === "OK") {
-  //           setShowModal(true);
-  //         } else {
-  //           setLoading(false);
-  //           setError(response.data.message);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setLoading(false);
-  //         setError(error.response.data.message);
-  //       });
-  //   };
   return (
     <div className="patient__checkin">
       <div className="patient__checkin__container">
@@ -266,13 +367,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     <div className="form-item">
                       <label>Check In</label>
 
-                      <input type="text" defaultValue={new Date()} />
+                      <input type="text" disabled defaultValue={new Date()} />
                     </div>
 
                     <div className="form-item">
                       <label>Visit Type</label>
 
-                      <select>
+                      <select disabled>
                         {[{ value: "Follow Up", label: "Follow Up" }].map(
                           (opt) => {
                             return (
@@ -288,17 +389,127 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                   title="Physical Examination"
                   actions={
                     <>
-                      <Button>Add New Results</Button>
+                      <Button onClick={() => setShowModal(true)}>
+                        Add New Results
+                      </Button>
                     </>
                   }
                 >
-                  <div>This is the children</div>
+                  <div className="patient__checkin__exam__result">
+                    {physicalExaminationResult.respiratoryRate && (
+                      <ul className="exam__result__list">
+                        {[
+                          {
+                            label: "Rectal Temperature",
+                            value: physicalExaminationResult.rectalTemperature,
+                          },
+                          {
+                            label: "Respiratory Rate",
+                            value: physicalExaminationResult.respiratoryRate,
+                          },
+                          {
+                            label: "Ocular Mucous Membrane",
+                            value:
+                              physicalExaminationResult.ocularMucousMembrane,
+                          },
+                          {
+                            label: "Oral Mucous Membrane",
+                            value: physicalExaminationResult.oralMucousMembrane,
+                          },
+                          {
+                            label: "Nasal cavity",
+                            value: physicalExaminationResult.nasalCavity,
+                          },
+                          {
+                            label: "Integument/Fur",
+                            value: physicalExaminationResult.integumentFur,
+                          },
+                          {
+                            label: "Nature of Lesion ",
+                            value: physicalExaminationResult.natureOfLesion,
+                          },
+                          {
+                            label: "Location of Lesion ",
+                            value: physicalExaminationResult.locationOfLesion,
+                          },
+                          {
+                            label: "Ectoparasite",
+                            value: physicalExaminationResult.ectoparasite,
+                          },
+                          {
+                            label: "General Disposation",
+                            value: physicalExaminationResult.generalDisposation,
+                          },
+                          {
+                            label: "Conformation",
+                            value: physicalExaminationResult.conformation,
+                          },
+                          {
+                            label: "Any Diarrhea",
+                            value: physicalExaminationResult.anyDiarrhea,
+                          },
+                          {
+                            label: "Nature of Diarrhea",
+                            value: physicalExaminationResult.natureOfDiarrhea,
+                          },
+                          {
+                            label: "Lungs Sound",
+                            value: physicalExaminationResult.lungsSound,
+                          },
+                          {
+                            label: "Any Lameness",
+                            value: physicalExaminationResult.anyLameness,
+                          },
+                          {
+                            label: "Lameness Location",
+                            value: physicalExaminationResult.lamenessLocation,
+                          },
+                          {
+                            label: "Rectal examination",
+                            value: physicalExaminationResult.rectalExamination,
+                          },
+                          {
+                            label: "Prepuce/Vulva Examination",
+                            value:
+                              physicalExaminationResult.prepuceVulvaExamination,
+                          },
+                        ].map(({ label, value }) => {
+                          return (
+                            <li className="exam__result__item">
+                              <span className="exam__result__item--name">
+                                {label}
+                              </span>
+                              <span className="exam__result__item--value">
+                                {value}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
                 </CheckinItem>
               </div>
             </div>
           </div>
+          <div className="patient__checkin__container--footer">
+            <Button> Checkin</Button>
+            <Button>Return</Button>
+          </div>
         </div>
       </div>
+      <Modal
+        fullMode={true}
+        visible={showModal}
+        closeModal={() => {
+          setShowModal(false);
+        }}
+      >
+        <PhysicalExaminationModal
+          onAddResult={handleAddResult}
+          onCancel={() => setShowModal(false)}
+        />
+      </Modal>
     </div>
   );
 };
