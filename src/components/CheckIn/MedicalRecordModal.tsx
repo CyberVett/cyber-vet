@@ -1,5 +1,6 @@
 import React from "react";
 import ChiefComplainReport from "./ChiefComplainReport";
+import NoteReport from "./NoteReport";
 import Modal from "../Modal/modal";
 
 const MedicalRecordModal = ({
@@ -43,7 +44,14 @@ const MedicalRecordModal = ({
       {currentModal === "Final Diagnosis" && <>Toggle Final Diagnosis</>}
       {currentModal === "Treatment" && <>Toggle Treatment</>}
       {currentModal === "Vaccination" && <>Toggle Vaccination</>}
-      {currentModal === "Note" && <>Toggle Note</>}
+      {currentModal === "Note" && (
+        <NoteReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={results.note}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
       {currentModal === "Medical Bill" && <>Toggle Medical Bill</>}
     </Modal>
   );
@@ -51,6 +59,7 @@ const MedicalRecordModal = ({
 
 export interface IMedicalReport {
   chiefComplain: string;
+  note: string;
 }
 
 export default MedicalRecordModal;

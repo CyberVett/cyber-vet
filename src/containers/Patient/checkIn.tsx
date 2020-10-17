@@ -87,6 +87,15 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setMedicalReports({ ...medicalReports, chiefComplain: "" });
   };
 
+  const handleEditNoteReport = () => {
+    setMedicalContentState("Note");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteNoteReport = () => {
+    setMedicalReports({ ...medicalReports, note: "" });
+  };
+
   return (
     <div className="patient__checkin">
       <div className="patient__checkin__container">
@@ -135,6 +144,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             onDelete={handleDeleteMedicalReport}
                           >
                             {medicalReports.chiefComplain}
+                          </CheckinItem>
+                        )}
+
+                        {medicalReports.note && (
+                          <CheckinItem
+                            title="Note"
+                            date={new Date().toString()}
+                            onEdit={handleEditNoteReport}
+                            onDelete={handleDeleteNoteReport}
+                          >
+                            {medicalReports.note}
                           </CheckinItem>
                         )}
 
