@@ -267,8 +267,10 @@ const PhysicalExaminationModal = (props: {
             />
           </div>
           <div className="physical__examination__form--buttons">
-            <Button onClick={() => handleAddResult}>Add Result</Button>
-            <Button onClick={() => props.onCancel}>Cancel</Button>
+            <Button type="primary" onClick={(e) => handleAddResult(e)}>
+              Add Result
+            </Button>
+            <Button onClick={(e) => props.onCancel(e)}>Cancel</Button>
           </div>
         </form>
       </React.Fragment>

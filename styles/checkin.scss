@@ -215,4 +215,12 @@
       background: #ebf5fd;
     }
   }
+
+  .medical__records {
+    .buttons__list {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
 }
