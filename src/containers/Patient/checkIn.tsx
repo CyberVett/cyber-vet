@@ -11,7 +11,10 @@ import PhysicalCheckResult, {
 } from "components/CheckIn/PhysicalCheckResult";
 
 import CheckedinItemsDisplay from "components/CheckIn/CheckedinItemsDisplay";
-import MedicalRecordModal from "components/CheckIn/MedicalRecordModal";
+import MedicalRecordModal, {
+  IMedicalReport,
+} from "components/CheckIn/MedicalRecordModal";
+import CheckinItem from "components/CheckIn/CheckinItem";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -42,10 +45,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [showMedicalModal, setShowMedicalModal] = useState(false);
   const [medicalContentState, setMedicalContentState] = useState("");
 
+  const [medicalReports, setMedicalReports] = useState<IMedicalReport>({
+    chiefComplain: "",
+  });
+
   const handleAddResult = (data: any) => {
     setPhysicalExaminationResult(data);
-    console.log(physicalExaminationResult);
-
     setShowModal(false);
   };
 
@@ -64,9 +69,22 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  const handleGetMedicalReportData = (data, field) => {
+  const handleGetMedicalReportData = (data: object, field: string) => {
     console.log({ data, field });
+    let splittedField = field.split(" ");
+    splittedField[0] = splittedField[0].toLowerCase();
+    field = splittedField.join("");
+    setMedicalReports({ ...medicalReports, ...data });
     setShowMedicalModal(false);
+  };
+
+  const handleEditMedicalReport = () => {
+    setMedicalContentState("Chief Complain");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteMedicalReport = () => {
+    setMedicalReports({ ...medicalReports, chiefComplain: "" });
   };
 
   return (
@@ -109,6 +127,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <MedicalRecordsItems
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
+                        {medicalReports.chiefComplain && (
+                          <CheckinItem
+                            title="Chief Complain"
+                            date={new Date().toString()}
+                            onEdit={handleEditMedicalReport}
+                            onDelete={handleDeleteMedicalReport}
+                          >
+                            {medicalReports.chiefComplain}
+                          </CheckinItem>
+                        )}
+
                         {physicalExaminationResult.respiratoryRate && (
                           <PhysicalCheckResult
                             showModal={() => setShowModal(true)}
@@ -184,6 +213,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           handleGetMedicalReportData(data, field);
         }}
         currentModal={medicalContentState}
+        results={medicalReports}
       />
     </div>
   );

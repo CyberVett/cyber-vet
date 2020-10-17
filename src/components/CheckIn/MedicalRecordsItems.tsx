@@ -17,9 +17,9 @@ const MedicalRecordsItems = (props: {
           <div className="buttons__list">
             <Button
               type="primary"
-              onClick={() => handleAddMedicalRecordItem("Chief complain")}
+              onClick={() => handleAddMedicalRecordItem("Chief Complain")}
             >
-              + Chief complain
+              + Chief Complain
             </Button>
             <Button
               type="primary"

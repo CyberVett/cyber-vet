@@ -7,11 +7,13 @@ const MedicalRecordModal = ({
   currentModal,
   getResult,
   closeModal,
+  results,
 }: {
   show: boolean;
   currentModal: string;
   getResult: Function;
   closeModal: Function;
+  results: IMedicalReport;
 }) => {
   console.log(currentModal);
   return (
@@ -22,10 +24,11 @@ const MedicalRecordModal = ({
         closeModal(false);
       }}
     >
-      {currentModal === "Chief complain" && (
+      {currentModal === "Chief Complain" && (
         <ChiefComplainReport
           onCancel={closeModal}
           title={currentModal}
+          data={results.chiefComplain}
           onAdd={(data: {}) => getResult(data, currentModal)}
         />
       )}
@@ -45,5 +48,9 @@ const MedicalRecordModal = ({
     </Modal>
   );
 };
+
+export interface IMedicalReport {
+  chiefComplain: string;
+}
 
 export default MedicalRecordModal;

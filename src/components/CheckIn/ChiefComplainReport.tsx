@@ -5,13 +5,14 @@ const ChiefComplainReport = (props: {
   title: string;
   onAdd: Function;
   onCancel: Function;
+  data: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
     props.onAdd(formValues);
   };
   const [formValues, setFormValues] = useState<{ chiefComplain: string }>({
-    chiefComplain: "",
+    chiefComplain: props.data || "",
   });
 
   const handleInputChange = (event: {

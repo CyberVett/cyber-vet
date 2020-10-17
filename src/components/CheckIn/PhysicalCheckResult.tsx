@@ -32,13 +32,9 @@ const PhysicalCheckResult = (props: {
   return (
     <CheckinItem
       title="Physical Examination"
-      actions={
-        <>
-          <input defaultValue={new Date().toString()} />
-          <Button onClick={() => showModal(true)}>Add New Results</Button>
-          <Button onClick={() => {}}>Delete Results</Button>
-        </>
-      }
+      onDelete={() => {}}
+      onEdit={() => {}}
+      date={new Date().toString()}
     >
       <div className="patient__checkin__exam__result">
         {physicalExaminationResult.respiratoryRate && (
