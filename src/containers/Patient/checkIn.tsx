@@ -2,344 +2,52 @@ import React, { useState } from "react";
 import { NextPage, NextPageContext } from "next";
 import Modal from "components/Modal/modal";
 import Button from "components/Button/button";
+import PatientDetails from "components/CheckIn/PatientDetails";
+import CheckinItem from "components/CheckIn/CheckinItem";
+import PhysicalExaminationModal from "components/CheckIn/PhysicalExaminationModal";
 
-const PatientDetails = () => {
-  return (
-    <div className="patient__details">
-      <div className="patient__details--info">
-        <div className="patient__info--title">Client's Name</div>
-        <div className="patient__info--value">Mr Oladele Mayowa</div>
-        <div className="patient__info--title">Patient Name</div>
-        <div className="patient__info--value">Demara</div>
-        <div className="patient__info--title">Specie</div>
-        <div className="patient__info--value">Canine</div>
-        <div className="patient__info--title">Breed</div>
-        <div className="patient__info--value">Rottweiler</div>
-        <div className="patient__info--title">Sex</div>
-        <div className="patient__info--value">Male</div>
-
-        <div className="patient__info--title">Age</div>
-        <div className="patient__info--value">1 year, 2 Months, 21 Days</div>
-
-        <div className="patient__info--title">Date Registered</div>
-        <div className="patient__info--value">16/08/2020</div>
-        <div className="patient__info--title">Number of visit</div>
-        <div className="patient__info--value">0</div>
-      </div>
-
-      <div className="patient__details--img">
-        <img src="https://res.cloudinary.com/dzgdxmfjw/image/upload/v1601793472/zuk4vuzk2epspzrsyphf.jpg" />
-
-        <div>
-          Status: <span className="status">Alive</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const CheckinItem = (props) => {
-  return (
-    <div className="checkin__item">
-      <div className="checkin__item--head">
-        <div className="item__head--title">{props.title}</div>
-        <div className="item__head--actions">{props.actions}</div>
-      </div>
-
-      <div className="checkin__item--content">{props.children}</div>
-    </div>
-  );
-};
-
-const CheckInModalContent = (props) => {
-  return (
-    <div className="checkin__modal__content">
-      <div className="checkin__modal__content--header">
-        <span className="content__title">{props.title}</span>
-        <span className="content__date">
-          Date Recorded
-          <input defaultValue={props.date} disabled />
-        </span>
-      </div>
-      <div className="checkin__modal__content--body">{props.children}</div>
-    </div>
-  );
-};
-
-const PhysicalExaminationModal = (props) => {
-  const handleAddResult = (e) => {
-    e.preventDefault();
-    console.log("Clicked");
-    props.onAddResult(physicalExamination);
-  };
-  const [physicalExamination, setPhysicalExamination] = useState({
-    rectalTemperature: "",
+const PatientCheckIn: NextPage<{ patientId: string }> = ({}) => {
+  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<{
+    respiratoryRate: string;
+    rectalTemperature: string;
+    ocularMucousMembrane: string;
+    oralMucousMembrane: string;
+    nasalCavity: string;
+    integumentFur: string;
+    natureOfLesion: string;
+    locationOfLesion: string;
+    ectoparasite: string;
+    generalDisposation: string;
+    conformation: string;
+    anyDiarrhea: string;
+    natureOfDiarrhea: string;
+    lungsSound: string;
+    anyLameness: string;
+    lamenessLocation: string;
+    rectalExamination: string;
+    prepuceVulvaExamination: string;
+  }>({
     respiratoryRate: "",
-    pulseRate: "",
-    prepuceVulvaExamination: "",
+    rectalTemperature: "",
     ocularMucousMembrane: "",
-    rectalExamination: "",
-    lamenessLocation: "",
-    anyLameness: "",
-    lungsSound: "",
-    natureOfBreathing: "",
-    consistencyOfFeaces: "",
-    natureOfDiarrhea: "",
-    anyDiarrhea: "",
-    conformation: "",
-    generalDisposation: "",
-    ectoParasites: "",
-    locationOfLesion: "",
-    natureOfLesion: "",
-    integementFur: "",
-    nasalCavity: "",
     oralMucousMembrane: "",
+    nasalCavity: "",
+    integumentFur: "",
+    natureOfLesion: "",
+    locationOfLesion: "",
+    ectoparasite: "",
+    generalDisposation: "",
+    conformation: "",
+    anyDiarrhea: "",
+    natureOfDiarrhea: "",
+    lungsSound: "",
+    anyLameness: "",
+    lamenessLocation: "",
+    rectalExamination: "",
+    prepuceVulvaExamination: "",
   });
-  const handleInputChange = (event: {
-    persist: () => void;
-    target: { name: any; value: any };
-  }) => {
-    event.persist();
-    setPhysicalExamination((input: any) => ({
-      ...input,
-      [event.target.name]: event.target.value,
-    }));
-  };
-  return (
-    <CheckInModalContent
-      title="Physical Examination Result"
-      date="16/08/2020 12:46 PM"
-    >
-      <form className="physical__examination__form">
-        <div className="physical__examination__form--input">
-          <label>Rectal Temperatur (°C)</label>
-          <input
-            type="text"
-            name={physicalExamination.rectalTemperature}
-            defaultValue="38.5 °C"
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Respiratory Rate (cycle/min)</label>
-          <input
-            type="text"
-            value={physicalExamination.respiratoryRate}
-            name="respiratoryRate"
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Pulse Rate (Beat/min)</label>
-          <input
-            type="text"
-            value={physicalExamination.pulseRate}
-            onChange={handleInputChange}
-            name="pulseRate"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Ocular Mucous Membrane</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            name="ocularMucousMembrane"
-            value={physicalExamination.ocularMucousMembrane}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Oral Mucous Membrane</label>
-          <input
-            onChange={handleInputChange}
-            type="text"
-            name="oralMucousMembrane"
-            value={physicalExamination.oralMucousMembrane}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Nasal Cavity</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            name="nasalCavity"
-            value={physicalExamination.nasalCavity}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Integument Fur</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={physicalExamination.integementFur}
-            name="integumentFur"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Nature of lesion</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="None"
-            value={physicalExamination.natureOfLesion}
-            name="natureOfLesion"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Location of lesion</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="None"
-            value={physicalExamination.locationOfLesion}
-            name="locationOfLesion"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Ectoparasites</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Tick, Lice"
-            value={physicalExamination.ectoParasites}
-            name="ectoParasites"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>General Disposation</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Active"
-            value={physicalExamination.generalDisposation}
-            name="generalDisposation"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Conformation</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={physicalExamination.conformation}
-            name="conformation"
-          />
-        </div>
-        <div className="divider" />
-        <div className="physical__examination__form--input">
-          <label>Any Diarrhea</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={physicalExamination.anyDiarrhea}
-            name="anyDiarrhea"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Nature of Diarrhea</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            value={physicalExamination.natureOfDiarrhea}
-            name="natureOfDiarrhea"
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Consistency of feaces</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Normal"
-            value={physicalExamination.consistencyOfFeaces}
-            name="consistencyOfFeaces"
-          />
-        </div>
-        <div className="physical__examination__form--input">
-          <label>Nature of Breathing</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            name="natureOfBreathing"
-            value={physicalExamination.natureOfBreathing}
-          />
-        </div>
-        <div className="physical__examination__form--input">
-          <label>Lungs Sound</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Normal"
-            name="lungsSound"
-            value={physicalExamination.lungsSound}
-          />
-        </div>
-        <div className="physical__examination__form--input">
-          <label>Any Lameness</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Yes"
-            name="anyLameness"
-            value={physicalExamination.anyLameness}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Lameness Location</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Right fore limb"
-            name="lamenessLocation"
-            value={physicalExamination.lamenessLocation}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Rectal Examination</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            defaultValue="Normal"
-            name="rectalExamination"
-            value={physicalExamination.rectalExamination}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <label>Prepuce/Vulva Examination</label>
-          <input
-            type="text"
-            onChange={handleInputChange}
-            name="prepuceVulvaExamination"
-            value={physicalExamination.prepuceVulvaExamination}
-          />
-        </div>
-        <div className="physical__examination__form--buttons">
-          <Button onClick={handleAddResult}>Add Result</Button>
-          <Button onClick={props.onCancel}>Cancel</Button>
-        </div>
-      </form>
-    </CheckInModalContent>
-  );
-};
-const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
-  const [physicalExaminationResult, setPhysicalExaminationResult] = useState(
-    {}
-  );
   const [showModal, setShowModal] = useState(false);
-  const handleAddResult = (data) => {
+  const handleAddResult = (data: any) => {
     setPhysicalExaminationResult(data);
     setShowModal(false);
   };
@@ -367,7 +75,11 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     <div className="form-item">
                       <label>Check In</label>
 
-                      <input type="text" disabled defaultValue={new Date()} />
+                      <input
+                        type="text"
+                        disabled
+                        defaultValue={new Date().toString()}
+                      />
                     </div>
 
                     <div className="form-item">
