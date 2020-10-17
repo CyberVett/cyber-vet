@@ -181,8 +181,15 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     );
   };
 
-  const CheckedinItemsDisplay = () => {
-    const [activeNavItem, setActiveNavItem] = useState("");
+  const CheckedinItemsDisplay = (props: {
+    onActiveItemChange: Function;
+    children: any;
+    activeNavItem: string;
+  }) => {
+    const handleChangeActiveItem = (newItem: string) => {
+      props.onActiveItemChange(newItem);
+    };
+
     return (
       <div className="checkedin__items">
         <ul className="checkedin__navbar">
@@ -198,15 +205,16 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             return (
               <li
                 className={`checkedin__navbar--item${
-                  name === activeNavItem ? " active--item" : ""
+                  name === props.activeNavItem ? " active--item" : ""
                 }`}
-                onClick={() => setActiveNavItem(name)}
+                onClick={() => handleChangeActiveItem(name)}
               >
                 {name}
               </li>
             );
           })}
         </ul>
+        <div className="checkedin__items--content">{props.children}</div>
       </div>
     );
   };
@@ -214,6 +222,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const handleCheckinPatient = () => {
     setCheckedIn(true);
     console.log(patientId);
+  };
+
+  const [activeCheckedInItem, setActiveCheckedInItem] = useState("");
+  const handleActiveCheckedInItemChange = (item: string) => {
+    console.log(item);
+    setActiveCheckedInItem(item);
   };
 
   return (
@@ -234,7 +248,42 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
               </div>
 
-              {checkedIn && <CheckedinItemsDisplay />}
+              {checkedIn && (
+                <CheckedinItemsDisplay
+                  activeNavItem={activeCheckedInItem}
+                  onActiveItemChange={handleActiveCheckedInItemChange}
+                >
+                  <>
+                    {"Client Details" === activeCheckedInItem && (
+                      <div>Client Details</div>
+                    )}
+
+                    {"Patient Details" === activeCheckedInItem && (
+                      <div>Patient Details</div>
+                    )}
+
+                    {"Vaccination" === activeCheckedInItem && (
+                      <div>Vaccination</div>
+                    )}
+
+                    {"Medical Records" === activeCheckedInItem && (
+                      <div>Medical Records</div>
+                    )}
+
+                    {"Laboratory" === activeCheckedInItem && (
+                      <div>Laboratory</div>
+                    )}
+
+                    {"Radiology" === activeCheckedInItem && (
+                      <div>Radiology</div>
+                    )}
+
+                    {"Appointment" === activeCheckedInItem && (
+                      <div>Appointment</div>
+                    )}
+                  </>
+                </CheckedinItemsDisplay>
+              )}
               {!checkedIn && <CheckinItemsDisplay />}
             </div>
           </div>

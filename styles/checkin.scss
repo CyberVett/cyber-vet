@@ -19,7 +19,14 @@
   }
 
   .checkedin {
+    &__items--content {
+      padding: 1rem;
+    }
     &__navbar {
+      @media only screen and (max-width: 56.25em) {
+        grid-template-columns: "item item item";
+        grid-template-rows: "item item item";
+      }
       list-style-type: none;
       margin: 0;
       padding: 1rem;
@@ -29,8 +36,6 @@
         position: relative;
         padding: 0.8rem;
         background-color: $color-grey-dark;
-        // display: flex;
-        // justify-items: center;
         text-align: center;
         border: 1px solid $color-black;
         &:hover {
@@ -50,6 +55,7 @@
         &.active--item {
           transition: all 0.3s linear;
           border-top-color: transparent;
+          background-color: #fff;
           &::before {
             opacity: 1;
           }
