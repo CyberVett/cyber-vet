@@ -181,6 +181,36 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     );
   };
 
+  const CheckedinItemsDisplay = () => {
+    const [activeNavItem, setActiveNavItem] = useState("");
+    return (
+      <div className="checkedin__items">
+        <ul className="checkedin__navbar">
+          {[
+            "Client Details",
+            "Patient Details",
+            "Medical Records",
+            "Vaccination",
+            "Laboratory",
+            "Radiology",
+            "Appointment",
+          ].map((name: string) => {
+            return (
+              <li
+                className={`checkedin__navbar--item${
+                  name === activeNavItem ? " active--item" : ""
+                }`}
+                onClick={() => setActiveNavItem(name)}
+              >
+                {name}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
+
   const handleCheckinPatient = () => {
     setCheckedIn(true);
     console.log(patientId);
@@ -204,7 +234,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
               </div>
 
-              {checkedIn ? <>Checked In</> : <CheckinItemsDisplay />}
+              {checkedIn && <CheckedinItemsDisplay />}
+              {!checkedIn && <CheckinItemsDisplay />}
             </div>
           </div>
           <div className="patient__checkin__container--footer">
