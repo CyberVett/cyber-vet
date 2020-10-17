@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { NextPage, NextPageContext } from "next";
 import Modal from "components/Modal/modal";
 import Button from "components/Button/button";
@@ -284,6 +284,80 @@ const CheckedinItemsDisplay = (props: {
   );
 };
 
+const MedicalReportModalContentTemplate = (props: {
+  children: any;
+  title: string;
+  onAdd: Function;
+  onCancel: Function;
+}) => {
+  return (
+    <div className="medical__report__template">
+      <div className="medical__report__template--head">
+        <span className="template__head--title">{props.title}</span>
+        <span className="template__head--date">
+          <span>Date Recorded</span>{" "}
+          <input type="text" disabled defaultValue={new Date().toString()} />
+        </span>
+      </div>
+
+      <div className="medical__report__template--content">{props.children}</div>
+
+      <div className="medical__report__template--footer">
+        <Button type="primary" onClick={(e) => props.onAdd(e)}>
+          Add
+        </Button>{" "}
+        <Button onClick={() => props.onCancel()}>Cancel</Button>
+      </div>
+    </div>
+  );
+};
+
+const ChiefComplainReport = (props: {
+  title: string;
+  onAdd: Function;
+  onCancel: Function;
+}) => {
+  const handleGetReport = (e: Event) => {
+    e.preventDefault();
+    props.onAdd(formValues);
+  };
+  const [formValues, setFormValues] = useState<{ chiefComplain: string }>({
+    chiefComplain: "",
+  });
+
+  const handleInputChange = (event: {
+    persist: () => void;
+    target: { name: any; value: any };
+  }) => {
+    event.persist();
+    setFormValues((formValues: any) => ({
+      ...formValues,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  return (
+    <MedicalReportModalContentTemplate
+      title={props.title}
+      onAdd={handleGetReport}
+      onCancel={props.onCancel}
+    >
+      <form className="medical__report__form">
+        <div className="medical__report__form--input">
+          <label>Rectal Temperatur (°C)</label>
+          <textarea
+            name={"chiefComplain"}
+            rows="10"
+            onChange={handleInputChange}
+          >
+            {formValues.chiefComplain}
+          </textarea>
+        </div>
+      </form>
+    </MedicalReportModalContentTemplate>
+  );
+};
+
 const MedicalRecordModal = ({
   show,
   currentModal,
@@ -304,7 +378,13 @@ const MedicalRecordModal = ({
         closeModal(false);
       }}
     >
-      {currentModal === "Chief complain" && <>Toggle Chief Complain</>}
+      {currentModal === "Chief complain" && (
+        <ChiefComplainReport
+          onCancel={closeModal}
+          title={currentModal}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
       {currentModal === "Physical Examination" && (
         <>Toggle Physical Examination</>
       )}
@@ -371,6 +451,11 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const handleMedicalItemUpdate = (item: string) => {
     setMedicalContentState(item);
     setShowMedicalModal(true);
+  };
+
+  const handleGetMedicalReportData = (data, field) => {
+    console.log({ data, field });
+    setShowMedicalModal(false);
   };
 
   return (
@@ -484,7 +569,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setShowMedicalModal(false);
           setMedicalContentState("");
         }}
-        getResult={() => {}}
+        getResult={(data, field) => {
+          handleGetMedicalReportData(data, field);
+        }}
         currentModal={medicalContentState}
       />
     </div>

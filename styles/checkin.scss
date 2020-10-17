@@ -223,4 +223,33 @@
       justify-content: flex-end;
     }
   }
+
+  .medical__report {
+    &__template {
+      padding: 1rem;
+      display: grid;
+      row-gap: 2rem;
+      &--head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+      &--footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        > button:first-of-type {
+          margin-right: 1rem;
+        }
+      }
+    }
+    &__form {
+      width: 100%;
+      input,
+      textarea {
+        width: 100%;
+      }
+    }
+  }
 }
