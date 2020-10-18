@@ -47,6 +47,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const [medicalReports, setMedicalReports] = useState<IMedicalReport>({
     chiefComplain: "",
+    note: ""
   });
 
   const handleAddResult = (data: any) => {
@@ -138,10 +139,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       >
                         {medicalReports.chiefComplain && (
                           <CheckinItem
-                            title="Chief Complain"
                             date={new Date().toString()}
-                            onEdit={handleEditMedicalReport}
                             onDelete={handleDeleteMedicalReport}
+                            onEdit={handleEditMedicalReport}
+                            title="Chief Complain"
                           >
                             {medicalReports.chiefComplain}
                           </CheckinItem>
@@ -149,10 +150,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                         {medicalReports.note && (
                           <CheckinItem
-                            title="Note"
                             date={new Date().toString()}
-                            onEdit={handleEditNoteReport}
                             onDelete={handleDeleteNoteReport}
+                            onEdit={handleEditNoteReport}
+                            title="Note"
                           >
                             {medicalReports.note}
                           </CheckinItem>
@@ -186,8 +187,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
               {!checkedIn && (
                 <CheckinItemsDisplay>
                   <PhysicalCheckResult
-                    showModal={() => setShowModal(true)}
                     physicalExaminationResult={physicalExaminationResult}
+                    showModal={() => setShowModal(true)}
                   />
                 </CheckinItemsDisplay>
               )}

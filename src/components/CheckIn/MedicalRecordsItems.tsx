@@ -1,9 +1,9 @@
 import React from "react";
-import Button from "../Button/button";
+import Button, { ButtonTypes } from "../Button/button";
 
 const MedicalRecordsItems = (props: {
   onRecordItemTypeUpdate: Function;
-  children: React.FunctionComponentFactory;
+  children: any;
 }) => {
   const handleAddMedicalRecordItem = (item: string) => {
     console.log(item);
@@ -16,32 +16,32 @@ const MedicalRecordsItems = (props: {
         <div className="medical__records--buttons">
           <div className="buttons__list">
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Chief Complain")}
+              type={ButtonTypes.primary}
             >
               + Chief Complain
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Physical Examination")}
+              type={ButtonTypes.primary}
             >
               + Physical Examination
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Clinical Signs")}
+              type={ButtonTypes.primary}
             >
               + Clinical Signs
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Tentative Diagnosis")}
+              type={ButtonTypes.primary}
             >
               + Tentative Diagnosis
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Diagnosis Test")}
+              type={ButtonTypes.primary}
             >
               + Diagnosis Test
             </Button>
@@ -49,32 +49,32 @@ const MedicalRecordsItems = (props: {
 
           <div className="buttons__list">
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Final Diagnosis")}
+              type={ButtonTypes.primary}
             >
               + Final Diagnosis
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Treatment")}
+              type={ButtonTypes.primary}
             >
               + Treatment
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Vaccination")}
+              type={ButtonTypes.primary}
             >
               + Vaccination
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Note")}
+              type={ButtonTypes.primary}
             >
               + Note
             </Button>
             <Button
-              type="primary"
               onClick={() => handleAddMedicalRecordItem("Medical Bill")}
+              type={ButtonTypes.primary}
             >
               + Medical Bill
             </Button>

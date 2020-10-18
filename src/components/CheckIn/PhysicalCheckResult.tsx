@@ -1,6 +1,4 @@
 import React from "react";
-
-import Button from "../Button/button";
 import CheckinItem from "./CheckinItem";
 
 export interface IphysicalExamination {
@@ -28,13 +26,13 @@ const PhysicalCheckResult = (props: {
   physicalExaminationResult: IphysicalExamination;
   showModal: Function;
 }) => {
-  const { physicalExaminationResult, showModal } = props;
+  const { physicalExaminationResult } = props;
   return (
     <CheckinItem
-      title="Physical Examination"
-      onDelete={() => {}}
-      onEdit={() => {}}
       date={new Date().toString()}
+      onDelete={() => { }}
+      onEdit={() => { }}
+      title="Physical Examination"
     >
       <div className="patient__checkin__exam__result">
         {physicalExaminationResult.respiratoryRate && (
@@ -114,7 +112,7 @@ const PhysicalCheckResult = (props: {
               },
             ].map(({ label, value }) => {
               return (
-                <li className="exam__result__item">
+                <li className="exam__result__item" key={1}>
                   <span className="exam__result__item--name">{label}</span>
                   <span className="exam__result__item--value">{value}</span>
                 </li>

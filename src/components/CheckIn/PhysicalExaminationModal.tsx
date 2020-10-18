@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Button from "../Button/button";
-import CheckInModalContent from "./CheckinModalContent";
+import Button, { ButtonTypes } from "../Button/button";
+import CheckInModalContent from "./CheckInModalContent";
 
 const PhysicalExaminationModal = (props: {
   onAddResult: Function;
@@ -267,7 +267,9 @@ const PhysicalExaminationModal = (props: {
             />
           </div>
           <div className="physical__examination__form--buttons">
-            <Button type="primary" onClick={(e) => handleAddResult(e)}>
+            <Button
+              onClick={(e: any) => handleAddResult(e)}
+              type={ButtonTypes.primary}>
               Add Result
             </Button>
             <Button onClick={(e) => props.onCancel(e)}>Cancel</Button>

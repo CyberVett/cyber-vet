@@ -23,7 +23,7 @@ export interface IButtonProps {
   type?: ButtonTypes;
 }
 
-const Button: React.SFC<IButtonProps> = ({
+const Button: React.FC<IButtonProps> = ({
   children, className, fullWidth, href, htmlType, loading, onClick, type, ...rest
 }) => {
   const Element = href ? 'a' : 'button';

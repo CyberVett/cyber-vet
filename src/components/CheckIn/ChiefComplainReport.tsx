@@ -28,16 +28,16 @@ const ChiefComplainReport = (props: {
 
   return (
     <MedicalReportModalContentTemplate
-      title={props.title}
-      onAdd={handleGetReport}
-      onCancel={props.onCancel}
+    onAdd={handleGetReport}
+    onCancel={props.onCancel}
+    title={props.title}
     >
       <form className="medical__report__form">
         <div className="medical__report__form--input">
           <textarea
             name={"chiefComplain"}
-            rows={10}
             onChange={handleInputChange}
+            rows={10}
           >
             {formValues.chiefComplain}
           </textarea>
