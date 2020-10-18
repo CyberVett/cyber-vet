@@ -1,11 +1,10 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2020": true
   },
   "extends": [
-    "plugin:react/recommended",
-    "airbnb"
+    "plugin:react/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -45,7 +44,7 @@
       }
     ],
     "react/jsx-one-expression-per-line": [
-      true,
+      1,
       {
         "allow": "single-child"
       }
@@ -80,7 +79,7 @@
     "jsx-a11y/no-static-element-interactions": "off",
     "@typescript-eslint/array-type": [
       "error",
-      "array"
+      {"default":"array"}
     ],
     "@typescript-eslint/interface-name-prefix": [
       "error",
@@ -106,16 +105,7 @@
         "variables": false
       }
     ],
-    "@typescript-eslint/member-delimiter-style": {
-      "multiline": {
-        "delimiter": "none",
-        "requireLast": false
-      },
-      "singleline": {
-        "delimiter": "none",
-        "requireLast": false
-      }
-    },
+    "@typescript-eslint/member-delimiter-style": 1,
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "import/prefer-default-export": "off",
