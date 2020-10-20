@@ -47,7 +47,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const [medicalReports, setMedicalReports] = useState<IMedicalReport>({
     chiefComplain: "",
-    note: ""
+    note: "",
+    clinicalSigns: [],
   });
 
   const handleAddResult = (data: any) => {
@@ -86,6 +87,15 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleDeleteMedicalReport = () => {
     setMedicalReports({ ...medicalReports, chiefComplain: "" });
+  };
+
+  const handleEditClinicalSigns = () => {
+    setMedicalContentState("Clinical Signs");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteClinicalSigns = () => {
+    setMedicalReports({ ...medicalReports, clinicalSigns: [] });
   };
 
   const handleEditNoteReport = () => {
@@ -137,6 +147,18 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <MedicalRecordsItems
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
+                        {medicalReports.clinicalSigns && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteClinicalSigns}
+                            onEdit={handleEditClinicalSigns}
+                            title="Clinical Signs"
+                          >
+                            {medicalReports.clinicalSigns.map((sign) => {
+                              return <>{sign && <p>{sign}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
                         {medicalReports.chiefComplain && (
                           <CheckinItem
                             date={new Date().toString()}
