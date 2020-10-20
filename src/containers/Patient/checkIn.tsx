@@ -52,6 +52,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     diagnosticTest: [],
     treatment: [],
     finalDiagnosis: [],
+    tentativeDiagnosis: {
+      differential: [],
+      tentative: [],
+    },
   });
 
   const handleAddResult = (data: any) => {
@@ -80,6 +84,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     splittedField[0] = splittedField[0].toLowerCase();
     field = splittedField.join("");
     setMedicalReports({ ...medicalReports, ...data });
+    console.log(medicalReports);
     setShowMedicalModal(false);
   };
 
@@ -126,6 +131,21 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleDeleteDiagnosticTest = () => {
     setMedicalReports({ ...medicalReports, diagnosticTest: [] });
+  };
+
+  const handleEditTentativeTest = () => {
+    setMedicalContentState("Tentative Diagnosis");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteTentativeTest = () => {
+    setMedicalReports({
+      ...medicalReports,
+      tentativeDiagnosis: {
+        tentative: [],
+        differential: [],
+      },
+    });
   };
 
   const handleEditNoteReport = () => {
@@ -248,6 +268,32 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             title="Note"
                           >
                             {medicalReports.note}
+                          </CheckinItem>
+                        )}
+
+                        {/* Tentative medical test */}
+                        {(medicalReports.tentativeDiagnosis.differential
+                          .length ||
+                          medicalReports.tentativeDiagnosis.tentative.length ||
+                          "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteTentativeTest}
+                            onEdit={handleEditTentativeTest}
+                            title="Diagnostic Test"
+                          >
+                            <h5>Differential</h5>
+                            {medicalReports.tentativeDiagnosis.differential.map(
+                              (test) => {
+                                return <>{test && <p>{test}</p>}</>;
+                              }
+                            )}
+                            <h5>Tentative</h5>
+                            {medicalReports.tentativeDiagnosis.tentative.map(
+                              (test) => {
+                                return <>{test && <p>{test}</p>}</>;
+                              }
+                            )}
                           </CheckinItem>
                         )}
 

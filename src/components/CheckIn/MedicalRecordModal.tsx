@@ -5,6 +5,7 @@ import ClinicalSignsReport from "./ClinicalSignsReport";
 import DiagnosticTestReport from "./DiagnosticTestReport";
 import TreatmentReport from "./TreatmentReport";
 import FinalDiagnosisReport from "././FinalDiagnosisReport";
+import TentativeDiagnosticReport from "./TentativeDiagnosticReport";
 import Modal from "../Modal/modal";
 
 const MedicalRecordModal = ({
@@ -48,7 +49,12 @@ const MedicalRecordModal = ({
         />
       )}
       {currentModal === "Tentative Diagnosis" && (
-        <>Toggle Tentative Diagnosis</>
+        <TentativeDiagnosticReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={results.tentativeDiagnosis}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
       )}
       {currentModal === "Diagnostic Test" && (
         <DiagnosticTestReport
@@ -96,6 +102,10 @@ export interface IMedicalReport {
   diagnosticTest: string[];
   treatment: string[];
   finalDiagnosis: string[];
+  tentativeDiagnosis: {
+    differential: string[];
+    tentative: string[];
+  };
 }
 
 export default MedicalRecordModal;
