@@ -2,6 +2,9 @@ import React from "react";
 import ChiefComplainReport from "./ChiefComplainReport";
 import NoteReport from "./NoteReport";
 import ClinicalSignsReport from "./ClinicalSignsReport";
+import DiagnosticTestReport from "./DiagnosticTestReport";
+import TreatmentReport from "./TreatmentReport";
+import FinalDiagnosisReport from "././FinalDiagnosisReport";
 import Modal from "../Modal/modal";
 
 const MedicalRecordModal = ({
@@ -47,9 +50,31 @@ const MedicalRecordModal = ({
       {currentModal === "Tentative Diagnosis" && (
         <>Toggle Tentative Diagnosis</>
       )}
-      {currentModal === "Diagnosis Test" && <>Toggle Diagnosis Test</>}
-      {currentModal === "Final Diagnosis" && <>Toggle Final Diagnosis</>}
-      {currentModal === "Treatment" && <>Toggle Treatment</>}
+      {currentModal === "Diagnostic Test" && (
+        <DiagnosticTestReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={results.diagnosticTest}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
+
+      {currentModal === "Treatment" && (
+        <TreatmentReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={results.treatment}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
+      {currentModal === "Final Diagnosis" && (
+        <FinalDiagnosisReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={results.finalDiagnosis}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
       {currentModal === "Vaccination" && <>Toggle Vaccination</>}
       {currentModal === "Note" && (
         <NoteReport
@@ -68,6 +93,9 @@ export interface IMedicalReport {
   chiefComplain: string;
   note: string;
   clinicalSigns: string[];
+  diagnosticTest: string[];
+  treatment: string[];
+  finalDiagnosis: string[];
 }
 
 export default MedicalRecordModal;

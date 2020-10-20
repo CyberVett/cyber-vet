@@ -49,6 +49,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     chiefComplain: "",
     note: "",
     clinicalSigns: [],
+    diagnosticTest: [],
+    treatment: [],
+    finalDiagnosis: [],
   });
 
   const handleAddResult = (data: any) => {
@@ -96,6 +99,33 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleDeleteClinicalSigns = () => {
     setMedicalReports({ ...medicalReports, clinicalSigns: [] });
+  };
+
+  const handleEditTreatment = () => {
+    setMedicalContentState("Treatment");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteTreatment = () => {
+    setMedicalReports({ ...medicalReports, treatment: [] });
+  };
+
+  const handleEditFinalDiagnosis = () => {
+    setMedicalContentState("Final Diagnosis");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteFinalDiagnosis = () => {
+    setMedicalReports({ ...medicalReports, finalDiagnosis: [] });
+  };
+
+  const handleEditDiagnosticTest = () => {
+    setMedicalContentState("Diagnostic Test");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteDiagnosticTest = () => {
+    setMedicalReports({ ...medicalReports, diagnosticTest: [] });
   };
 
   const handleEditNoteReport = () => {
@@ -147,7 +177,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <MedicalRecordsItems
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
-                        {medicalReports.clinicalSigns && (
+                        {(medicalReports.clinicalSigns.length || "") && (
                           <CheckinItem
                             date={new Date().toString()}
                             onDelete={handleDeleteClinicalSigns}
@@ -159,6 +189,46 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             })}
                           </CheckinItem>
                         )}
+
+                        {(medicalReports.finalDiagnosis.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteFinalDiagnosis}
+                            onEdit={handleEditFinalDiagnosis}
+                            title="Final Diagnosis"
+                          >
+                            {medicalReports.finalDiagnosis.map((item) => {
+                              return <>{item && <p>{item}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.diagnosticTest.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteDiagnosticTest}
+                            onEdit={handleEditDiagnosticTest}
+                            title="Diagnostic Test"
+                          >
+                            {medicalReports.diagnosticTest.map((test) => {
+                              return <>{test && <p>{test}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.treatment.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteTreatment}
+                            onEdit={handleEditTreatment}
+                            title="Treatment"
+                          >
+                            {medicalReports.treatment.map((item) => {
+                              return <>{item && <p>{item}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
                         {medicalReports.chiefComplain && (
                           <CheckinItem
                             date={new Date().toString()}
