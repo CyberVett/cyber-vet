@@ -6,6 +6,7 @@ import DiagnosticTestReport from "./DiagnosticTestReport";
 import TreatmentReport from "./TreatmentReport";
 import FinalDiagnosisReport from "././FinalDiagnosisReport";
 import TentativeDiagnosticReport from "./TentativeDiagnosticReport";
+import VacinationReport from "./VacinationReport";
 import Modal from "../Modal/modal";
 
 const MedicalRecordModal = ({
@@ -81,7 +82,14 @@ const MedicalRecordModal = ({
           onAdd={(data: {}) => getResult(data, currentModal)}
         />
       )}
-      {currentModal === "Vaccination" && <>Toggle Vaccination</>}
+      {currentModal === "Vaccination" && (
+        <VacinationReport
+          onCancel={closeModal}
+          title={currentModal}
+          data={{ vaccination: results.vaccination }}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
       {currentModal === "Note" && (
         <NoteReport
           onCancel={closeModal}
@@ -102,6 +110,12 @@ export interface IMedicalReport {
   diagnosticTest: string[];
   treatment: string[];
   finalDiagnosis: string[];
+  vaccination: {
+    type: string;
+    name: string;
+    dosage: string;
+    nextDate: string;
+  };
   tentativeDiagnosis: {
     differential: string[];
     tentative: string[];

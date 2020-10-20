@@ -15,6 +15,7 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
+import { string } from "yup";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -55,6 +56,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     tentativeDiagnosis: {
       differential: [],
       tentative: [],
+    },
+    vaccination: {
+      type: "",
+      name: "",
+      dosage: "",
+      nextDate: "",
     },
   });
 
