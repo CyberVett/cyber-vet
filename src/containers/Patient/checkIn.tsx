@@ -15,6 +15,7 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
+import { string } from "yup";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -47,7 +48,21 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const [medicalReports, setMedicalReports] = useState<IMedicalReport>({
     chiefComplain: "",
-    note: ""
+    note: "",
+    clinicalSigns: [],
+    diagnosticTest: [],
+    treatment: [],
+    finalDiagnosis: [],
+    tentativeDiagnosis: {
+      differential: [],
+      tentative: [],
+    },
+    vaccination: {
+      type: "",
+      name: "",
+      dosage: "",
+      nextDate: "",
+    },
   });
 
   const handleAddResult = (data: any) => {
@@ -76,6 +91,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     splittedField[0] = splittedField[0].toLowerCase();
     field = splittedField.join("");
     setMedicalReports({ ...medicalReports, ...data });
+    console.log(medicalReports);
     setShowMedicalModal(false);
   };
 
@@ -86,6 +102,57 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleDeleteMedicalReport = () => {
     setMedicalReports({ ...medicalReports, chiefComplain: "" });
+  };
+
+  const handleEditClinicalSigns = () => {
+    setMedicalContentState("Clinical Signs");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteClinicalSigns = () => {
+    setMedicalReports({ ...medicalReports, clinicalSigns: [] });
+  };
+
+  const handleEditTreatment = () => {
+    setMedicalContentState("Treatment");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteTreatment = () => {
+    setMedicalReports({ ...medicalReports, treatment: [] });
+  };
+
+  const handleEditFinalDiagnosis = () => {
+    setMedicalContentState("Final Diagnosis");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteFinalDiagnosis = () => {
+    setMedicalReports({ ...medicalReports, finalDiagnosis: [] });
+  };
+
+  const handleEditDiagnosticTest = () => {
+    setMedicalContentState("Diagnostic Test");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteDiagnosticTest = () => {
+    setMedicalReports({ ...medicalReports, diagnosticTest: [] });
+  };
+
+  const handleEditTentativeTest = () => {
+    setMedicalContentState("Tentative Diagnosis");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteTentativeTest = () => {
+    setMedicalReports({
+      ...medicalReports,
+      tentativeDiagnosis: {
+        tentative: [],
+        differential: [],
+      },
+    });
   };
 
   const handleEditNoteReport = () => {
@@ -137,6 +204,58 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <MedicalRecordsItems
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
+                        {(medicalReports.clinicalSigns.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteClinicalSigns}
+                            onEdit={handleEditClinicalSigns}
+                            title="Clinical Signs"
+                          >
+                            {medicalReports.clinicalSigns.map((sign) => {
+                              return <>{sign && <p>{sign}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.finalDiagnosis.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteFinalDiagnosis}
+                            onEdit={handleEditFinalDiagnosis}
+                            title="Final Diagnosis"
+                          >
+                            {medicalReports.finalDiagnosis.map((item) => {
+                              return <>{item && <p>{item}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.diagnosticTest.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteDiagnosticTest}
+                            onEdit={handleEditDiagnosticTest}
+                            title="Diagnostic Test"
+                          >
+                            {medicalReports.diagnosticTest.map((test) => {
+                              return <>{test && <p>{test}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.treatment.length || "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteTreatment}
+                            onEdit={handleEditTreatment}
+                            title="Treatment"
+                          >
+                            {medicalReports.treatment.map((item) => {
+                              return <>{item && <p>{item}</p>}</>;
+                            })}
+                          </CheckinItem>
+                        )}
+
                         {medicalReports.chiefComplain && (
                           <CheckinItem
                             date={new Date().toString()}
@@ -156,6 +275,32 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             title="Note"
                           >
                             {medicalReports.note}
+                          </CheckinItem>
+                        )}
+
+                        {/* Tentative medical test */}
+                        {(medicalReports.tentativeDiagnosis.differential
+                          .length ||
+                          medicalReports.tentativeDiagnosis.tentative.length ||
+                          "") && (
+                          <CheckinItem
+                            date={new Date().toString()}
+                            onDelete={handleDeleteTentativeTest}
+                            onEdit={handleEditTentativeTest}
+                            title="Diagnostic Test"
+                          >
+                            <h5>Differential</h5>
+                            {medicalReports.tentativeDiagnosis.differential.map(
+                              (test) => {
+                                return <>{test && <p>{test}</p>}</>;
+                              }
+                            )}
+                            <h5>Tentative</h5>
+                            {medicalReports.tentativeDiagnosis.tentative.map(
+                              (test) => {
+                                return <>{test && <p>{test}</p>}</>;
+                              }
+                            )}
                           </CheckinItem>
                         )}
 

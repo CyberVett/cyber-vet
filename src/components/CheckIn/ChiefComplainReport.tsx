@@ -28,9 +28,9 @@ const ChiefComplainReport = (props: {
 
   return (
     <MedicalReportModalContentTemplate
-    onAdd={handleGetReport}
-    onCancel={props.onCancel}
-    title={props.title}
+      onAdd={handleGetReport}
+      onCancel={props.onCancel}
+      title={props.title}
     >
       <form className="medical__report__form">
         <div className="medical__report__form--input">
