@@ -15,7 +15,6 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
-import { string } from "yup";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -306,10 +305,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                         {physicalExaminationResult.respiratoryRate && (
                           <PhysicalCheckResult
-                            showModal={() => setShowModal(true)}
-                            physicalExaminationResult={
-                              physicalExaminationResult
-                            }
+                          physicalExaminationResult={
+                            physicalExaminationResult
+                          }
+                          showModal={() => setShowModal(true)}
                           />
                         )}
                       </MedicalRecordsItems>

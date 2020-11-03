@@ -62,7 +62,7 @@ const Login: React.FunctionComponent = () => {
           const redirectUrl = window.location.search && new URLSearchParams(window.location.search).get('to');
           const defaultPath = '/app/dashboard';
           Router.push(redirectUrl || defaultPath);
-        } if((response.status === 200 && response.statusText === 'OK' && response.data.data.role === userRoles.SUPER_ADMINISTRATOR)){
+        } if ((response.status === 200 && response.statusText === 'OK' && response.data.data.role === userRoles.SUPER_ADMINISTRATOR)) {
           setLoading(false);
           setError(['This is the Client portal, to login in as an admin, please visit the Admin portal']);
         } else {
@@ -96,7 +96,7 @@ const Login: React.FunctionComponent = () => {
                 value={loginInput.email}
               />
             </InputGroup>
-            <InputGroup horizontal  className={styles.passwordBox}>
+            <InputGroup horizontal className={styles.passwordBox}>
               <Label>Password</Label>
               <div>
                 <Input
@@ -108,7 +108,8 @@ const Login: React.FunctionComponent = () => {
                   validation={InputValidationTypes.freeText}
                   value={loginInput.password}
                 /> <EyeIcon
-                 className={showPassword ? styles.showPassword : styles.hidePassword} onClick={() => { setShowPassword(!showPassword) }} />
+                  className={showPassword ? styles.showPassword : styles.hidePassword}
+                  onClick={() => { setShowPassword(!showPassword) }} />
               </div>
             </InputGroup>
             <Button type={ButtonTypes.primary} htmlType="submit" loading={loading}>Login</Button>
