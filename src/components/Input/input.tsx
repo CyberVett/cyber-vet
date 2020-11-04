@@ -216,7 +216,6 @@ export const Label: React.FC<React.DetailedHTMLProps<React.LabelHTMLAttributes<H
   const classes = composeClasses(styles.label, className);
 
   return (
-    // eslint-disable-next-line jsx-a11y/label-has-for
     <label
       className={classes}
       {...rest}

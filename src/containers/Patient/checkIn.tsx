@@ -15,6 +15,8 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
+import { ILabRecords } from "types/checkInn";
+import LaboratoryTab from "./Laboratory/laboratoryTab";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -63,6 +65,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       nextDate: "",
     },
   });
+
+  const [labRecords, setLabRecords] = useState<ILabRecords>({
+    microbiology: {},
+    parasitology: {},
+    pathology: {},
+    rapidTest: {},
+  })
 
   const handleAddResult = (data: any) => {
     setPhysicalExaminationResult(data);
@@ -315,7 +324,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     )}
 
                     {"Laboratory" === activeCheckedInItem && (
-                      <div>Laboratory</div>
+                      <LaboratoryTab />
                     )}
 
                     {"Radiology" === activeCheckedInItem && (
