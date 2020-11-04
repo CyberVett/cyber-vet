@@ -36,46 +36,44 @@ const FinalDiagnosisReport = (props: {
       title={props.title}
     >
       <form className="medical__report__form">
-        <div className="medical__report__form--input">
-          <div className="physical__examination__form--input">
-            <input
-              name={"0"}
-              onChange={handleInputChange}
-              defaultValue={formValues.finalDiagnosis[0]}
-            />
-          </div>
+        <div className="physical__examination__form--input">
+          <input
+            name={"0"}
+            onChange={handleInputChange}
+            defaultValue={formValues.finalDiagnosis[0]}
+          />
+        </div>
 
-          <div className="physical__examination__form--input">
-            <input
-              name={"1"}
-              onChange={handleInputChange}
-              defaultValue={formValues.finalDiagnosis[1]}
-            />
-          </div>
+        <div className="physical__examination__form--input">
+          <input
+            name={"1"}
+            onChange={handleInputChange}
+            defaultValue={formValues.finalDiagnosis[1]}
+          />
+        </div>
 
-          <div className="physical__examination__form--input">
-            <input
-              name={"2"}
-              onChange={handleInputChange}
-              defaultValue={formValues.finalDiagnosis[2]}
-            />
-          </div>
+        <div className="physical__examination__form--input">
+          <input
+            name={"2"}
+            onChange={handleInputChange}
+            defaultValue={formValues.finalDiagnosis[2]}
+          />
+        </div>
 
-          <div className="physical__examination__form--input">
-            <input
-              name={"3"}
-              onChange={handleInputChange}
-              defaultValue={formValues.finalDiagnosis[3]}
-            />
-          </div>
+        <div className="physical__examination__form--input">
+          <input
+            name={"3"}
+            onChange={handleInputChange}
+            defaultValue={formValues.finalDiagnosis[3]}
+          />
+        </div>
 
-          <div className="physical__examination__form--input">
-            <input
-              name={"4"}
-              onChange={handleInputChange}
-              defaultValue={formValues.finalDiagnosis[4]}
-            />
-          </div>
+        <div className="physical__examination__form--input">
+          <input
+            name={"4"}
+            onChange={handleInputChange}
+            defaultValue={formValues.finalDiagnosis[4]}
+          />
         </div>
       </form>
     </MedicalReportModalContentTemplate>

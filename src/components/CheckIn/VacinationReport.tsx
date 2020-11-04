@@ -83,14 +83,16 @@ const VacinationReport = (props: {
             />
           </div>
 
-          <div className="physical__examination__form--input">
-            <label>Email Reminder</label>
-            <CheckboxInput />
-          </div>
+          <div className="checkboxes">
+            <div className="physical__examination__form--input ">
+              <label>Email Reminder</label>
+              <CheckboxInput />
+            </div>
 
-          <div className="physical__examination__form--input">
-            <label>SMS</label>
-            <CheckboxInput />
+            <div className="physical__examination__form--input ">
+              <label>SMS</label>
+              <CheckboxInput />
+            </div>
           </div>
         </div>
       </form>

@@ -62,6 +62,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       dosage: "",
       nextDate: "",
     },
+    medicalBill: {
+      services: null,
+      paid: "",
+      balance: "",
+      method: null,
+    },
   });
 
   const handleAddResult = (data: any) => {
@@ -80,8 +86,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   };
 
   const handleMedicalItemUpdate = (item: string) => {
-    setMedicalContentState(item);
-    setShowMedicalModal(true);
+    if (item === "Physical Examination") {
+      setShowModal(true);
+    } else {
+      setMedicalContentState(item);
+      setShowMedicalModal(true);
+    }
   };
 
   const handleGetMedicalReportData = (data: object, field: string) => {
@@ -305,10 +315,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                         {physicalExaminationResult.respiratoryRate && (
                           <PhysicalCheckResult
-                          physicalExaminationResult={
-                            physicalExaminationResult
-                          }
-                          showModal={() => setShowModal(true)}
+                            physicalExaminationResult={
+                              physicalExaminationResult
+                            }
+                            showModal={() => setShowModal(true)}
                           />
                         )}
                       </MedicalRecordsItems>
