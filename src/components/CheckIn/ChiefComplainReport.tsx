@@ -38,6 +38,7 @@ const ChiefComplainReport = (props: {
             name={"chiefComplain"}
             onChange={handleInputChange}
             rows={10}
+            cols={10}
           >
             {formValues.chiefComplain}
           </textarea>

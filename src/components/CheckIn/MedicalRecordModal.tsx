@@ -7,6 +7,7 @@ import TreatmentReport from "./TreatmentReport";
 import FinalDiagnosisReport from "././FinalDiagnosisReport";
 import TentativeDiagnosticReport from "./TentativeDiagnosticReport";
 import VacinationReport from "./VacinationReport";
+import MedicalBill from "./MedicalBill";
 import Modal from "../Modal/modal";
 
 const MedicalRecordModal = ({
@@ -57,7 +58,7 @@ const MedicalRecordModal = ({
           onAdd={(data: {}) => getResult(data, currentModal)}
         />
       )}
-      {currentModal === "Diagnostic Test" && (
+      {currentModal === "Diagnosis Test" && (
         <DiagnosticTestReport
           onCancel={closeModal}
           title={currentModal}
@@ -98,10 +99,22 @@ const MedicalRecordModal = ({
           onAdd={(data: {}) => getResult(data, currentModal)}
         />
       )}
-      {currentModal === "Medical Bill" && <>Toggle Medical Bill</>}
+      {currentModal === "Medical Bill" && (
+        <MedicalBill
+          onCancel={closeModal}
+          title={currentModal}
+          data={{ medicalBill: results.medicalBill }}
+          onAdd={(data: {}) => getResult(data, currentModal)}
+        />
+      )}
     </Modal>
   );
 };
+
+enum PaymentMethod {
+  cash = "CASH",
+  card = "CARD",
+}
 
 export interface IMedicalReport {
   chiefComplain: string;
@@ -119,6 +132,12 @@ export interface IMedicalReport {
   tentativeDiagnosis: {
     differential: string[];
     tentative: string[];
+  };
+  medicalBill: {
+    services: [{ name: string; price: string }] | null;
+    paid: string;
+    balance: string;
+    method: PaymentMethod | null;
   };
 }
 
