@@ -1,4 +1,4 @@
-import { formatDistance } from "date-fns";
+import { format, formatDistance } from "date-fns";
 
 /* Combine a number of classes removing undefined values
 * @param {string} styles A list of classes to compose together
@@ -39,6 +39,8 @@ export const getAge = (dob: Date | string): string => {
   }
   return 'enter date of birth';
 };
+export const formatDate = (datetime: Date | number): string => (datetime ? format(datetime, 'MMM D, YYYY') : '');
+
 
 // export const uploadToCloudinary = (imgToUpload: string) => {
 //   const [percentage, setPercentage] = useState(0);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage, NextPageContext } from "next";
 import Modal from "components/Modal/modal";
 import Button from "components/Button/button";
@@ -10,6 +10,7 @@ import PhysicalCheckResult, {
   IphysicalExamination,
 } from "components/CheckIn/PhysicalCheckResult";
 
+import { ReactComponent as Loader } from '../../assets/icons/loader.svg';
 import CheckedinItemsDisplay from "components/CheckIn/CheckedinItemsDisplay";
 import MedicalRecordModal, {
   IMedicalReport,
@@ -19,8 +20,26 @@ import { ILabRecords } from "types/checkInn";
 import LaboratoryTab from "./Laboratory/laboratoryTab";
 import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
+import requestClient from "lib/requestClient";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    requestClient.get(`/patients/${patientId}`)
+      .then((response) => {
+        if (response.status === 200 && response.statusText === 'OK') {
+          setData(response.data.data);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }, []);
+
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
     IphysicalExamination
   >({
@@ -184,223 +203,226 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   };
 
   return (
-    <div className="patient__checkin">
-      <div className="patient__checkin__container">
-        <div className="patient__checkin__container--header">
-          <h1>Patient Check In</h1>
-        </div>
-        <div className="patient__checkin__container--content">
-          <div className="checkin__card">
-            <div className="checkin__card--header">
-              <span>Signalment</span>
-              <span>Patient No: SAC01/16/08/2020</span>
-            </div>
-            <div className="checkin__card--body">
-              <PatientDetails />
-              <div style={{ padding: "1rem" }}>
-                <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+    loading ?
+      <Loader />
+      :
+      <div className="patient__checkin">
+        <div className="patient__checkin__container">
+          <div className="patient__checkin__container--header">
+            <h1>Patient Check In</h1>
+          </div>
+          <div className="patient__checkin__container--content">
+            <div className="checkin__card">
+              <div className="checkin__card--header">
+                <span>Signalment</span>
+                <span>{`Patient No: ${data.id}`}</span>
               </div>
+              <div className="checkin__card--body">
+                <PatientDetails patientData={data} />
+                <div style={{ padding: "1rem" }}>
+                  <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+                </div>
 
-              {checkedIn && (
-                <CheckedinItemsDisplay
-                  activeNavItem={activeCheckedInItem}
-                  onActiveItemChange={handleActiveCheckedInItemChange}
-                >
-                  <>
-                    {"Client Details" === activeCheckedInItem && (
-                      <div>Client Details</div>
-                    )}
+                {checkedIn && (
+                  <CheckedinItemsDisplay
+                    activeNavItem={activeCheckedInItem}
+                    onActiveItemChange={handleActiveCheckedInItemChange}
+                  >
+                    <>
+                      {"Client Details" === activeCheckedInItem && (
+                        <div>Client Details</div>
+                      )}
 
-                    {"Patient Details" === activeCheckedInItem && (
-                      <div>Patient Details</div>
-                    )}
+                      {"Patient Details" === activeCheckedInItem && (
+                        <div>Patient Details</div>
+                      )}
 
-                    {"Vaccination" === activeCheckedInItem && (
-                      <div>Vaccination</div>
-                    )}
+                      {"Vaccination" === activeCheckedInItem && (
+                        <div>Vaccination</div>
+                      )}
 
-                    {"Medical Records" === activeCheckedInItem && (
-                      <MedicalRecordsItems
-                        onRecordItemTypeUpdate={handleMedicalItemUpdate}
-                      >
-                        {(medicalReports.clinicalSigns.length || "") && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteClinicalSigns}
-                            onEdit={handleEditClinicalSigns}
-                            title="Clinical Signs"
-                          >
-                            {medicalReports.clinicalSigns.map((sign) => {
-                              return <>{sign && <p>{sign}</p>}</>;
-                            })}
-                          </CheckinItem>
-                        )}
+                      {"Medical Records" === activeCheckedInItem && (
+                        <MedicalRecordsItems
+                          onRecordItemTypeUpdate={handleMedicalItemUpdate}
+                        >
+                          {(medicalReports.clinicalSigns.length || "") && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteClinicalSigns}
+                              onEdit={handleEditClinicalSigns}
+                              title="Clinical Signs"
+                            >
+                              {medicalReports.clinicalSigns.map((sign) => {
+                                return <>{sign && <p>{sign}</p>}</>;
+                              })}
+                            </CheckinItem>
+                          )}
 
-                        {(medicalReports.finalDiagnosis.length || "") && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteFinalDiagnosis}
-                            onEdit={handleEditFinalDiagnosis}
-                            title="Final Diagnosis"
-                          >
-                            {medicalReports.finalDiagnosis.map((item) => {
-                              return <>{item && <p>{item}</p>}</>;
-                            })}
-                          </CheckinItem>
-                        )}
+                          {(medicalReports.finalDiagnosis.length || "") && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteFinalDiagnosis}
+                              onEdit={handleEditFinalDiagnosis}
+                              title="Final Diagnosis"
+                            >
+                              {medicalReports.finalDiagnosis.map((item) => {
+                                return <>{item && <p>{item}</p>}</>;
+                              })}
+                            </CheckinItem>
+                          )}
 
-                        {(medicalReports.diagnosticTest.length || "") && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteDiagnosticTest}
-                            onEdit={handleEditDiagnosticTest}
-                            title="Diagnostic Test"
-                          >
-                            {medicalReports.diagnosticTest.map((test) => {
-                              return <>{test && <p>{test}</p>}</>;
-                            })}
-                          </CheckinItem>
-                        )}
-
-                        {(medicalReports.treatment.length || "") && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteTreatment}
-                            onEdit={handleEditTreatment}
-                            title="Treatment"
-                          >
-                            {medicalReports.treatment.map((item) => {
-                              return <>{item && <p>{item}</p>}</>;
-                            })}
-                          </CheckinItem>
-                        )}
-
-                        {medicalReports.chiefComplain && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteMedicalReport}
-                            onEdit={handleEditMedicalReport}
-                            title="Chief Complain"
-                          >
-                            {medicalReports.chiefComplain}
-                          </CheckinItem>
-                        )}
-
-                        {medicalReports.note && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteNoteReport}
-                            onEdit={handleEditNoteReport}
-                            title="Note"
-                          >
-                            {medicalReports.note}
-                          </CheckinItem>
-                        )}
-
-                        {/* Tentative medical test */}
-                        {(medicalReports.tentativeDiagnosis.differential
-                          .length ||
-                          medicalReports.tentativeDiagnosis.tentative.length ||
-                          "") && (
-                          <CheckinItem
-                            date={new Date().toString()}
-                            onDelete={handleDeleteTentativeTest}
-                            onEdit={handleEditTentativeTest}
-                            title="Diagnostic Test"
-                          >
-                            <h5>Differential</h5>
-                            {medicalReports.tentativeDiagnosis.differential.map(
-                              (test) => {
+                          {(medicalReports.diagnosticTest.length || "") && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteDiagnosticTest}
+                              onEdit={handleEditDiagnosticTest}
+                              title="Diagnostic Test"
+                            >
+                              {medicalReports.diagnosticTest.map((test) => {
                                 return <>{test && <p>{test}</p>}</>;
-                              }
+                              })}
+                            </CheckinItem>
+                          )}
+
+                          {(medicalReports.treatment.length || "") && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteTreatment}
+                              onEdit={handleEditTreatment}
+                              title="Treatment"
+                            >
+                              {medicalReports.treatment.map((item) => {
+                                return <>{item && <p>{item}</p>}</>;
+                              })}
+                            </CheckinItem>
+                          )}
+
+                          {medicalReports.chiefComplain && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteMedicalReport}
+                              onEdit={handleEditMedicalReport}
+                              title="Chief Complain"
+                            >
+                              {medicalReports.chiefComplain}
+                            </CheckinItem>
+                          )}
+
+                          {medicalReports.note && (
+                            <CheckinItem
+                              date={new Date().toString()}
+                              onDelete={handleDeleteNoteReport}
+                              onEdit={handleEditNoteReport}
+                              title="Note"
+                            >
+                              {medicalReports.note}
+                            </CheckinItem>
+                          )}
+
+                          {/* Tentative medical test */}
+                          {(medicalReports.tentativeDiagnosis.differential
+                            .length ||
+                            medicalReports.tentativeDiagnosis.tentative.length ||
+                            "") && (
+                              <CheckinItem
+                                date={new Date().toString()}
+                                onDelete={handleDeleteTentativeTest}
+                                onEdit={handleEditTentativeTest}
+                                title="Diagnostic Test"
+                              >
+                                <h5>Differential</h5>
+                                {medicalReports.tentativeDiagnosis.differential.map(
+                                  (test) => {
+                                    return <>{test && <p>{test}</p>}</>;
+                                  }
+                                )}
+                                <h5>Tentative</h5>
+                                {medicalReports.tentativeDiagnosis.tentative.map(
+                                  (test) => {
+                                    return <>{test && <p>{test}</p>}</>;
+                                  }
+                                )}
+                              </CheckinItem>
                             )}
-                            <h5>Tentative</h5>
-                            {medicalReports.tentativeDiagnosis.tentative.map(
-                              (test) => {
-                                return <>{test && <p>{test}</p>}</>;
+
+                          {physicalExaminationResult.respiratoryRate && (
+                            <PhysicalCheckResult
+                              physicalExaminationResult={
+                                physicalExaminationResult
                               }
-                            )}
-                          </CheckinItem>
-                        )}
+                              showModal={() => setShowModal(true)}
+                            />
+                          )}
+                        </MedicalRecordsItems>
+                      )}
 
-                        {physicalExaminationResult.respiratoryRate && (
-                          <PhysicalCheckResult
-                            physicalExaminationResult={
-                              physicalExaminationResult
-                            }
-                            showModal={() => setShowModal(true)}
-                          />
-                        )}
-                      </MedicalRecordsItems>
-                    )}
+                      {"Laboratory" === activeCheckedInItem && (
+                        <LaboratoryTab />
+                      )}
 
-                    {"Laboratory" === activeCheckedInItem && (
-                      <LaboratoryTab />
-                    )}
+                      {"Radiology" === activeCheckedInItem && (
+                        <Radiology />
+                      )}
 
-                    {"Radiology" === activeCheckedInItem && (
-                      <Radiology />
-                    )}
-
-                    {"Appointment" === activeCheckedInItem && (
-                     <Appointment />
-                    )}
-                  </>
-                </CheckedinItemsDisplay>
-              )}
+                      {"Appointment" === activeCheckedInItem && (
+                        <Appointment />
+                      )}
+                    </>
+                  </CheckedinItemsDisplay>
+                )}
+                {!checkedIn && (
+                  <CheckinItemsDisplay>
+                    <PhysicalCheckResult
+                      physicalExaminationResult={physicalExaminationResult}
+                      showModal={() => setShowModal(true)}
+                    />
+                  </CheckinItemsDisplay>
+                )}
+              </div>
+            </div>
+            <div className="patient__checkin__container--footer">
               {!checkedIn && (
-                <CheckinItemsDisplay>
-                  <PhysicalCheckResult
-                    physicalExaminationResult={physicalExaminationResult}
-                    showModal={() => setShowModal(true)}
-                  />
-                </CheckinItemsDisplay>
+                <>
+                  {" "}
+                  <Button onClick={() => handleCheckinPatient()}> Checkin</Button>
+                  <Button>Return</Button>
+                </>
               )}
             </div>
           </div>
-          <div className="patient__checkin__container--footer">
-            {!checkedIn && (
-              <>
-                {" "}
-                <Button onClick={() => handleCheckinPatient()}> Checkin</Button>
-                <Button>Return</Button>
-              </>
-            )}
-          </div>
+          {checkedIn && (
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+              {" "}
+              <Button>Check Out</Button>{" "}
+            </div>
+          )}
         </div>
-        {checkedIn && (
-          <div style={{ textAlign: "center", marginTop: "2rem" }}>
-            {" "}
-            <Button>Check Out</Button>{" "}
-          </div>
-        )}
-      </div>
-      <Modal
-        fullMode={true}
-        visible={showModal}
-        closeModal={() => {
-          setShowModal(false);
-        }}
-      >
-        <PhysicalExaminationModal
-          onAddResult={handleAddResult}
-          onCancel={() => setShowModal(false)}
-        />
-      </Modal>
+        <Modal
+          fullMode={true}
+          visible={showModal}
+          closeModal={() => {
+            setShowModal(false);
+          }}
+        >
+          <PhysicalExaminationModal
+            onAddResult={handleAddResult}
+            onCancel={() => setShowModal(false)}
+          />
+        </Modal>
 
-      <MedicalRecordModal
-        show={showMedicalModal}
-        closeModal={() => {
-          setShowMedicalModal(false);
-          setMedicalContentState("");
-        }}
-        getResult={(data: object, field: string) => {
-          handleGetMedicalReportData(data, field);
-        }}
-        currentModal={medicalContentState}
-        results={medicalReports}
-      />
-    </div>
+        <MedicalRecordModal
+          show={showMedicalModal}
+          closeModal={() => {
+            setShowMedicalModal(false);
+            setMedicalContentState("");
+          }}
+          getResult={(data: object, field: string) => {
+            handleGetMedicalReportData(data, field);
+          }}
+          currentModal={medicalContentState}
+          results={medicalReports}
+        />
+      </div>
   );
 };
 

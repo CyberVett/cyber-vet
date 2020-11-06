@@ -14,7 +14,8 @@ import { AuthContext } from "contexts/auth";
 import requestClient from "lib/requestClient";
 import Table from "components/Table/table";
 import { DashboardPatientHeaders } from "config/constants";
-// import { actionButton } from 'containers/Patient/patientList';
+import Router  from "next/router";
+import { actionButton } from 'containers/Patient/patientList';
 
 const Dashboard: React.FunctionComponent = () => {
   const { staff, role } = useContext(AuthContext);
@@ -35,6 +36,38 @@ const Dashboard: React.FunctionComponent = () => {
         console.log(error);
       });
   }, []);
+
+  const checkIn = (id: string) => {
+    setLoading(true);
+    requestClient.put(`/patients/${id}/check-in`)
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          Router.push(`/app/patient/checkin/${id}`);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }
+
+  const checkOut = (id) => {
+    setLoading(true);
+    requestClient.put(`/patients/${id}/check-out`)
+      .then((response) => {
+        console.log(response);
+
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          Router.push(`/app/dashboard`);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }
 
   return (
     <div className={styles.container}>
@@ -62,12 +95,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <td>{row.name}</td>
                       <td>{row.specie}</td>
                       <td>{row.breed}</td>
-                      <td>
-                        <Button href={`/app/patient/checkin/${row.id}`}>
-                          Check In
-                        </Button>
-                      </td>
-                      {/* <td>{actionButton(row.status, row.id)}</td> */}
+                      <td>{actionButton(row.checkedIn, row.id, checkIn, checkOut, true)}</td>
                     </tr>
                   )}
                 />
