@@ -17,6 +17,8 @@ import MedicalRecordModal, {
 import CheckinItem from "components/CheckIn/CheckinItem";
 import { ILabRecords } from "types/checkInn";
 import LaboratoryTab from "./Laboratory/laboratoryTab";
+import Radiology from "./Radiology/radiology";
+import Appointment from "./Appointment/appointment";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
@@ -86,7 +88,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleCheckinPatient = () => {
     setCheckedIn(true);
-    console.log(patientId);
   };
 
   const [activeCheckedInItem, setActiveCheckedInItem] = useState("");
@@ -338,11 +339,11 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     )}
 
                     {"Radiology" === activeCheckedInItem && (
-                      <div>Radiology</div>
+                      <Radiology />
                     )}
 
                     {"Appointment" === activeCheckedInItem && (
-                      <div>Appointment</div>
+                     <Appointment />
                     )}
                   </>
                 </CheckedinItemsDisplay>

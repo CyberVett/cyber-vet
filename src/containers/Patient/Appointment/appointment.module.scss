@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 16px;
   > * {
     margin: 2px 4px;
   }
@@ -30,4 +29,11 @@
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
   }
+}
+
+.appointmentCardBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

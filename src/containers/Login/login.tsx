@@ -62,10 +62,10 @@ const Login: React.FunctionComponent = () => {
           const redirectUrl = window.location.search && new URLSearchParams(window.location.search).get('to');
           const defaultPath = '/app/dashboard';
           Router.push(redirectUrl || defaultPath);
-        } if ((response.status === 200 && response.statusText === 'OK' && response.data.data.role === userRoles.SUPER_ADMINISTRATOR)) {
+        } else if ((response.status === 200 && response.statusText === 'OK' && response.data.data.role === userRoles.SUPER_ADMINISTRATOR)) {
           setLoading(false);
           setError(['This is the Client portal, to login in as an admin, please visit the Admin portal']);
-        } else {
+        } else {          
           setLoading(false);
           setError([response.data.message, 'Please check your login credentials and try again']);
         }
