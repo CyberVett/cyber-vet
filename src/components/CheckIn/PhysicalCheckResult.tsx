@@ -2,7 +2,10 @@ import React from "react";
 import CheckinItem from "./CheckinItem";
 
 export interface IphysicalExamination {
+  pulseRate: string;
   respiratoryRate: string;
+  consistencyOfFaeces: string;
+  natureOfBreathing: string;
   rectalTemperature: string;
   ocularMucousMembrane: string;
   oralMucousMembrane: string;
@@ -20,19 +23,26 @@ export interface IphysicalExamination {
   lamenessLocation: string;
   rectalExamination: string;
   prepuceVulvaExamination: string;
+  updatedAt?: string;
 }
 
 const PhysicalCheckResult = (props: {
   physicalExaminationResult: IphysicalExamination;
   showModal: Function;
+  onAddNew: Function;
+  onEdit: Function;
+  onDelete: Function;
+  checkedIn: Boolean;
 }) => {
   const { physicalExaminationResult } = props;
   return (
     <CheckinItem
-      date={new Date().toString()}
-      onDelete={() => { }}
-      onEdit={() => { }}
+      date={physicalExaminationResult.updatedAt || ""}
+      onDelete={() => props.onDelete()}
+      onEdit={() => props.onEdit()}
+      onAddNew={() => props.onAddNew()}
       title="Physical Examination"
+      checkedIn={props.checkedIn}
     >
       <div className="patient__checkin__exam__result">
         {physicalExaminationResult.respiratoryRate && (
@@ -45,6 +55,18 @@ const PhysicalCheckResult = (props: {
               {
                 label: "Respiratory Rate",
                 value: physicalExaminationResult.respiratoryRate,
+              },
+              {
+                label: "Pulse Rate",
+                value: physicalExaminationResult.pulseRate,
+              },
+              {
+                label: "Consisitencies of feaces",
+                value: physicalExaminationResult.consistencyOfFaeces,
+              },
+              {
+                label: "Nature of breathing",
+                value: physicalExaminationResult.natureOfBreathing,
               },
               {
                 label: "Ocular Mucous Membrane",
