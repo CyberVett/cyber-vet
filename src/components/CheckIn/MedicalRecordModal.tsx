@@ -127,13 +127,15 @@ export interface IMedicalReport {
   note: string;
   clinicalSigns: string;
   diagnosticTest: string;
-  treatment: string[];
-  finalDiagnosis: string[];
+  treatment: string;
+  finalDiagnosis: string;
   vaccination: {
     type: string;
     name: string;
     dosage: string;
     nextDate: string;
+    smsReminder: boolean;
+    emailReminder: boolean;
   };
   tentativeDiagnosis: {
     differential: string;

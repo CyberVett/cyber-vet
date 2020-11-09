@@ -122,6 +122,40 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 diagnosticTest: checkinData.diagnosticTest.test,
               });
             }
+            if (checkinData.finalDiagnosis) {
+              setMedicalReports({
+                ...medicalReports,
+                finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
+              });
+            }
+
+            if (checkinData.treatment) {
+              setMedicalReports({
+                ...medicalReports,
+                treatment: checkinData.treatment.treatment,
+              });
+            }
+
+            if (checkinData.notes) {
+              setMedicalReports({
+                ...medicalReports,
+                note: checkinData.notes.note,
+              });
+            }
+
+            if (checkinData.vaccination) {
+              setMedicalReports({
+                ...medicalReports,
+                vaccination: {
+                  type: checkinData.vaccination.vaccinationType,
+                  name: checkinData.vaccination.nameOfVaccine,
+                  dosage: checkinData.vaccination.dosage,
+                  nextDate: checkinData.vaccination.dateOfNextShot,
+                  smsReminder: checkinData.vaccination.smsReminder,
+                  emailReminder: checkinData.vaccination.emailReminder,
+                },
+              });
+            }
           }
         }
       })
@@ -136,8 +170,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     note: "",
     clinicalSigns: "",
     diagnosticTest: "",
-    treatment: [],
-    finalDiagnosis: [],
+    treatment: "",
+    finalDiagnosis: "",
     tentativeDiagnosis: {
       differential: "",
       tentative: "",
@@ -303,6 +337,43 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         ...body,
         test: data.diagnosticTest,
       };
+    } else if (field === "Final Diagnosis") {
+      // diagnostic-test
+      method = !medicalReports.finalDiagnosis ? "post" : "put";
+      endpoint = "final-diagnosis";
+      body = {
+        ...body,
+        diagnosis: data.finalDiagnosis,
+      };
+    } else if (field === "Treatment") {
+      // diagnostic-test
+      method = !medicalReports.treatment ? "post" : "put";
+      endpoint = "treatment";
+      body = {
+        ...body,
+        treatment: data.treatment,
+      };
+    } else if (field === "Vaccination") {
+      // // diagnostic-test
+      method = !medicalReports.vaccination.name ? "post" : "put";
+      endpoint = "vaccination";
+      body = {
+        ...body,
+        vaccinationType: data.vaccination.type,
+        nameOfVaccine: data.vaccination.name,
+        dosage: data.vaccination.dosage,
+        dateOfNextShot: data.vaccination.nextDate,
+        emailReminder: data.vaccination.emailReminder === "on",
+        smsReminder: data.vaccination.emailReminder === "on",
+      };
+    } else if (field === "Note") {
+      // // diagnostic-test
+      method = !medicalReports.note ? "post" : "put";
+      endpoint = "notes";
+      body = {
+        ...body,
+        note: data.note,
+      };
     }
 
     requestClient[method](`/patients/${patientId}/${endpoint}`, body)
@@ -359,17 +430,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  const handleDeleteClinicalSigns = () => {
-    setMedicalReports({ ...medicalReports, clinicalSigns: "" });
-  };
-
   const handleEditTreatment = () => {
     setMedicalContentState("Treatment");
     setShowMedicalModal(true);
-  };
-
-  const handleDeleteTreatment = () => {
-    setMedicalReports({ ...medicalReports, treatment: [] });
   };
 
   const handleEditFinalDiagnosis = () => {
@@ -377,8 +440,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  const handleDeleteFinalDiagnosis = () => {
-    setMedicalReports({ ...medicalReports, finalDiagnosis: [] });
+  const handleEditVaccination = () => {
+    setMedicalContentState("Vaccination");
+    setShowMedicalModal(true);
   };
 
   const handleEditDiagnosticTest = () => {
@@ -393,16 +457,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const handleEditTentativeTest = () => {
     setMedicalContentState("Tentative Diagnosis");
     setShowMedicalModal(true);
-  };
-
-  const handleDeleteTentativeTest = () => {
-    setMedicalReports({
-      ...medicalReports,
-      tentativeDiagnosis: {
-        tentative: [],
-        differential: [],
-      },
-    });
   };
 
   const handleEditNoteReport = () => {
@@ -507,14 +561,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                         {(medicalReports.finalDiagnosis.length || "") && (
                           <CheckinItem
+                            checkedIn={checkedIn}
                             date={new Date().toString()}
-                            onDelete={handleDeleteFinalDiagnosis}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("final-diagnosis", {
+                                finalDiagnosis: "",
+                              })
+                            }
                             onEdit={handleEditFinalDiagnosis}
                             title="Final Diagnosis"
                           >
-                            {medicalReports.finalDiagnosis.map((item) => {
-                              return <>{item && <p>{item}</p>}</>;
-                            })}
+                            <p>{medicalReports.finalDiagnosis}</p>
                           </CheckinItem>
                         )}
 
@@ -534,13 +591,65 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={new Date().toString()}
-                            onDelete={handleDeleteTreatment}
-                            onEdit={handleEditTreatment}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("treatment", {
+                                treatment: "",
+                              })
+                            }
+                            onEdit={handleEditFinalDiagnosis}
                             title="Treatment"
                           >
-                            {medicalReports.treatment.map((item) => {
-                              return <>{item && <p>{item}</p>}</>;
-                            })}
+                            <p>{medicalReports.treatment}</p>
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.vaccination.name || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("vaccination", {
+                                vaccination: {
+                                  type: "",
+                                  name: "",
+                                  dosage: "",
+                                  nextDate: "",
+                                  smsReminder: false,
+                                  emailReminder: false,
+                                },
+                              })
+                            }
+                            onEdit={handleEditVaccination}
+                            title="Vaccination"
+                          >
+                            <ul>
+                              <li>
+                                Name:{" "}
+                                {medicalReports.vaccination.name ||
+                                  medicalReports.vaccination.nameOfVaccine}
+                              </li>
+                              <li>
+                                Type:{" "}
+                                {medicalReports.vaccination.type ||
+                                  medicalReports.vaccination.vaccinationType}
+                              </li>
+                              <li>
+                                Dosage: {medicalReports.vaccination.dosage}
+                              </li>
+                              <li>
+                                Type:{" "}
+                                {medicalReports.vaccination.nextDate ||
+                                  medicalReports.vaccination.dateOfNextShot}
+                              </li>
+                              <li>
+                                Email Reminder:{" "}
+                                {medicalReports.vaccination.emailReminder}
+                              </li>
+                              <li>
+                                SMS Reminder:{" "}
+                                {medicalReports.vaccination.smsReminder}
+                              </li>
+                            </ul>
                           </CheckinItem>
                         )}
 
@@ -559,7 +668,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         {medicalReports.note && (
                           <CheckinItem
                             date={new Date().toString()}
-                            onDelete={handleDeleteNoteReport}
+                            checkedIn={checkedIn}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("notes", {
+                                note: "",
+                              })
+                            }
                             onEdit={handleEditNoteReport}
                             title="Note"
                           >

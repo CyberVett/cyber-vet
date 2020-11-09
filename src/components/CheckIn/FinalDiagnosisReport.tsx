@@ -5,14 +5,14 @@ const FinalDiagnosisReport = (props: {
   title: string;
   onAdd: Function;
   onCancel: Function;
-  data: string[];
+  data: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
     props.onAdd(formValues);
   };
-  const [formValues, setFormValues] = useState<{ finalDiagnosis: string[] }>({
-    finalDiagnosis: [...props.data],
+  const [formValues, setFormValues] = useState<{ finalDiagnosis: string }>({
+    finalDiagnosis: props.data,
   });
 
   const handleInputChange = (event: {
@@ -21,10 +21,8 @@ const FinalDiagnosisReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: any) => {
-      const arr = [...formValues.finalDiagnosis];
-      arr.splice(parseInt(event.target.name), 1, event.target.value);
       return {
-        finalDiagnosis: arr,
+        finalDiagnosis: event.target.value,
       };
     });
   };
@@ -38,41 +36,9 @@ const FinalDiagnosisReport = (props: {
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
           <input
-            name={"0"}
+            name={"finalDiagnosis"}
             onChange={handleInputChange}
-            defaultValue={formValues.finalDiagnosis[0]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"1"}
-            onChange={handleInputChange}
-            defaultValue={formValues.finalDiagnosis[1]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"2"}
-            onChange={handleInputChange}
-            defaultValue={formValues.finalDiagnosis[2]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"3"}
-            onChange={handleInputChange}
-            defaultValue={formValues.finalDiagnosis[3]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"4"}
-            onChange={handleInputChange}
-            defaultValue={formValues.finalDiagnosis[4]}
+            defaultValue={formValues.finalDiagnosis}
           />
         </div>
       </form>
