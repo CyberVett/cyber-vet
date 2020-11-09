@@ -8,6 +8,8 @@ interface IData {
     name: string;
     dosage: string;
     nextDate: string;
+    smsReminder: boolean;
+    emailReminder: boolean;
   };
 }
 
@@ -86,12 +88,22 @@ const VacinationReport = (props: {
           <div className="checkboxes">
             <div className="physical__examination__form--input ">
               <label>Email Reminder</label>
-              <CheckboxInput />
+              <CheckboxInput
+                name="emailReminder"
+                onChange={handleInputChange}
+                defaultValue={
+                  formValues.vaccination.emailReminder ? "on" : "off"
+                }
+              />
             </div>
 
             <div className="physical__examination__form--input ">
               <label>SMS</label>
-              <CheckboxInput />
+              <CheckboxInput
+                name="smsReminder"
+                onChange={handleInputChange}
+                defaultValue={formValues.vaccination.smsReminder ? "on" : "off"}
+              />
             </div>
           </div>
         </div>

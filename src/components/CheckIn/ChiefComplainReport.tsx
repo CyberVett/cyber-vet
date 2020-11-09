@@ -35,10 +35,11 @@ const ChiefComplainReport = (props: {
       <form className="medical__report__form">
         <div className="medical__report__form--input">
           <textarea
+            style={{ height: "10rem" }}
             name={"chiefComplain"}
             onChange={handleInputChange}
-            rows={10}
-            cols={10}
+            // rows={10}
+            // cols={10}
           >
             {formValues.chiefComplain}
           </textarea>

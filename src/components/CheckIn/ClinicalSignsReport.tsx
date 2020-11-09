@@ -5,14 +5,14 @@ const ClinicalSignsReport = (props: {
   title: string;
   onAdd: Function;
   onCancel: Function;
-  data: string[];
+  data: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
     props.onAdd(formValues);
   };
-  const [formValues, setFormValues] = useState<{ clinicalSigns: string[] }>({
-    clinicalSigns: [...props.data],
+  const [formValues, setFormValues] = useState<{ clinicalSigns: string }>({
+    clinicalSigns: props.data,
   });
 
   const handleInputChange = (event: {
@@ -21,10 +21,8 @@ const ClinicalSignsReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: any) => {
-      const arr = [...formValues.clinicalSigns];
-      arr.splice(parseInt(event.target.name), 1, event.target.value);
       return {
-        clinicalSigns: arr,
+        clinicalSigns: event.target.value,
       };
     });
   };
@@ -38,48 +36,9 @@ const ClinicalSignsReport = (props: {
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
           <input
-            name={"0"}
+            name="clinicalSign"
             onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[0]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"1"}
-            onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[1]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"2"}
-            onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[2]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"3"}
-            onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[3]}
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"4"}
-            onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[4]}
-          />
-        </div>
-        <div className="physical__examination__form--input">
-          <input
-            name={"5"}
-            onChange={handleInputChange}
-            defaultValue={formValues.clinicalSigns[5]}
+            defaultValue={formValues.clinicalSigns}
           />
         </div>
       </form>
