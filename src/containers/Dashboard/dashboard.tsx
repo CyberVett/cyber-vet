@@ -52,7 +52,7 @@ const Dashboard: React.FunctionComponent = () => {
       })
   }
 
-  const checkOut = (id) => {
+  const checkOut = (id: string) => {
     setLoading(true);
     requestClient.put(`/patients/${id}/check-out`)
       .then((response) => {

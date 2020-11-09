@@ -16,7 +16,6 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
-import { ILabRecords } from "types/checkInn";
 import LaboratoryTab from "./Laboratory/laboratoryTab";
 import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
@@ -92,13 +91,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       method: null,
     },
   });
-
-  const [labRecords, setLabRecords] = useState<ILabRecords>({
-    microbiology: {},
-    parasitology: {},
-    pathology: {},
-    rapidTest: {},
-  })
 
   const handleAddResult = (data: any) => {
     setPhysicalExaminationResult(data);
@@ -215,7 +207,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             <div className="checkin__card">
               <div className="checkin__card--header">
                 <span>Signalment</span>
-                <span>{`Patient No: ${data.id}`}</span>
+                <span>{
+                  // @ts-ignore
+                `Patient No: ${data.id}`
+                }</span>
               </div>
               <div className="checkin__card--body">
                 <PatientDetails patientData={data} />
@@ -365,7 +360,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       )}
 
                       {"Appointment" === activeCheckedInItem && (
-                        <Appointment />
+                        <Appointment
+                        // @ts-ignore
+                          appointments={data.appointments} patientNo={data.id} />
                       )}
                     </>
                   </CheckedinItemsDisplay>
