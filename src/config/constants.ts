@@ -265,6 +265,37 @@ export const DashboardPatientHeaders = [
   },
 ];
 
+export const AppointmentHeaders = [
+  {
+    id: 1,
+    label: 'Date',
+  },
+  {
+    id: 2,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Scheduled By',
+  },
+  {
+    id: 4,
+    label: 'Reason',
+  },
+  {
+    id: 5,
+    label: 'Status',
+  },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+  {
+    id: 8,
+    label: '',
+  },
+];
+
 export const SamplePatientData = [
   {
     id: 1,

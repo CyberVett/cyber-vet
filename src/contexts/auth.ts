@@ -1,4 +1,4 @@
-import { IUser, IHospital, IStaff } from './../types/user';
+ import { IUser, IHospital, IStaff } from './../types/user';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 

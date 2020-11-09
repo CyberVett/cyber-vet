@@ -1,4 +1,4 @@
-import { formatDate, getAge } from "lib/utils";
+import { getAge } from "lib/utils";
 import React from "react";
 
 const PatientDetails = (patientData: any) => {
