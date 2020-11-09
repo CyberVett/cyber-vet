@@ -86,65 +86,68 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
           const checkinData = checkins.find((checkin: any) => checkin.checkIn);
+          console.log(checkinData);
 
           if (checkinData) {
             setCheckedIn(true);
             setCheckIndata(checkinData);
+            let _medicalReport = { ...medicalReports };
             if (checkinData.physicalExamination) {
               setPhysicalExaminationResult(checkinData.physicalExamination);
             }
+
             if (checkinData.chiefComplain) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 chiefComplain: checkinData.chiefComplain.chiefComplain,
-              });
+              };
             }
 
             if (checkinData.diagnosis) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 tentativeDiagnosis: {
                   tentative: checkinData.diagnosis.tentativeDiagnosis,
                   differential: checkinData.diagnosis.differentialDiagnosis,
                 },
-              });
+              };
             }
             if (checkinData.clinicalSigns) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 clinicalSigns: checkinData.clinicalSigns.signs,
-              });
+              };
             }
             if (checkinData.diagnosticTest) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 diagnosticTest: checkinData.diagnosticTest.test,
-              });
+              };
             }
             if (checkinData.finalDiagnosis) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
-              });
+              };
             }
 
             if (checkinData.treatment) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 treatment: checkinData.treatment.treatment,
-              });
+              };
             }
 
             if (checkinData.notes) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 note: checkinData.notes.note,
-              });
+              };
             }
 
             if (checkinData.vaccination) {
-              setMedicalReports({
-                ...medicalReports,
+              _medicalReport = {
+                ..._medicalReport,
                 vaccination: {
                   type: checkinData.vaccination.vaccinationType,
                   name: checkinData.vaccination.nameOfVaccine,
@@ -153,8 +156,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                   smsReminder: checkinData.vaccination.smsReminder,
                   emailReminder: checkinData.vaccination.emailReminder,
                 },
-              });
+              };
             }
+
+            setMedicalReports(_medicalReport);
           }
         }
       })
