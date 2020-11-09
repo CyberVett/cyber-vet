@@ -30,19 +30,21 @@ const PhysicalCheckResult = (props: {
   physicalExaminationResult: IphysicalExamination;
   showModal: Function;
   onAddNew: Function;
-  onEdit: Function;
-  onDelete: Function;
+  onEdit?: Function;
+  onDelete?: Function;
   checkedIn: Boolean;
 }) => {
   const { physicalExaminationResult } = props;
   return (
     <CheckinItem
-      date={physicalExaminationResult.updatedAt || ""}
-      onDelete={() => props.onDelete()}
-      onEdit={() => props.onEdit()}
-      onAddNew={() => props.onAddNew()}
-      title="Physical Examination"
       checkedIn={props.checkedIn}
+      date={physicalExaminationResult.updatedAt || ""}
+      onAddNew={() => props?.onAddNew()}
+       // @ts-ignore
+      onDelete={() => props?.onDelete()}
+       // @ts-ignore
+      onEdit={() => props?.onEdit()}
+      title="Physical Examination"
     >
       <div className="patient__checkin__exam__result">
         {physicalExaminationResult.respiratoryRate && (

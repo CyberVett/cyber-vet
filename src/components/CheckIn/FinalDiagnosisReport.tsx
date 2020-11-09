@@ -20,7 +20,7 @@ const FinalDiagnosisReport = (props: {
     target: { name: any; value: any };
   }) => {
     event.persist();
-    setFormValues((formValues: any) => {
+    setFormValues(() => {
       return {
         finalDiagnosis: event.target.value,
       };

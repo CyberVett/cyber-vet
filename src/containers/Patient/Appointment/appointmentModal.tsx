@@ -43,8 +43,6 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       [event.target.name]: value
     }));
   };
-console.log('here',appointment);
-console.log('mode',modalData);
 
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
