@@ -17,7 +17,6 @@ import MedicalRecordModal, {
   IMedicalReport,
 } from "components/CheckIn/MedicalRecordModal";
 import CheckinItem from "components/CheckIn/CheckinItem";
-import { ILabRecords } from "types/checkInn";
 import LaboratoryTab from "./Laboratory/laboratoryTab";
 import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
