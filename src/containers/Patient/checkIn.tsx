@@ -730,7 +730,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       </MedicalRecordsItems>
                     )}
 
-                    {"Laboratory" === activeCheckedInItem && <LaboratoryTab />}
+                    {"Laboratory" === activeCheckedInItem && (
+                      <LaboratoryTab
+                        patientData={patientData}
+                        checkInData={checkInData}
+                      />
+                    )}
 
                     {"Radiology" === activeCheckedInItem && <Radiology />}
 
