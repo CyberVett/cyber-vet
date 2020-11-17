@@ -6,7 +6,9 @@ import React, { useState } from "react";
 
 import styles from "./laboratory.module.scss";
 import MicrobiologyModal from "./Modal/microbiologyModal";
-import ParasitologyModal from "./Modal/parasitologyModal";
+import ParasitologyModal, {
+  IParasitologyData,
+} from "./Modal/parasitologyModal";
 import AddPathologyModal, { IPathologyData } from "./Modal/pathologyModal";
 import RapidTestModal from "./Modal/rapidTestModal";
 
@@ -60,7 +62,31 @@ const defaultPathologyFields: IPathologyData = {
   nameOfTechnologist: "",
 };
 
-const LaboratoryTab = ({ patientData, checkInData }) => {
+const defaultPrasitologyFields: IParasitologyData = {
+  tentativeDiagnosis: "",
+  caseHistory: "",
+  testsRequired: "",
+  bloodSampleSubmitted: false,
+  urineSampleSubmitted: false,
+  stoolSampleSubmitted: false,
+  skinScrappingSampleSubmitted: false,
+  otherSampleSubmitted: false,
+  conditionOfSpecimen: "",
+  bloodResult: "",
+  PCVResult: "",
+  wetMountResult: "",
+  skinScrappingResult: "",
+  facialAnalysisResult: "",
+  urineAnalysisResult: "",
+};
+
+const LaboratoryTab = ({
+  patientData,
+  checkInData,
+}: {
+  patientData: any;
+  checkInData: any;
+}) => {
   const [togglePathology, setTogglePathology] = useState(false);
   const [toggleParasitology, setToggleParasitology] = useState(false);
   const [toggleMicrobiology, setToggleMicrobiology] = useState(false);
@@ -68,8 +94,11 @@ const LaboratoryTab = ({ patientData, checkInData }) => {
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState({});
 
+  const [parasitologyData, setParasitologyData] = useState<IParasitologyData>(
+    checkInData.pathology || defaultPrasitologyFields
+  );
   const [pathologyData, setPathologyData] = useState<IPathologyData>(
-    checkInData.pathology || defaultPathologyFields
+    checkInData.parasitology || defaultPathologyFields
   );
 
   const onCreateData = (
@@ -96,6 +125,38 @@ const LaboratoryTab = ({ patientData, checkInData }) => {
       delete _data.clientId;
     }
     const url = `/laboratory/pathology/${
+      method === "create" ? "add" : "complete"
+    }`;
+    const requestMethod = method === "create" ? "post" : "put";
+    requestClient[requestMethod](url, _data)
+      .then((response) => {
+        setModalLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setTogglePathology(false);
+        }
+      })
+      .catch((error) => {
+        setModalLoading(false);
+        setModalError(error.message);
+      });
+  };
+
+  const saveParasitology = (data: IParasitologyData, method = "create") => {
+    setModalLoading(true);
+
+    const _data = {
+      checkinId: checkInData.id,
+      patientId: patientData.id,
+      ...data,
+    };
+    delete _data.nameOfTechnologist;
+    delete _data.id;
+    delete _data.completed;
+    delete _data.dateCompleted;
+    if (method !== "create") {
+      delete _data.clientId;
+    }
+    const url = `/laboratory/parasitology/${
       method === "create" ? "add" : "complete"
     }`;
     const requestMethod = method === "create" ? "post" : "put";
@@ -189,6 +250,17 @@ const LaboratoryTab = ({ patientData, checkInData }) => {
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
         visible={toggleParasitology}
+        data={ParasitologyModal}
+        onAdd={(data: IPathologyData) => {
+          savePathology(data, "create");
+        }}
+        onComplete={(data: IPathologyData) => {
+          savePathology(data, "complete");
+        }}
+        modalLoading={modalLoading}
+        onCancel={() => {
+          setTogglePathology(false);
+        }}
       ></ParasitologyModal>
       {(pathologyData.albumin || "") && (
         <CheckinItem

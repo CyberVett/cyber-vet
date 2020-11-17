@@ -24,7 +24,7 @@ import requestClient from "lib/requestClient";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [data, setData] = useState([]);
-  const [checkInData, setCheckIndata] = useState(null);
+  const [checkInData, setCheckIndata] = useState({});
 
   useEffect(() => {
     requestClient
