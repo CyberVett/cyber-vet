@@ -55,12 +55,6 @@ const ParasitologyModal: React.FC<IModalProps> = ({
     target: { name: any; value: any };
   }) => {
     event.persist();
-    // if (Object.keys(formValues).includes(`${event.target.name}Required`)) {
-    //   formValues[
-    //     `${event.target.name}Required`
-    //   ] = !!`${event.target.name}Required`;
-    // }
-
     let value = event.target.value;
     if (event.target.type === "checkbox") {
       value = event.target.checked;
