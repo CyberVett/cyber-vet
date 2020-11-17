@@ -21,29 +21,14 @@ import LaboratoryTab from "./Laboratory/laboratoryTab";
 import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
 import requestClient from "lib/requestClient";
+import Router from "next/router";
+import { FormErrors } from "components/Input/input";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [data, setData] = useState([]);
-  const [checkInData, setCheckIndata] = useState({});
-
-  useEffect(() => {
-    requestClient
-      .get(`/patients/${patientId}`)
-      .then((response) => {
-        if (response.status === 200 && response.statusText === "OK") {
-          setData(response.data.data);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
-  }, []);
-
-  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
-    IphysicalExamination
-  >({
+  // TODO: refactor and set approproaite data type
+  const [checkInData, setCheckIndata] = useState(null);
+  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<IphysicalExamination>({
     rectalTemperature: "",
     respiratoryRate: "",
     pulseRate: "",
@@ -79,15 +64,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   useEffect(() => {
     requestClient
-      .get("patients/bro-01-01")
+      .get(`/patients/${patientId}`)
       .then((response) => {
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
           const checkinData = checkins.find((checkin: any) => checkin.checkIn);
-          console.log(checkinData);
-
           if (checkinData) {
             setCheckedIn(true);
             setCheckIndata(checkinData);
@@ -185,6 +168,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       name: "",
       dosage: "",
       nextDate: "",
+      smsReminder: false,
+      emailReminder: false,
     },
     medicalBill: {
       services: null,
@@ -194,13 +179,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     },
   });
 
-  const [labRecords, setLabRecords] = useState<ILabRecords>({
-    microbiology: {},
-    parasitology: {},
-    pathology: {},
-    rapidTest: {},
-  });
-
   const handleEditPhysicalResult = (physicalResult: IphysicalExamination) => {
     setModalLoading(true);
 
@@ -208,13 +186,20 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       ...physicalResult,
       anyDiarrhea: physicalResult.anyDiarrhea + "",
       anyLameness: physicalResult.anyLameness + "",
-      checkinId: checkInData.id,
+      // @ts-ignore
+      checkinId: checkInData?.id,
     };
+      // @ts-ignore
     delete data.id;
+      // @ts-ignore
     delete data.patientId;
+      // @ts-ignore
     delete data.updatedAt;
+      // @ts-ignore
     delete data.lastModifiedBy;
+      // @ts-ignore
     delete data.createdAt;
+      // @ts-ignore
     delete data.addedBy;
     requestClient
       .put("/patients/bro-01-01/physical-examination", data)
@@ -235,6 +220,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const handleAddResult = (data: any) => {
     setModalLoading(true);
     const _data = {
+        // @ts-ignore
       checkinId: patientData.checkins[0].id,
       rectalTemperature: data.rectalTemperature,
       respiratoryRate: data.respiratoryRate,
@@ -281,7 +267,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setCheckedIn(true);
     console.log(patientId);
     requestClient
-      .post("/patients/abcd-01-04/check-in", {})
+      .post(`/patients/${patientId}/check-in`, {})
       .then((response) => {
         console.log(response.data);
         // setLoading(false);
@@ -295,6 +281,23 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         console.log(error);
       });
   };
+
+  const checkOut = (id: string) => {
+    setLoading(true);
+    requestClient.put(`/patients/${id}/check-out`)
+      .then((response) => {
+        console.log(response);
+
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          Router.push(`/app/dashboard`);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }
 
   const [activeCheckedInItem, setActiveCheckedInItem] = useState("");
   const handleActiveCheckedInItemChange = (item: string) => {
@@ -315,22 +318,27 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     let method = "put";
     let endpoint = "chief-complain";
     let body = {
-      checkinId: checkInData.id,
+        // @ts-ignore
+      checkinId: checkInData?.id,
     };
     if (field === "Chief Complain" && !medicalReports.chiefComplain) {
       // Adding new chief complain
+        // @ts-ignore
       body.chiefComplain = data.chiefComplain;
       method = "post";
     } else if (field === "Clinical Signs") {
       method = !medicalReports.clinicalSigns ? "post" : "put";
       endpoint = "clinical-sign";
+        // @ts-ignore
       body.signs = data.clinicalSigns;
     } else if (field === "Tentative Diagnosis") {
       method = !medicalReports.tentativeDiagnosis.tentative ? "post" : "put";
       endpoint = "diagnosis";
       body = {
         ...body,
+          // @ts-ignore
         tentativeDiagnosis: data.tentativeDiagnosis.tentative,
+          // @ts-ignore
         differentialDiagnosis: data.tentativeDiagnosis.differential,
       };
     } else if (field === "Diagnosis Test") {
@@ -339,6 +347,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "diagnostic-test";
       body = {
         ...body,
+          // @ts-ignore
         test: data.diagnosticTest,
       };
     } else if (field === "Final Diagnosis") {
@@ -347,6 +356,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "final-diagnosis";
       body = {
         ...body,
+          // @ts-ignore
         diagnosis: data.finalDiagnosis,
       };
     } else if (field === "Treatment") {
@@ -355,6 +365,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "treatment";
       body = {
         ...body,
+          // @ts-ignore
         treatment: data.treatment,
       };
     } else if (field === "Vaccination") {
@@ -363,11 +374,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "vaccination";
       body = {
         ...body,
+          // @ts-ignore
         vaccinationType: data.vaccination.type,
+          // @ts-ignore
         nameOfVaccine: data.vaccination.name,
+          // @ts-ignore
         dosage: data.vaccination.dosage,
+          // @ts-ignore
         dateOfNextShot: data.vaccination.nextDate,
+          // @ts-ignore
         emailReminder: data.vaccination.emailReminder === "on",
+          // @ts-ignore
         smsReminder: data.vaccination.emailReminder === "on",
       };
     } else if (field === "Note") {
@@ -376,12 +393,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "notes";
       body = {
         ...body,
+          // @ts-ignore
         note: data.note,
       };
     }
-
+    // @ts-ignore
     requestClient[method](`/patients/${patientId}/${endpoint}`, body)
-      .then((response) => {
+      .then((response: any) => {
         // setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setModalLoading(false);
@@ -389,7 +407,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setShowMedicalModal(false);
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setModalLoading(false);
         console.log(error);
       });
@@ -417,7 +435,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         Authorization: accessToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ checkinId: checkInData.id }),
+        // @ts-ignore
+      body: JSON.stringify({ checkinId: checkInData?.id }),
     })
       .then((response) => {
         if (response.ok) {
@@ -434,10 +453,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  const handleEditTreatment = () => {
-    setMedicalContentState("Treatment");
-    setShowMedicalModal(true);
-  };
+  // const handleEditTreatment = () => {
+  //   setMedicalContentState("Treatment");
+  //   setShowMedicalModal(true);
+  // };
 
   const handleEditFinalDiagnosis = () => {
     setMedicalContentState("Final Diagnosis");
@@ -468,9 +487,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  const handleDeleteNoteReport = () => {
-    setMedicalReports({ ...medicalReports, note: "" });
-  };
+  // const handleDeleteNoteReport = () => {
+  //   setMedicalReports({ ...medicalReports, note: "" });
+  // };
 
   const handleDeleteItem = (key: string) => {
     let url = "patients/bro-01-01/physical-examination";
@@ -486,10 +505,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         Authorization: accessToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ checkinId: checkInData.id }),
+        // @ts-ignore
+      body: JSON.stringify({ checkinId: checkInData?.id }),
     })
       .then((response) => {
-        console.log(response.status);
         // setModalLoading(false);
         if (response.ok) {
           if (key === "physicalExamination") {
@@ -517,14 +536,16 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           <div className="checkin__card">
             <div className="checkin__card--header">
               <span>Signalment</span>
-              <span>{`Patient No: ${data.id}`}</span>
+              <span>{`Patient No: ${
+                 // @ts-ignore
+                patientData.id}`}</span>
             </div>
             <div className="checkin__card--body">
-              <PatientDetails patientData={data} />
+              <PatientDetails patientData={patientData} />
               <div style={{ padding: "1rem" }}>
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
               </div>
-
+              <FormErrors errors={modalError} />
               {checkedIn && (
                 <CheckedinItemsDisplay
                   activeNavItem={activeCheckedInItem}
@@ -630,11 +651,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               <li>
                                 Name:{" "}
                                 {medicalReports.vaccination.name ||
+                                 // @ts-ignore
                                   medicalReports.vaccination.nameOfVaccine}
                               </li>
                               <li>
                                 Type:{" "}
                                 {medicalReports.vaccination.type ||
+                                 // @ts-ignore
                                   medicalReports.vaccination.vaccinationType}
                               </li>
                               <li>
@@ -643,6 +666,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               <li>
                                 Type:{" "}
                                 {medicalReports.vaccination.nextDate ||
+                                // @ts-ignore
                                   medicalReports.vaccination.dateOfNextShot}
                               </li>
                               <li>
@@ -739,15 +763,18 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                     {"Radiology" === activeCheckedInItem && <Radiology />}
 
-                    {"Appointment" === activeCheckedInItem && <Appointment />}
+                    {"Appointment" === activeCheckedInItem && 
+                      <Appointment	
+                      // @ts-ignore	
+                        appointments={patientData.appointments} patientNo={patientData.id} />}
                   </>
                 </CheckedinItemsDisplay>
               )}
               {!checkedIn && (
                 <CheckinItemsDisplay>
                   <PhysicalCheckResult
-                    onAddNew={() => setShowModal(true)}
                     checkedIn={checkedIn}
+                    onAddNew={() => setShowModal(true)}
                     physicalExaminationResult={physicalExaminationResult}
                     showModal={() => setShowModal(true)}
                   />
@@ -767,8 +794,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         </div>
         {checkedIn && (
           <div style={{ textAlign: "center", marginTop: "2rem" }}>
-            {" "}
-            <Button>Check Out</Button>{" "}
+            <Button onClick={() => checkOut(patientId)}>Check Out</Button>
           </div>
         )}
       </div>
@@ -792,7 +818,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       <MedicalRecordModal
         modalLoading={modalLoading}
         show={showMedicalModal}
+         // @ts-ignore
         onDeleteItem={handleDeleteItem}
+         // @ts-ignore
         closeModal={() => {
           setShowMedicalModal(false);
           setMedicalContentState("");
