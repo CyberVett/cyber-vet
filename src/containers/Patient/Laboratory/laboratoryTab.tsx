@@ -126,7 +126,7 @@ const LaboratoryTab = ({
   );
 
   const [rapidTestData, setRapidTestData] = useState<IRapidTestData>(
-    checkInData.rapidTest || defaultRapidTestFields
+    checkInData.rapidTestKit || defaultRapidTestFields
   );
 
   const onCreateData = (
@@ -386,6 +386,69 @@ const LaboratoryTab = ({
           }}
           disableDelete
           title="Pathology Test"
+        >
+          {/* <h5>Differential</h5>
+                            <p>
+                              {medicalReports.tentativeDiagnosis.differential}
+                            </p>
+
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+        </CheckinItem>
+      )}
+
+      {(parasitologyData.caseHistory || "") && (
+        <CheckinItem
+          checkedIn={checkInData.checkIn}
+          date={new Date().toString()}
+          onDelete={() => setParasitologyData(defaultParasitologyFields)}
+          onEdit={() => {
+            setToggleParasitology(true);
+          }}
+          disableDelete
+          title="Parasitology Test"
+        >
+          {/* <h5>Differential</h5>
+                            <p>
+                              {medicalReports.tentativeDiagnosis.differential}
+                            </p>
+
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+        </CheckinItem>
+      )}
+
+      {(microbiologyData.clinicalDetails || "") && (
+        <CheckinItem
+          checkedIn={checkInData.checkIn}
+          date={new Date().toString()}
+          onDelete={() => setMicrobiologyData(defaultMicrobiologyFields)}
+          onEdit={() => {
+            setToggleMicrobiology(true);
+          }}
+          disableDelete
+          title="Microbiology Test"
+        >
+          {/* <h5>Differential</h5>
+                            <p>
+                              {medicalReports.tentativeDiagnosis.differential}
+                            </p>
+
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+        </CheckinItem>
+      )}
+
+      {(rapidTestData.clinicalDetails || "") && (
+        <CheckinItem
+          checkedIn={checkInData.checkIn}
+          date={new Date().toString()}
+          onDelete={() => setRapidTestData(defaultRapidTestFields)}
+          onEdit={() => {
+            setToggleRapidtest(true);
+          }}
+          disableDelete
+          title="Rapid Test"
         >
           {/* <h5>Differential</h5>
                             <p>
