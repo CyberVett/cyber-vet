@@ -63,7 +63,7 @@ const RequestedXray: React.FunctionComponent = () => {
         <div className={dashboardStyles.searchBar}>
           <SearchIcon />
           <Input
-            placeholder="Search appointments"
+            placeholder="Search patients"
           />
         </div>
        <div></div>

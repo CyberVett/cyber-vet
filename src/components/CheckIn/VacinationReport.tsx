@@ -79,6 +79,7 @@ const VacinationReport = (props: {
           <div className="physical__examination__form--input">
             <label>Date of next shot</label>
             <input
+              type='date'
               name={"nextDate"}
               onChange={handleInputChange}
               defaultValue={formValues.vaccination.nextDate}

@@ -34,7 +34,7 @@ const noteReport = (props: {
     >
       <form className="medical__report__form">
         <div className="medical__report__form--input">
-          <textarea name={"note"} rows={10} onChange={handleInputChange}>
+          <textarea name={"note"} style={{ height: "10rem" }} onChange={handleInputChange}>
             {formValues.note}
           </textarea>
         </div>

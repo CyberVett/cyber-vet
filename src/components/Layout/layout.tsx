@@ -83,7 +83,7 @@ const navLinks = [
     ]
   },
   {
-    href: '/app/diagnostic',
+    href: '/app/diagnostic/lab/requested',
     icon: MicroscopeIcon,
     id: 3,
     name: 'Diagnostic Unit',
