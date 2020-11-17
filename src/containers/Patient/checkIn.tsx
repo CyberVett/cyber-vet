@@ -25,9 +25,9 @@ import Router from "next/router";
 import { FormErrors } from "components/Input/input";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
+  const [data, setData] = useState([]);
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
-
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<IphysicalExamination>({
     rectalTemperature: "",
     respiratoryRate: "",
@@ -754,7 +754,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       </MedicalRecordsItems>
                     )}
 
-                    {"Laboratory" === activeCheckedInItem && <LaboratoryTab />}
+                    {"Laboratory" === activeCheckedInItem && (
+                      <LaboratoryTab
+                        patientData={patientData}
+                        checkInData={checkInData}
+                      />
+                    )}
 
                     {"Radiology" === activeCheckedInItem && <Radiology />}
 

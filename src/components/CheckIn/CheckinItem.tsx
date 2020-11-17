@@ -9,6 +9,7 @@ const CheckinItem = (props: {
   title: string;
   checkedIn?: Boolean;
   children: any;
+  disableDelete?: Boolean;
 }) => {
   return (
     <div className="checkin__item">
@@ -19,7 +20,9 @@ const CheckinItem = (props: {
             <>
               <input defaultValue={props.date || new Date().toString()} />
               <Button onClick={() => props.onEdit()}>Edit Result</Button>
-              <Button onClick={() => props.onDelete()}>Delete Results</Button>
+              {!props.disableDelete ? (
+                <Button onClick={() => props.onDelete()}>Delete Results</Button>
+              ) : null}
             </>
           ) : (
             <>
