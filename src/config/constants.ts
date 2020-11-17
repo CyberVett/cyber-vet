@@ -184,6 +184,7 @@ export const PatientHeaders = [
   },
 ];
 
+
 export const ClientPatientHeaders = [
   {
     id: 1,
@@ -296,46 +297,65 @@ export const AppointmentHeaders = [
   },
 ];
 
-export const SamplePatientData = [
+export const LabRequestHeaders = [
   {
     id: 1,
-    patientNo: 'SAC01/16/08/2020',
-    clientName: 'Mr Ololade Mayowa',
-    patientName: 'Damara',
-    specie:'Canine',
-    breed:'Rottweiler',
+    label: 'Patient No',
   },
   {
     id: 2,
-    patientNo: 'SAC01/16/08/2020',
-    clientName: 'Mr Ololade Mayowa',
-    patientName: 'Damara',
-    specie:'Canine',
-    breed:'Rottweiler',
+    label: 'Client\'s Name',
   },
   {
     id: 3,
-    patientNo: 'SAC01/16/08/2020',
-    clientName: 'Mr Ololade Mayowa',
-    patientName: 'Damara',
-    specie:'Canine',
-    breed:'Rottweiler',
+    label: 'Patient\'s Name',
   },
   {
     id: 4,
-    patientNo: 'SAC01/16/08/2020',
-    clientName: 'Mr Ololade Mayowa',
-    patientName: 'Damara',
-    specie:'Canine',
-    breed:'Rottweiler',
+    label: 'Requested By',
   },
   {
     id: 5,
-    patientNo: 'SAC01/16/08/2020',
-    clientName: 'Mr Ololade Mayowa',
-    patientName: 'Damara',
-    specie:'Canine',
-    breed:'Rottweiler',
+    label: 'Laboratory',
+  },
+  {
+    id: 6,
+    label: 'Date Requested',
+  },
+  {
+    id: 8,
+    label: 'Actions',
+  },
+];
+
+export const LabCompletedHeaders = [
+  {
+    id: 1,
+    label: 'Patient No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Requested By',
+  },
+  {
+    id: 5,
+    label: 'Laboratory',
+  },
+  {
+    id: 6,
+    label: 'Date Completed',
+  },
+  {
+    id: 8,
+    label: 'Actions',
   },
 ];
 

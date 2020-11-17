@@ -111,7 +111,7 @@ const navLinks = [
     ]
   },
   {
-    href: '/app/schedules',
+    href: '/app/appointments',
     icon: CalendarIcon,
     id: 4,
     name: 'Scheduling',

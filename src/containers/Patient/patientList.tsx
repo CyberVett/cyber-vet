@@ -86,7 +86,7 @@ const PatientList: React.FunctionComponent = () => {
                 renderRow={(row) => (
                   <tr key={row.id}>
                     <td>{row.id}</td>
-                    <td>{row.Client.title}. {row.Client.firstName} {row.Client.lastName}</td>
+                    <td>{row?.client?.title}. {row?.client?.firstName} {row?.client?.lastName}</td>
                     <td>{row.name}</td>
                     <td>{row.specie}</td>
                     <td>{row.breed}</td>
