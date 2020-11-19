@@ -16,6 +16,7 @@ import Table from "components/Table/table";
 import { AppointmentHeaders, DashboardPatientHeaders } from "config/constants";
 import Router from "next/router";
 import { actionButton } from 'containers/Patient/patientList';
+import { formatDate } from "lib/utils";
 
 const Dashboard: React.FunctionComponent = () => {
   const { staff, role } = useContext(AuthContext);
@@ -139,7 +140,7 @@ const Dashboard: React.FunctionComponent = () => {
                   headers={AppointmentHeaders}
                   renderRow={(row) => (
                     <tr key={row.id}>
-                      <td>{row?.appointmentDate}</td>
+                      <td>{formatDate(row?.appointmentDate)}</td>
                       <td>{row?.patient?.name}</td>
                       <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
                       <td>{row?.reason}</td>
@@ -164,8 +165,8 @@ const Dashboard: React.FunctionComponent = () => {
             <div className={styles.contactCardPhoto}>
               <div>
                 <img
-                  src={require("../../assets/images/photo.png")}
                   alt="admin photo"
+                  src={require("../../assets/images/photo.png")}
                 />
               </div>
               <h3>
@@ -174,7 +175,7 @@ const Dashboard: React.FunctionComponent = () => {
               <p>{role}</p>
             </div>
             <h4>0</h4>
-            <p>Patient</p>
+            <p>Patient(s)</p>
           </Card>
         </div>
         <div>

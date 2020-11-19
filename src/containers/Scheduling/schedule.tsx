@@ -13,16 +13,20 @@ import requestClient from 'lib/requestClient';
 
 import styles from './schedule.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
+import { formatDate } from 'lib/utils';
+import AppointmentModal from 'containers/Patient/Appointment/appointmentModal';
+import { IAppointmentArray } from 'types/user';
 
 const AppointmentList: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toggleReviewModal, setToggleReviewModal] = useState(false);
+  const [rowData, setRowData] = useState<IAppointmentArray>();
+  const [patientNo, setPatientNo] = useState('');
 
   useEffect(() => {
     requestClient.get('appointments')
       .then(response => {
-        console.log('appointmnt', response);
-
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           setData(response.data.data);
@@ -56,6 +60,12 @@ const AppointmentList: React.FunctionComponent = () => {
       })
   };
 
+  const handleReview = (row: any) => { 
+    setPatientNo(row?.patientId);   
+    setRowData(row);
+    setToggleReviewModal(true);
+  }
+
   return (
     <div>
       <div className={styles.topHeader}>
@@ -77,30 +87,26 @@ const AppointmentList: React.FunctionComponent = () => {
                 headers={AppointmentHeaders}
                 renderRow={(row) => (
                   <tr key={row.id}>
-                    <td>{row?.appointmentDate}</td>
+                    <td>{formatDate(row?.appointmentDate)}</td>
                     <td>{row?.patient?.name}</td>
                     <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
                     <td>{row?.reason}</td>
                     <td>{row?.status}</td>
-                    <td>{
-                      // TODO: add roles and permissions
-                      actionButton(row.id, row.patientId, deleteAppointment)
-                    }</td>
+                    <td><Button onClick={() => handleReview(row)}>Review</Button></td>
+                    <td> <Button onClick={() => deleteAppointment(row.id, row.patientId)}>Delete</Button></td>
                   </tr>
                 )} /> : <h2>No appointments Found</h2>
           }
+          <AppointmentModal
+            closeModal={() => setToggleReviewModal(false)}
+            isReview={true}
+            modalData={rowData}
+            patientNo={patientNo}
+            visible={toggleReviewModal}
+          />
         </Card>
       </div>
     </div>
-  )
-};
-
-export const actionButton = (id: string, patientId: string, deleteAppointment: (id: string, patientId: string) => void, checkOut?: (id: string) => void, hideEdit?: boolean) => {
-  return (
-    <>
-      <Button>Review</Button>
-      <Button onClick={() => deleteAppointment(id, patientId)}>Delete</Button>
-    </>
   )
 };
 

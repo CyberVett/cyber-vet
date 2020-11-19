@@ -12,6 +12,7 @@ import requestClient from 'lib/requestClient';
 import Modal from 'components/Modal/modal';
 import { FormErrors } from 'components/Input/input';
 import { IAppointment, IAppointmentArray } from 'types/user';
+import { formatDate } from 'lib/utils';
 
 
 const Appointment: React.FC<IAppointment> = ({
@@ -70,7 +71,7 @@ const Appointment: React.FC<IAppointment> = ({
                       headers={AppointmentHeaders}
                       renderRow={(row) => (
                         <tr key={row.id}>
-                          <td>{row.createdAt}</td>
+                          <td>{formatDate(row.createdAt)}</td>
                           <td>{row.patientId}</td>
                           <td>{row.scheduledBy}</td>
                           <td>{row.reason}</td>

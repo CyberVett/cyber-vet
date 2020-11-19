@@ -6,32 +6,32 @@ export const VaccinationSection = ({ data }) => {
     <div>
       <h4>
         Name:{" "}
-        {data.name ||
+        {data?.name ||
           // @ts-ignore
-          data.nameOfVaccine}
+          data?.nameOfVaccine}
       </h4>
       <h4>
         Type:{" "}
-        {data.type ||
+        {data?.type ||
           // @ts-ignore
-          data.vaccinationType}
+          data?.vaccinationType}
       </h4>
       <h4>
-        Dosage: {data.dosage}
+        Dosage: {data?.dosage}
       </h4>
       <h4>
         Date:{" "}
-        {data.nextDate ||
+        {data?.nextDate ||
           // @ts-ignore
-          data.dateOfNextShot}
+          data?.dateOfNextShot}
       </h4>
       <h4>
         Email Reminder:{" "}
-        {data.emailReminder.toString()}
+        {data?.emailReminder?.toString()}
       </h4>
       <h4>
         SMS Reminder:{" "}
-        <span>{data.smsReminder.toString()}</span>
+        <span>{data?.smsReminder?.toString()}</span>
       </h4>
     </div>
   )

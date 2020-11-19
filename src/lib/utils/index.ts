@@ -1,5 +1,4 @@
-import { format, formatDistance } from "date-fns";
-
+import {format, formatDistance } from "date-fns";
 /* Combine a number of classes removing undefined values
 * @param {string} styles A list of classes to compose together
 */
@@ -33,47 +32,8 @@ export const formatPhoneNumber = (phoneNo: string) => {
   return formattedPhoneNo
 };
 
-export const getAge = (dob: Date | string): string => {
-  if (dob) {
-    return formatDistance(new Date(), new Date(dob));
-  }
-  return 'enter date of birth';
-};
-export const formatDate = (datetime: Date | number): string => (datetime ? format(datetime, 'MMM D, YYYY') : '');
+export const getAge = (dob: Date | string): string => dob ? formatDistance(new Date(), new Date(dob)) : 'Enter Date of Birth'
+ 
+export const formatDate = (datetime: Date | number): string => datetime ? format(new Date(datetime), 'MMM d, yyyy') : '';
 
-
-// export const uploadToCloudinary = (imgToUpload: string) => {
-//   const [percentage, setPercentage] = useState(0);
-//   const [imgUrl, setImgUrl] = useState('');
-
-//   useEffect(() => {
-//     let formData = new FormData();
-//     formData.append('image', imgToUpload);
-//     requestClient.post('images', formData, {
-//       onUploadProgress: (ProgressEvent) => {
-//         const { loaded, total } = ProgressEvent;
-//         setPercentage(Math.floor((loaded * 100) / total));
-//       }
-//     })
-//       .then(res => {
-//         console.log(res);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//       return () => { };
-//   },[])
-
-//   return {
-//     percentage,
-//     imgUrl
-//   }
-// }
-
-// export const formatDate = (dob: Date | string): string => {
-//   if (dob) {
-//     const date = new Date(dob);
-//     utcToZonedTime(date, timeZone);
-//   }
-//   return 'enter date of birth';
-// };
+export const formatDateForCalendar = (datetime: Date | number): string => datetime ? format(new Date(datetime), 'yyyy-MM-dd') : '';
