@@ -13,7 +13,7 @@ import styles from "./dashboard.module.scss";
 import { AuthContext } from "contexts/auth";
 import requestClient from "lib/requestClient";
 import Table from "components/Table/table";
-import { AppointmentHeaders, DashboardPatientHeaders } from "config/constants";
+import { AppointmentDashboardHeaders, DashboardPatientHeaders } from "config/constants";
 import Router from "next/router";
 import { actionButton } from 'containers/Patient/patientList';
 import { formatDate } from "lib/utils";
@@ -137,7 +137,7 @@ const Dashboard: React.FunctionComponent = () => {
               <>
                 <Table
                   data={appointmentData}
-                  headers={AppointmentHeaders}
+                  headers={AppointmentDashboardHeaders}
                   renderRow={(row) => (
                     <tr key={row.id}>
                       <td>{formatDate(row?.appointmentDate)}</td>

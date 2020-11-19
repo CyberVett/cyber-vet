@@ -28,7 +28,6 @@ import { PatientSection } from "./patientSection";
 import { VaccinationSection } from "./VaccinationSection";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
-  const [data, setData] = useState([]);
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<IphysicalExamination>({
@@ -267,7 +266,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const handleCheckinPatient = () => {
     setCheckedIn(true);
-    console.log(patientId);
     requestClient
       .post(`/patients/${patientId}/check-in`, {})
       .then((response) => {
@@ -301,7 +299,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       })
   }
 
-  const [activeCheckedInItem, setActiveCheckedInItem] = useState("");
+  const [activeCheckedInItem, setActiveCheckedInItem] = useState("Medical Records");
   const handleActiveCheckedInItemChange = (item: string) => {
     setActiveCheckedInItem(item);
   };
@@ -546,6 +544,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 <PatientDetails patientData={patientData} />
                 <div style={{ padding: "1rem" }}>
                   <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+                <p>{patientData?.treatmentWarnings}</p>
                 </div>
                 <FormErrors errors={modalError} />
                 {checkedIn && (
@@ -622,8 +621,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 onDelete={() =>
                                   handleDeleteMedicalReport("diagnosis", {
                                     tentativeDiagnosis: {
-                                      tentative: "",
                                       differential: "",
+                                      tentative: "",
                                     },
                                   })
                                 }
@@ -666,9 +665,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               <p>{medicalReports.finalDiagnosis}</p>
                             </CheckinItem>
                           )}
-
-
-
                           {(medicalReports.treatment.length || "") && (
                             <CheckinItem
                               checkedIn={checkedIn}
@@ -692,12 +688,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               onDelete={() =>
                                 handleDeleteMedicalReport("vaccination", {
                                   vaccination: {
-                                    type: "",
-                                    name: "",
                                     dosage: "",
+                                    emailReminder: false,
+                                    name: "",
                                     nextDate: "",
                                     smsReminder: false,
-                                    emailReminder: false,
+                                    type: "",
                                   },
                                 })
                               }
@@ -707,40 +703,40 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               <ul>
                                 <li>
                                   Name:{" "}
-                                  {medicalReports.vaccination.name ||
+                                  {medicalReports?.vaccination?.name ||
                                     // @ts-ignore
-                                    medicalReports.vaccination.nameOfVaccine}
+                                    medicalReports?.vaccination?.nameOfVaccine}
                                 </li>
                                 <li>
                                   Type:{" "}
-                                  {medicalReports.vaccination.type ||
+                                  {medicalReports?.vaccination?.type ||
                                     // @ts-ignore
-                                    medicalReports.vaccination.vaccinationType}
+                                    medicalReports?.vaccination?.vaccinationType}
                                 </li>
                                 <li>
-                                  Dosage: {medicalReports.vaccination.dosage}
+                                  Dosage: {medicalReports?.vaccination?.dosage}
                                 </li>
                                 <li>
                                   Date:{" "}
-                                  {medicalReports.vaccination.nextDate ||
+                                  {medicalReports?.vaccination?.nextDate ||
                                     // @ts-ignore
-                                    medicalReports.vaccination.dateOfNextShot}
+                                    medicalReports?.vaccination?.dateOfNextShot}
                                 </li>
                                 <li>
                                   Email Reminder:{" "}
-                                  {medicalReports.vaccination.emailReminder}
+                                  {medicalReports?.vaccination?.emailReminder}
                                 </li>
                                 <li>
                                   SMS Reminder:{" "}
-                                  {medicalReports.vaccination.smsReminder}
+                                  {medicalReports?.vaccination?.smsReminder}
                                 </li>
                               </ul>
                             </CheckinItem>
                           )}
                           {medicalReports.note && (
                             <CheckinItem
-                              date={new Date().toString()}
                               checkedIn={checkedIn}
+                              date={new Date().toString()}
                               onDelete={() =>
                                 handleDeleteMedicalReport("notes", {
                                   note: "",
@@ -758,13 +754,11 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                       {"Laboratory" === activeCheckedInItem && (
                         <LaboratoryTab
-                          patientData={patientData}
                           checkInData={checkInData}
+                          patientData={patientData}
                         />
                       )}
-
                       {"Radiology" === activeCheckedInItem && <Radiology />}
-
                       {"Appointment" === activeCheckedInItem &&
                         <Appointment
                           // @ts-ignore	
@@ -801,19 +795,19 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           )}
         </div>
         <Modal
-          fullMode={true}
-          visible={showModal}
           closeModal={() => {
             setShowModal(false);
           }}
+          fullMode={true}
+          visible={showModal}
         >
           <PhysicalExaminationModal
-            result={physicalExaminationResult}
             loading={modalLoading}
             onAddResult={handleAddResult}
-            onEditResult={handleEditPhysicalResult}
-            onDeleteResult={() => handleDeleteItem("physicalExamination")}
             onCancel={() => setShowModal(false)}
+            onDeleteResult={() => handleDeleteItem("physicalExamination")}
+            onEditResult={handleEditPhysicalResult}
+            result={physicalExaminationResult}
           />
         </Modal>
 

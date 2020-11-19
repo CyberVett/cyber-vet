@@ -108,14 +108,14 @@ export const actionButton = (checkedIn: boolean, id: string, checkIn: (id: strin
     return (
       <div style={{ display: 'flex' }}>
         {!hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        <Button onClick={() => checkIn(id)}>Check In</Button>
+        &nbsp;&nbsp;<Button onClick={() => checkIn(id)}>Check In</Button>
       </div>
     )
   } else {
     return (
       <div style={{ display: 'flex' }}>
         { !hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        <Button onClick={() => checkOut(id)}>Check Out</Button>
+        &nbsp;&nbsp;<Button onClick={() => checkOut(id)}>Check Out</Button>
       </div>
     )
   }

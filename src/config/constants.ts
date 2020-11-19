@@ -297,6 +297,29 @@ export const AppointmentHeaders = [
   },
 ];
 
+export const AppointmentDashboardHeaders = [
+  {
+    id: 1,
+    label: 'Date',
+  },
+  {
+    id: 2,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Scheduled By',
+  },
+  {
+    id: 4,
+    label: 'Reason',
+  },
+  {
+    id: 5,
+    label: 'Status',
+  },
+];
+
 export const LabRequestHeaders = [
   {
     id: 1,
