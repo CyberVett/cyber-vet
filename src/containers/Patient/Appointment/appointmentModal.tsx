@@ -8,6 +8,7 @@ import SectionHeader from 'components/SectionHeader/sectionHeader';
 import { IAppointmentInput } from 'types/user';
 import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
+import { formatDateForCalendar } from 'lib/utils';
 
 export interface IModalProps {
   visible: boolean;
@@ -19,7 +20,7 @@ export interface IModalProps {
 
 const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientNo, modalData, isReview }) => {
   // @ts-ignore
-  const { user: { info} } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [appointment, setAppointment] = useState<IAppointmentInput>(modalData ?? {
     allDay: false,
     appointmentDate: '',
@@ -72,7 +73,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
         setLoading(false);
         setError(error.response.data.message)
       })
-  };
+  };  
 
   const updateForm = (e: FormEvent) => {
     e.preventDefault();
@@ -135,7 +136,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 onChange={handleInputChange}
                 required
                 type="date"
-                value={modalData?.appointmentDate ?? appointment?.appointmentDate}
+                value={formatDateForCalendar(modalData?.appointmentDate) ?? formatDateForCalendar(appointment?.appointmentDate)}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -148,6 +149,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
               />
             </InputGroup>
           </div>
+          {/* TODO: possible fix later one */}
           <InputGroup horizontal>
             <Label>Scheduled By</Label>
             <Input
@@ -156,7 +158,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
               onChange={handleInputChange}
               required
               type="text"
-              value={`${info?.staff?.title} ${info?.staff?.firstName} ${info?.staff?.lastName}`}
+              value={`${user?.info?.staff?.title} ${user?.info?.staff?.firstName} ${user?.info?.staff?.lastName}`}
             />
           </InputGroup>
           <InputGroup horizontal>

@@ -35,11 +35,9 @@ const TreatmentReport = (props: {
     >
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
-          <input
-            name={"treatment"}
-            onChange={handleInputChange}
-            defaultValue={formValues.treatment}
-          />
+          <textarea name={"treatment"} style={{ height: "10rem" }} onChange={handleInputChange}>
+            {formValues.treatment}
+          </textarea>
         </div>
       </form>
     </MedicalReportModalContentTemplate>

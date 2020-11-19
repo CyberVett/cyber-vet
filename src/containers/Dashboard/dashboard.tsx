@@ -13,16 +13,23 @@ import styles from "./dashboard.module.scss";
 import { AuthContext } from "contexts/auth";
 import requestClient from "lib/requestClient";
 import Table from "components/Table/table";
-import { DashboardPatientHeaders } from "config/constants";
-import Router  from "next/router";
+import { AppointmentDashboardHeaders, DashboardPatientHeaders } from "config/constants";
+import Router from "next/router";
 import { actionButton } from 'containers/Patient/patientList';
+import { formatDate } from "lib/utils";
 
 const Dashboard: React.FunctionComponent = () => {
   const { staff, role } = useContext(AuthContext);
   const [patientData, setPatientData] = useState([]);
+  const [appointmentData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    getPatients();
+    getAppointments();
+  }, []);
+
+  const getPatients = () => {
     requestClient
       .get("patients")
       .then((response) => {
@@ -35,8 +42,22 @@ const Dashboard: React.FunctionComponent = () => {
         setLoading(false);
         console.log(error);
       });
-  }, []);
+  }
 
+  const getAppointments = () => {
+    requestClient
+      .get("appointments")
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setAppointmentData(response.data.data);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  }
   const checkIn = (id: string) => {
     setLoading(true);
     requestClient.put(`/patients/${id}/check-in`)
@@ -89,8 +110,8 @@ const Dashboard: React.FunctionComponent = () => {
                     <tr key={row.id}>
                       <td>{row.id}</td>
                       <td>
-                        {row.Client.title}. {row.Client.firstName}{" "}
-                        {row.Client.firstName}
+                        {row.client.title}. {row.client.firstName}{" "}
+                        {row.client.firstName}
                       </td>
                       <td>{row.name}</td>
                       <td>{row.specie}</td>
@@ -101,20 +122,39 @@ const Dashboard: React.FunctionComponent = () => {
                 />
               </>
             ) : (
-              <div className={styles.patientCardBody}>
-                <FolderIcon />
-                <h3>Add new patient</h3>
-              </div>
-            )}
+                <div className={styles.patientCardBody}>
+                  <FolderIcon />
+                  <h3>Add new patient</h3>
+                </div>
+              )}
           </Card>
         </div>
         <div>
           <Card>
             <CardHeader>Appointment</CardHeader>
-            <div className={styles.appointmentCardBody}>
-              <FolderIcon />
-              <h3>No appointment added</h3>
-            </div>
+            {loading && <Loader />}
+            {patientData.length > 0 && !loading ? (
+              <>
+                <Table
+                  data={appointmentData}
+                  headers={AppointmentDashboardHeaders}
+                  renderRow={(row) => (
+                    <tr key={row.id}>
+                      <td>{formatDate(row?.appointmentDate)}</td>
+                      <td>{row?.patient?.name}</td>
+                      <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
+                      <td>{row?.reason}</td>
+                      <td>{row?.status}</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  )}
+                />
+              </>) : (
+                <div className={styles.appointmentCardBody}>
+                  <FolderIcon />
+                  <h3>No appointment added</h3>
+                </div>
+              )}
           </Card>
         </div>
       </div>
@@ -125,8 +165,8 @@ const Dashboard: React.FunctionComponent = () => {
             <div className={styles.contactCardPhoto}>
               <div>
                 <img
-                  src={require("../../assets/images/photo.png")}
                   alt="admin photo"
+                  src={require("../../assets/images/photo.png")}
                 />
               </div>
               <h3>
@@ -135,7 +175,7 @@ const Dashboard: React.FunctionComponent = () => {
               <p>{role}</p>
             </div>
             <h4>0</h4>
-            <p>Patient</p>
+            <p>Patient(s)</p>
           </Card>
         </div>
         <div>

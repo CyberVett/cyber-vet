@@ -86,7 +86,7 @@ const PatientList: React.FunctionComponent = () => {
                 renderRow={(row) => (
                   <tr key={row.id}>
                     <td>{row.id}</td>
-                    <td>{row.Client.title}. {row.Client.firstName} {row.Client.lastName}</td>
+                    <td>{row?.client?.title}. {row?.client?.firstName} {row?.client?.lastName}</td>
                     <td>{row.name}</td>
                     <td>{row.specie}</td>
                     <td>{row.breed}</td>
@@ -108,14 +108,14 @@ export const actionButton = (checkedIn: boolean, id: string, checkIn: (id: strin
     return (
       <div style={{ display: 'flex' }}>
         {!hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        <Button onClick={() => checkIn(id)}>Check In</Button>
+        &nbsp;&nbsp;<Button onClick={() => checkIn(id)}>Check In</Button>
       </div>
     )
   } else {
     return (
       <div style={{ display: 'flex' }}>
         { !hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        <Button onClick={() => checkOut(id)}>Check Out</Button>
+        &nbsp;&nbsp;<Button onClick={() => checkOut(id)}>Check Out</Button>
       </div>
     )
   }

@@ -167,16 +167,23 @@ const PhysicalExaminationModal = (props: {
                 name="conformation"
               />
             </div>
-            <div className="divider" />
-            <div className="physical__examination__form--input">
-              <label>Any Diarrhea</label>
-              <input
-                type="text"
-                onChange={handleInputChange}
-                value={physicalExamination.anyDiarrhea}
-                name="anyDiarrhea"
-              />
-            </div>
+              <div className="divider" />
+              <div className="physical__examination__form--input">
+                <label>Any Diarrhea</label>
+                <select
+                  onChange={handleInputChange}
+                  defaultValue="true"
+                  value={physicalExamination.anyDiarrhea}
+                  name="anyDiarrhea"
+                >
+                  <option label="Yes" value="true">
+                    Yes
+                </option>
+                  <option label="No" value="false">
+                    Yes
+                </option>
+                </select>
+              </div>
 
             <div className="physical__examination__form--input">
               <label>Nature of Diarrhea</label>

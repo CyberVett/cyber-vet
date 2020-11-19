@@ -38,10 +38,10 @@ const ClientList: React.FunctionComponent = () => {
         <div className={dashboardStyles.searchBar}>
         <SearchIcon />
           <Input 
-            placeholder="Search for clients or Patients"
+            placeholder="Search for clients"
           />
           </div>
-        <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new patient</Button>
+        <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new clients</Button>
       </div>
       <div>
         <Card>

@@ -115,18 +115,18 @@ const LaboratoryTab = ({
   const [modalError, setModalError] = useState({});
 
   const [parasitologyData, setParasitologyData] = useState<IParasitologyData>(
-    checkInData.parasitology || defaultParasitologyFields
+    checkInData?.parasitology || defaultParasitologyFields
   );
   const [pathologyData, setPathologyData] = useState<IPathologyData>(
-    checkInData.pathology || defaultPathologyFields
+    checkInData?.pathology || defaultPathologyFields
   );
 
   const [microbiologyData, setMicrobiologyData] = useState<IMicrobiologyData>(
-    checkInData.microbiology || defaultMicrobiologyFields
+    checkInData?.microbiology || defaultMicrobiologyFields
   );
 
   const [rapidTestData, setRapidTestData] = useState<IRapidTestData>(
-    checkInData.rapidTestKit || defaultRapidTestFields
+    checkInData?.rapidTestKit || defaultRapidTestFields
   );
 
   const onCreateData = (
