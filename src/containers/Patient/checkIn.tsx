@@ -822,8 +822,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 </svg>
               </span>
               <span className="checkin__navigator--counter">
-                Doc {checkinDataIndex + 1}
-                of {patientData.checkins.length}
+                Doc {checkinDataIndex + 1} of {patientData.checkins.length}
               </span>
               <span
                 onClick={() => {

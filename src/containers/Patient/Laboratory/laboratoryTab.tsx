@@ -736,13 +736,36 @@ const LaboratoryTab = ({
           disableDelete
           title="Microbiology Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Nature of specimen</td>
+              <td>{microbiologyData.natureOfSpecimen}</td>
+            </tr>
+            <tr>
+              <td>Date of collection</td>
+              <td>{microbiologyData.dateOfCollection}</td>
+            </tr>
+            <tr>
+              <td>Date of Submission</td>
+              <td>{microbiologyData.dateOfSubmission}</td>
+            </tr>
+            <tr>
+              <td>Clinical Details</td>
+              <td>{microbiologyData.clinicalDetails}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{microbiologyData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Tests Required</td>
+              <td>{microbiologyData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td>{microbiologyData.result}</td>
+            </tr>
+          </table>
         </CheckinItem>
       )}
 
@@ -757,13 +780,28 @@ const LaboratoryTab = ({
           disableDelete
           title="Rapid Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Type of specimen</td>
+              <td>{rapidTestData.typeOfSpecimen}</td>
+            </tr>
+            <tr>
+              <td>Clinical Details</td>
+              <td>{rapidTestData.clinicalDetails}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{rapidTestData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Tests Required</td>
+              <td>{rapidTestData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td>{rapidTestData.result}</td>
+            </tr>
+          </table>
         </CheckinItem>
       )}
     </section>
