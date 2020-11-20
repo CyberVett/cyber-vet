@@ -2,7 +2,7 @@ import Button, { ButtonTypes } from "components/Button/button";
 import CheckinItem from "components/CheckIn/CheckinItem";
 import { InputGroup, Label } from "components/Input/input";
 import requestClient from "lib/requestClient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./laboratory.module.scss";
 import MicrobiologyModal, {
@@ -129,28 +129,27 @@ const LaboratoryTab = ({
     checkInData?.rapidTestKit || defaultRapidTestFields
   );
 
-  const onCreateData = (
-    data: IPathologyData,
-    endpoint: string,
-    callback: Function
-  ) => {
-    // console.l
-  };
+  useEffect(() => {
+    setParasitologyData(checkInData?.parasitology || defaultParasitologyFields);
+    setPathologyData(checkInData?.pathology || defaultPathologyFields);
+    setMicrobiologyData(checkInData?.microbiology || defaultMicrobiologyFields);
+    setRapidTestData(checkInData?.rapidTestKit || defaultRapidTestFields);
+  }, [checkInData]);
 
   const savePathology = (data: IPathologyData, method = "create") => {
     setModalLoading(true);
 
-    const _data = {
+    let _data = {
       checkinId: checkInData.id,
       patientId: patientData.id,
-      ...data,
     };
-    delete _data.nameOfTechnologist;
-    delete _data.id;
-    delete _data.completed;
-    delete _data.dateCompleted;
     if (method !== "create") {
       delete _data.clientId;
+      Object.keys(defaultPathologyFields).map((key) => {
+        _data[key] = data[key];
+      });
+    } else {
+      _data = { ..._data, ...data };
     }
     const url = `/laboratory/pathology/${
       method === "create" ? "add" : "complete"
@@ -172,17 +171,17 @@ const LaboratoryTab = ({
   const saveParasitology = (data: IParasitologyData, method = "create") => {
     setModalLoading(true);
 
-    const _data = {
+    let _data = {
       checkinId: checkInData.id,
       patientId: patientData.id,
-      ...data,
     };
-    delete _data.nameOfTechnologist;
-    delete _data.id;
-    delete _data.completed;
-    delete _data.dateCompleted;
     if (method !== "create") {
       delete _data.clientId;
+      Object.keys(defaultParasitologyFields).map((key) => {
+        _data[key] = data[key];
+      });
+    } else {
+      _data = { ..._data, ...data };
     }
     const url = `/laboratory/parasitology/${
       method === "create" ? "add" : "complete"
@@ -204,17 +203,17 @@ const LaboratoryTab = ({
   const saveMicrobiology = (data: IMicrobiologyData, method = "create") => {
     setModalLoading(true);
 
-    const _data = {
+    let _data = {
       checkinId: checkInData.id,
       patientId: patientData.id,
-      ...data,
     };
-    delete _data.nameOfTechnologist;
-    delete _data.id;
-    delete _data.completed;
-    delete _data.dateCompleted;
     if (method !== "create") {
       delete _data.clientId;
+      Object.keys(defaultMicrobiologyFields).map((key) => {
+        _data[key] = data[key];
+      });
+    } else {
+      _data = { ..._data, ...data };
     }
     const url = `/laboratory/microbiology/${
       method === "create" ? "add" : "complete"
@@ -236,17 +235,17 @@ const LaboratoryTab = ({
   const saveRapidTest = (data: IRapidTestData, method = "create") => {
     setModalLoading(true);
 
-    const _data = {
+    let _data = {
       checkinId: checkInData.id,
       patientId: patientData.id,
-      ...data,
     };
-    delete _data.nameOfTechnologist;
-    delete _data.id;
-    delete _data.completed;
-    delete _data.dateCompleted;
     if (method !== "create") {
       delete _data.clientId;
+      Object.keys(defaultRapidTestFields).map((key) => {
+        _data[key] = data[key];
+      });
+    } else {
+      _data = { ..._data, ...data };
     }
     const url = `/laboratory/rapid-test-kit/${
       method === "create" ? "add" : "complete"
@@ -378,7 +377,7 @@ const LaboratoryTab = ({
       ></ParasitologyModal>
       {(pathologyData.albumin || "") && (
         <CheckinItem
-          checkedIn={checkInData.checkIn}
+          checkedIn={true}
           date={new Date().toString()}
           onDelete={() => setPathologyData(defaultPathologyFields)}
           onEdit={() => {
@@ -387,19 +386,245 @@ const LaboratoryTab = ({
           disableDelete
           title="Pathology Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Case History</td>
+              <td>{pathologyData.caseHistory}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{pathologyData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Type of sample submitted</td>
+              <td>{pathologyData.typeOfSampleSubmitted}</td>
+            </tr>
+            <tr>
+              <td>Test(s) required</td>
+              <td>{pathologyData.testsRequired}</td>
+            </tr>
+          </table>
+          <div className={styles.labCheckinDataListContainer}>
+            <div>
+              <h5>Haemotology</h5>
+              <table>
+                <tr>
+                  <td>RBC (x 1013/l)</td>
+                  <td>{pathologyData.RBC}</td>
+                </tr>
+                <tr>
+                  <td>Haemoglobin (g/dl)</td>
+                  <td>{pathologyData.haemoglobin}</td>
+                </tr>
+                <tr>
+                  <td>MCV (fl)</td>
+                  <td>{pathologyData.MCV}</td>
+                </tr>
+                <tr>
+                  <td>MCH (pg)</td>
+                  <td>{pathologyData.MCH}</td>
+                </tr>
+                <tr>
+                  <td>MCHC (g/l)</td>
+                  <td>{pathologyData.MCHC}</td>
+                </tr>
+                <tr>
+                  <td>WBC (x 1013/L)</td>
+                  <td>{pathologyData.WBC}</td>
+                </tr>
+                <tr>
+                  <td>Neutrophils (%)</td>
+                  <td>{pathologyData.neutrophils}</td>
+                </tr>
+                <tr>
+                  <td>Bands (%)</td>
+                  <td>{pathologyData.bands}</td>
+                </tr>
+                <tr>
+                  <td>Lymphocytes (%)</td>
+                  <td>{pathologyData.lymphocytes}</td>
+                </tr>
+                <tr>
+                  <td>Monocytes (%)</td>
+                  <td>{pathologyData.monocytes}</td>
+                </tr>
+                <tr>
+                  <td>Eosinophils (%)</td>
+                  <td>{pathologyData.eosinophils}</td>
+                </tr>
+                <tr>
+                  <td>Platelets (x 1013/l)</td>
+                  <td>{pathologyData.platelets}</td>
+                </tr>
+                <tr>
+                  <td>MPV (fl)</td>
+                  <td>{pathologyData.mpv}</td>
+                </tr>
+              </table>
+            </div>
+            <div>
+              <h5>Serum Chemistry</h5>
 
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+              <table>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.totalProteinRequired}
+                    />
+                    Total Protein (g/dl)
+                  </td>
+                  <td>{pathologyData.totalProtein}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.totalBilirubin}
+                    />
+                    Total bilirubin (μmol/l)
+                  </td>
+                  <td>{pathologyData.totalBilirubin}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.conjugatedBilirubinRequired}
+                    />
+                    Conjugated bilirubin (μmol/l)
+                  </td>
+                  <td>{pathologyData.conjugatedBilirubin}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.totalBilirubin}
+                    />
+                    MCH (pg)
+                  </td>
+                  <td>{pathologyData.MCH}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.sodiumRequired}
+                    />
+                    Na+ (μmol/l)
+                  </td>
+                  <td>{pathologyData.sodium}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.potassiumRequired}
+                    />
+                    K+ (μmol/l)
+                  </td>
+                  <td>{pathologyData.potassium}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.creatinineRequired}
+                    />
+                    Creatinine (μmol/l)
+                  </td>
+                  <td>{pathologyData.creatinine}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.BUNRequired}
+                    />
+                    BUN ( μmol/l)
+                  </td>
+                  <td>{pathologyData.BUN}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.albuminRequired}
+                    />
+                    Albumin (g/dl)
+                  </td>
+                  <td>{pathologyData.albumin}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.glucoseRequired}
+                    />
+                    Glucose ( μmol/l)
+                  </td>
+                  <td>{pathologyData.glucose}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.SGOTASTRequired}
+                    />
+                    SGOT/AST (IU/L)
+                  </td>
+                  <td>{pathologyData.SGOTAST}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.SGPTALTRequired}
+                    />
+                    SGPT/ALT (IUL)
+                  </td>
+                  <td>{pathologyData.SGPTALT}</td>
+                </tr>
+                {/* <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.totalBilirubin}
+                    />
+                    ALP (IU/L)
+                  </td>
+                  <td>{pathologyData.alp}</td>
+                </tr> */}
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.liquidProfileRequired}
+                    />
+                    Liquid Profile (μmol/l)
+                  </td>
+                  <td>{pathologyData.liquidProfileRequired}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      defaultChecked={pathologyData.otherRequired}
+                    />
+                    Other Specified
+                  </td>
+                  <td>{pathologyData.other}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </CheckinItem>
       )}
 
       {(parasitologyData.caseHistory || "") && (
         <CheckinItem
-          checkedIn={checkInData.checkIn}
+          checkedIn={true}
           date={new Date().toString()}
           onDelete={() => setParasitologyData(defaultParasitologyFields)}
           onEdit={() => {
@@ -408,19 +633,101 @@ const LaboratoryTab = ({
           disableDelete
           title="Parasitology Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Case History</td>
+              <td>{parasitologyData.caseHistory}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{parasitologyData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Test(s) required</td>
+              <td>{parasitologyData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Condition of specimen</td>
+              <td>{parasitologyData.conditionOfSpecimen}</td>
+            </tr>
+          </table>
+          <div className={styles.labCheckinDataListContainer}>
+            <div>
+              <table>
+                <h5>Results</h5>
+                <tr>
+                  <td>Blood</td>
+                  <td>{parasitologyData.bloodResult}</td>
+                </tr>
+                <tr>
+                  <td>PCV (%)</td>
+                  <td>{parasitologyData.PCVResult}</td>
+                </tr>
+                <tr>
+                  <td>Wet mount/Blood film/ Haemoparasite</td>
+                  <td>{parasitologyData.wetMountResult}</td>
+                </tr>
+                <tr>
+                  <td>Skin Scrapping</td>
+                  <td>{parasitologyData.skinScrappingResult}</td>
+                </tr>
+                <tr>
+                  <td>Feacal analysis - Egg/ Oocyst/Parasite Count</td>
+                  <td>{parasitologyData.facialAnalysisResult}</td>
+                </tr>
+                <tr>
+                  <td>Urine Analysis</td>
+                  <td>{parasitologyData.urineAnalysisResult}</td>
+                </tr>
+              </table>
+            </div>
+            <div>
+              <h5>Sample Submitted</h5>
+              <table>
+                <tr>
+                  <td>Blood</td>
+                  <td>
+                    {parasitologyData.bloodSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Urine</td>
+                  <td>
+                    {parasitologyData.urineSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
 
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+                <tr>
+                  <td>Skin scrapping</td>
+                  <td>
+                    {parasitologyData.skinScrappingSampleSubmitted
+                      ? "Yes"
+                      : "No"}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Stool</td>
+                  <td>
+                    {parasitologyData.stoolSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Other</td>
+                  <td>
+                    {parasitologyData.otherSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </CheckinItem>
       )}
 
       {(microbiologyData.clinicalDetails || "") && (
         <CheckinItem
-          checkedIn={checkInData.checkIn}
+          checkedIn={true}
           date={new Date().toString()}
           onDelete={() => setMicrobiologyData(defaultMicrobiologyFields)}
           onEdit={() => {
@@ -429,19 +736,42 @@ const LaboratoryTab = ({
           disableDelete
           title="Microbiology Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Nature of specimen</td>
+              <td>{microbiologyData.natureOfSpecimen}</td>
+            </tr>
+            <tr>
+              <td>Date of collection</td>
+              <td>{microbiologyData.dateOfCollection}</td>
+            </tr>
+            <tr>
+              <td>Date of Submission</td>
+              <td>{microbiologyData.dateOfSubmission}</td>
+            </tr>
+            <tr>
+              <td>Clinical Details</td>
+              <td>{microbiologyData.clinicalDetails}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{microbiologyData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Tests Required</td>
+              <td>{microbiologyData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td>{microbiologyData.result}</td>
+            </tr>
+          </table>
         </CheckinItem>
       )}
 
       {(rapidTestData.clinicalDetails || "") && (
         <CheckinItem
-          checkedIn={checkInData.checkIn}
+          checkedIn={true}
           date={new Date().toString()}
           onDelete={() => setRapidTestData(defaultRapidTestFields)}
           onEdit={() => {
@@ -450,13 +780,28 @@ const LaboratoryTab = ({
           disableDelete
           title="Rapid Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Type of specimen</td>
+              <td>{rapidTestData.typeOfSpecimen}</td>
+            </tr>
+            <tr>
+              <td>Clinical Details</td>
+              <td>{rapidTestData.clinicalDetails}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{rapidTestData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Tests Required</td>
+              <td>{rapidTestData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Result</td>
+              <td>{rapidTestData.result}</td>
+            </tr>
+          </table>
         </CheckinItem>
       )}
     </section>

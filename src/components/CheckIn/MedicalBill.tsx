@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MedicalReportModalContentTemplate from "./MedicalReportModalContentTemplate";
 
 enum PaymentMethod {
@@ -7,20 +7,31 @@ enum PaymentMethod {
 }
 
 interface IData {
-  medicalBill: {
-    services: [{ name: string; price: string }] | null;
-    paid: string;
-    balance: string;
-    method: PaymentMethod | null;
-  };
+  services: any;
+  paid: string;
+  balance: string;
+  method: PaymentMethod;
 }
 
 const Services = [
-  { name: "Select One", value: "Select One", disabled: true },
-  { name: "Registration", value: "Registration" },
-  { name: "Heamoparasite screening", value: "Heamoparasite screening" },
-  { name: "Endectocides", value: "Endectocides" },
-  { name: "Vit Bco", value: "Vit Bco" },
+  { name: "Registration", value: "Registration", price: 100 },
+  {
+    name: "Heamoparasite screening",
+    value: "Heamoparasite screening",
+    price: 200,
+  },
+  { name: "Endectocides", value: "Endectocides", price: 300 },
+  { name: "Vit Bco", value: "Vit Bco", price: 400 },
+];
+
+const defaultServices = [
+  { name: "Registration", price: "100" },
+  {
+    name: "Heamoparasite screening",
+    price: 200,
+  },
+  { name: "Endectocides", price: "300" },
+  { name: "Vit Bco", price: "400" },
 ];
 
 const VacinationReport = (props: {
@@ -34,7 +45,10 @@ const VacinationReport = (props: {
     props.onAdd(formValues);
   };
   const [formValues, setFormValues] = useState<IData>({
-    ...props.data,
+    paid: "0",
+    balance: "0",
+    method: PaymentMethod.card,
+    services: defaultServices,
   });
 
   const handleInputChange = (event: {
@@ -43,10 +57,11 @@ const VacinationReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: IData) => {
-      formValues.medicalBill = {
-        ...formValues.medicalBill,
+      formValues = {
+        ...formValues,
         [event.target.name]: event.target.value,
       };
+
       return formValues;
     });
   };
@@ -58,17 +73,18 @@ const VacinationReport = (props: {
     event.persist();
 
     setFormValues((formValues: IData) => {
-      let item = (formValues.medicalBill.services || [])[
-        parseInt(event.target.name)
-      ];
-
-      if (item) {
+      const services = formValues.services || [];
+      let item = services[parseInt(event.target.name)];
+      if (item && event.target.value) {
         item.name = event.target.value;
+        item.price = defaultServices[parseInt(event.target.name)].price;
       } else {
         item = { name: event.target.value, price: "" };
       }
+      const _formValues = { ...formValues };
+      _formValues.services.splice(parseInt(event.target.name), 1, item);
 
-      return formValues;
+      return _formValues;
     });
   };
 
@@ -79,19 +95,30 @@ const VacinationReport = (props: {
     event.persist();
 
     setFormValues((formValues: IData) => {
-      let item = (formValues.medicalBill.services || [])[
-        parseInt(event.target.name)
-      ];
+      const services = formValues.services || [];
+      let item = (services || [])[parseInt(event.target.name)];
 
       if (item) {
-        item.name = event.target.value;
-      } else {
-        item = { name: "", price: event.target.value };
+        item.price = event.target.value;
       }
 
-      return formValues;
+      const _formValues = { ...formValues };
+      _formValues.services.splice(parseInt(event.target.name), 1, item);
+
+      return _formValues;
     });
   };
+
+  useEffect(() => {
+    const totalPrice = formValues.services.reduce((acc, val) => {
+      return acc + parseInt(val.price);
+    }, 0);
+
+    const balance = totalPrice - formValues.paid;
+    if (balance !== formValues.balance) {
+      setFormValues({ ...formValues, balance: balance });
+    }
+  }, [formValues]);
 
   return (
     <MedicalReportModalContentTemplate
@@ -100,202 +127,72 @@ const VacinationReport = (props: {
       title={props.title}
     >
       <form className="medical__report__form medical--bill">
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
+        {Services.map((__service, index) => {
+          const service = (formValues.services || [])[index] || {
+            name: "",
+            price: "",
+          };
+          return (
+            <>
+              <div className="physical__examination__form--input">
+                <select
+                  onChange={handleBillItemChange}
+                  name={`${index}`}
+                  defaultValue={service.name}
                 >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+                  <option value="">Select One</option>
+                  {[...Services].map((serviceName) => {
+                    return (
+                      <option
+                        value={serviceName.value}
+                        // disabled={serviceName.disabled}
+                        defaultChecked={serviceName.name === service.name}
+                      >
+                        {serviceName.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
 
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
-                >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
-                >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
-                >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
-                >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
-
-        <div className="physical__examination__form--input">
-          <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
-          >
-            {[...Services].map((serviceName) => {
-              return (
-                <option
-                  value={serviceName.value}
-                  disabled={serviceName.disabled}
-                >
-                  {serviceName.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <div className="physical__examination__form--input">
-          <input
-            name={"name"}
-            onChange={handleBillValueChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ price: "" }])[0].price
-            }
-          />
-        </div>
+              <div className="physical__examination__form--input">
+                {service.price ? (
+                  <input
+                    type="number"
+                    name={`${index}`}
+                    onChange={handleBillValueChange}
+                    defaultValue={service.price}
+                  />
+                ) : (
+                  <input
+                    type="number"
+                    name={`${index}`}
+                    onChange={handleBillValueChange}
+                    defaultValue={""}
+                  />
+                )}
+              </div>
+            </>
+          );
+        })}
 
         <div>
           <div className="physical__examination__form--input">
-            <label>Vaccination Dosage</label>
+            <label>Paid</label>
             <input
-              name={"dosage"}
+              name={"paid"}
               onChange={handleInputChange}
-              defaultValue={formValues.medicalBill.paid}
+              defaultValue={formValues.paid}
             />
           </div>
 
           <div className="physical__examination__form--input">
-            <label>Date of next shot</label>
+            <label>Balance</label>
             <input
-              name={"nextDate"}
-              onChange={handleInputChange}
-              defaultValue={formValues.medicalBill.balance}
+              name={"balance"}
+              disabled
+              // onChange={handleInputChange}
+              value={formValues.balance}
             />
           </div>
         </div>
@@ -303,10 +200,9 @@ const VacinationReport = (props: {
         <div className="physical__examination__form--input payment--method">
           <label>Payment Method</label>
           <select
-            onChange={handleBillItemChange}
-            defaultValue={
-              (formValues.medicalBill.services || [{ name: "" }])[0].name
-            }
+            onChange={handleInputChange}
+            name="method"
+            defaultValue={formValues.method}
           >
             {["Cash", "Card"].map((method) => {
               return <option value={method}>{method}</option>;

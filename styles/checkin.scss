@@ -16,6 +16,31 @@
       display: flex;
       justify-content: center;
     }
+    &--checkin--navigator {
+      display: flex;
+      place-content: center;
+      margin: 2rem 0;
+      // span {
+      //   display: block;
+      // }
+      svg {
+        cursor: pointer;
+        margin-top: 1rem;
+        width: 25px;
+        height: 25px;
+      }
+    }
+  }
+
+  .checkin__navigator {
+    &--counter {
+      padding: 1rem 1.5rem;
+      margin-right: 20px;
+      margin-left: 20px;
+      background: #e5e5e5;
+      background: #e5e5e5;
+      border-radius: 10px;
+    }
   }
 
   .checkedin {

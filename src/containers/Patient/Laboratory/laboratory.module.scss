@@ -21,7 +21,7 @@
   }
 
   &Input {
-    border-top: 1px solid #C4C4C4;
+    border-top: 1px solid #c4c4c4;
     padding: 24px 16px 0;
   }
 
@@ -29,5 +29,24 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
+  }
+}
+
+.labCheckinDataListContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  Input {
+    margin-right: 0.5rem;
+  }
+
+  Td {
+    padding: 0.2rem 0.1rem;
+  }
+}
+
+.overviewTable {
+  Td {
+    padding: 0.2rem 0.1rem;
   }
 }

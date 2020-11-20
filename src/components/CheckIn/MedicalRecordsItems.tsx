@@ -4,9 +4,9 @@ import Button, { ButtonTypes } from "../Button/button";
 const MedicalRecordsItems = (props: {
   onRecordItemTypeUpdate: Function;
   children: any;
+  checkedIn: boolean;
 }) => {
   const handleAddMedicalRecordItem = (item: string) => {
-    console.log(item);
     props.onRecordItemTypeUpdate(item);
   };
 
