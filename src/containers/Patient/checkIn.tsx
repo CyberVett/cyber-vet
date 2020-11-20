@@ -75,12 +75,41 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       let _medicalReport = { ...medicalReports };
       if (checkinData.physicalExamination) {
         setPhysicalExaminationResult(checkinData.physicalExamination);
+      } else {
+        setPhysicalExaminationResult({
+          rectalTemperature: "",
+          respiratoryRate: "",
+          pulseRate: "",
+          prepuceVulvaExamination: "",
+          ocularMucousMembrane: "",
+          rectalExamination: "",
+          lamenessLocation: "",
+          anyLameness: "",
+          lungsSound: "",
+          natureOfBreathing: "",
+          consistencyOfFaeces: "",
+          natureOfDiarrhea: "",
+          anyDiarrhea: "",
+          conformation: "",
+          generalDisposation: "",
+          ectoparasite: "",
+          locationOfLesion: "",
+          natureOfLesion: "",
+          integumentFur: "",
+          nasalCavity: "",
+          oralMucousMembrane: "",
+        });
       }
 
       if (checkinData.chiefComplain) {
         _medicalReport = {
           ..._medicalReport,
           chiefComplain: checkinData.chiefComplain.chiefComplain,
+        };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          chiefComplain: "",
         };
       }
 
@@ -92,11 +121,24 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             differential: checkinData.diagnosis.differentialDiagnosis,
           },
         };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          tentativeDiagnosis: {
+            differential: "",
+            tentative: "",
+          },
+        };
       }
       if (checkinData.clinicalSigns) {
         _medicalReport = {
           ..._medicalReport,
           clinicalSigns: checkinData.clinicalSigns.signs,
+        };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          clinicalSigns: "",
         };
       }
       if (checkinData.diagnosticTest) {
@@ -104,11 +146,21 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           ..._medicalReport,
           diagnosticTest: checkinData.diagnosticTest.test,
         };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          diagnosticTest: "",
+        };
       }
       if (checkinData.finalDiagnosis) {
         _medicalReport = {
           ..._medicalReport,
           finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
+        };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          finalDiagnosis: "",
         };
       }
 
@@ -117,12 +169,22 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           ..._medicalReport,
           treatment: checkinData.treatment.treatment,
         };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          treatment: "",
+        };
       }
 
       if (checkinData.notes) {
         _medicalReport = {
           ..._medicalReport,
           note: checkinData.notes.note,
+        };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          note: "",
         };
       }
 
@@ -136,6 +198,18 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             nextDate: checkinData.vaccination.dateOfNextShot,
             smsReminder: checkinData.vaccination.smsReminder,
             emailReminder: checkinData.vaccination.emailReminder,
+          },
+        };
+      } else {
+        _medicalReport = {
+          ..._medicalReport,
+          vaccination: {
+            type: "",
+            name: "",
+            dosage: "",
+            nextDate: "",
+            smsReminder: false,
+            emailReminder: false,
           },
         };
       }
@@ -213,7 +287,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     // @ts-ignore
     delete data.addedBy;
     requestClient
-      .put("/patients/bro-01-01/physical-examination", data)
+      .put(`/patients/${patientId}/physical-examination`, data)
       .then((response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -258,7 +332,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setModalError("");
 
     requestClient
-      .post("/patients/bro-01-01/physical-examination", _data)
+      .post(`/patients/${patientId}/physical-examination`, _data)
       .then((response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
