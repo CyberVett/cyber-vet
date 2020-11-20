@@ -160,6 +160,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setTogglePathology(false);
+          setPathologyData(_data);
         }
       })
       .catch((error) => {
@@ -192,6 +193,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setToggleParasitology(false);
+          setParasitologyData(_data);
         }
       })
       .catch((error) => {
@@ -224,6 +226,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setToggleMicrobiology(false);
+          setMicrobiologyData(_data);
         }
       })
       .catch((error) => {
@@ -255,6 +258,7 @@ const LaboratoryTab = ({
       .then((response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
+          setRapidTestData(_data);
           setToggleRapidtest(false);
         }
       })
@@ -322,8 +326,8 @@ const LaboratoryTab = ({
         onAdd={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "create");
         }}
-        onComplete={(data: IPathologyData) => {
-          savePathology(data, "complete");
+        onComplete={(data: IMicrobiologyData) => {
+          saveMicrobiology(data, "complete");
         }}
         modalLoading={modalLoading}
         onCancel={() => {
