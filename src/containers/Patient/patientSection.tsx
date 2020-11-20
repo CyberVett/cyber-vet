@@ -1,17 +1,51 @@
 import React from 'react'
+import styles from './patient.module.scss';
 
 export const PatientSection = ({ data }) => {
-console.log('whodey', data);
+console.log(data);
 
   return (
-    <div>
-      <div></div>
-      <div></div>
-      <h4>Name: {data?.title} {data.firstName} {data.otherName} {data.lastName}</h4>
-      <h4>Gender: {data.gender}</h4>
-      <h4>Address: {data.address}</h4>
-      <h4>Phone: {data.phoneNumber}</h4>
-      <h4>Email: {data.email} </h4>
+    <div className={styles.columnGrid}>
+      <div>
+        <table>
+          <tr>
+            <td>Colour</td>
+            <td>{data.colour}</td>
+          </tr>
+          <tr>
+            <td>Flock Size</td>
+            <td>{data.flockHerdSize}</td>
+          </tr>
+          <tr>
+            <td>Purpose of Keeping</td>
+            <td>{data.purposeOfKepping}</td>
+          </tr>
+          <tr>
+            <td>Type of Food</td>
+            <td>{data.typeOfFood}</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <table>
+          <tr>
+            <td>Source</td>
+            <td>{data.source}</td>
+          </tr>
+          <tr>
+            <td>Water Source</td>
+            <td>{data.waterSource}</td>
+          </tr>
+          <tr>
+            <td>Vaccination</td>
+            <td>{data.vaccination}</td>
+          </tr>
+          <tr>
+            <td>Vaccination Used</td>
+            <td>{data.vaccineUsed}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   )
 }

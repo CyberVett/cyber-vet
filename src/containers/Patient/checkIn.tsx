@@ -30,6 +30,8 @@ import { VaccinationSection } from "./VaccinationSection";
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
+  console.log('Home', checkInData);
+  
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
     IphysicalExamination
   >({
@@ -117,8 +119,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           tentativeDiagnosis: {
-            tentative: checkinData.diagnosis.tentativeDiagnosis,
             differential: checkinData.diagnosis.differentialDiagnosis,
+            tentative: checkinData.diagnosis.tentativeDiagnosis,
           },
         };
       } else {
@@ -354,11 +356,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .post(`/patients/${patientId}/check-in`, {})
       .then((response) => {
         console.log(response.data);
-        // setLoading(false);
-        // if (response.status === 200 && response.statusText === "OK") {
-        //   setPatientData(response.data.data);
-        //   // setCheckedIn
-        // }
       })
       .catch((error) => {
         setLoading(false);
@@ -574,10 +571,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  // const handleDeleteNoteReport = () => {
-  //   setMedicalReports({ ...medicalReports, note: "" });
-  // };
-
   const handleDeleteItem = (key: string) => {
     let url = "patients/bro-01-01/physical-examination";
 
@@ -651,7 +644,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                     {"Vaccination" === activeCheckedInItem && (
                       <VaccinationSection
-                        data={patientData?.checkins[0].vaccination}
+                        data={checkInData?.vaccination}
                       />
                     )}
 
@@ -720,13 +713,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             onEdit={handleEditTentativeTest}
                             title="Diagnostic Test"
                           >
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
                             <h5>Differential</h5>
                             <p>
                               {medicalReports.tentativeDiagnosis.differential}
                             </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
                           </CheckinItem>
                         )}
                         {(medicalReports.diagnosticTest.length || "") && (
@@ -848,11 +840,11 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         patientData={patientData}
                       />
                     )}
-                    {"Radiology" === activeCheckedInItem && <Radiology />}
+                    {"Radiology" === activeCheckedInItem && <Radiology checkInData={checkInData} />}
                     {"Appointment" === activeCheckedInItem && (
                       <Appointment
                         // @ts-ignore
-                        appointments={patientData.appointments}
+                        appointments={patientData?.appointments}
                         patientNo={patientData.id}
                       />
                     )}

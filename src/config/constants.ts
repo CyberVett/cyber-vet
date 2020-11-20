@@ -382,6 +382,33 @@ export const LabCompletedHeaders = [
   },
 ];
 
+export const XRayHeaders = [
+  {
+    id: 1,
+    label: 'Patient No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Requested By',
+  },
+  {
+    id: 6,
+    label: 'Date Completed',
+  },
+  {
+    id: 8,
+    label: 'Actions',
+  },
+];
+
 export const userRoles = {
   ADMINISTRATOR: 'ADMINISTRATOR',
   LAB_TECHNOLOGIST: 'LAB_TECHNOLOGIST',

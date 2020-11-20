@@ -31,7 +31,6 @@ const TopNav = () => {
     <nav className={styles.nav}>
       <div className={styles.navLeft}>
         <Link href="/"><LogoIcon /></Link>
-        <SettingIcon />
       </div>
       <div className={styles.navRight}>
         <Button type={ButtonTypes.outline}>{hospital?.name}</Button>

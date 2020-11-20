@@ -113,11 +113,6 @@ const RapidTestModal: React.FC<IModalProps> = ({
                 {formValues.result}
               </textarea>{" "}
             </InputGroup>
-            <br />
-            <InputGroup horizontal>
-              <Label>Name of Technologist</Label>
-              <Input />
-            </InputGroup>
           </div>
           <div>
             <Button onClick={() => onAdd(formValues, "create")}>Add</Button>

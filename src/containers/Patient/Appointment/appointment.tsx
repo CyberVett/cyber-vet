@@ -63,7 +63,7 @@ const Appointment: React.FC<IAppointment> = ({
           loading ? <Loader /> :
             <>
               {
-                appointments.length > 0 ?
+                appointments?.length > 0 ?
                   <>
                     <FormErrors errors={error} />
                     <Table

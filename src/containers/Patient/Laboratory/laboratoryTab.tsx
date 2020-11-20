@@ -150,6 +150,7 @@ const LaboratoryTab = ({
       });
     } else {
       _data = { ..._data, ...data };
+      delete _data.nameOfTechnologist;
     }
     const url = `/laboratory/pathology/${
       method === "create" ? "add" : "complete"
@@ -292,6 +293,8 @@ const LaboratoryTab = ({
           + Rapid Test Kit
         </Button>
       </div>
+      {/* {
+        checkInData === null ? <h2 style={{textAlign: 'center'}}>No Lab Activity Recorded</h2> : */}
       <div className={styles.formDetails}>
         <div className={styles.formDetailsInfo}>
           <InputGroup>
@@ -464,7 +467,6 @@ const LaboratoryTab = ({
             </div>
             <div>
               <h5>Serum Chemistry</h5>
-
               <table>
                 <tr>
                   <td>
@@ -586,16 +588,6 @@ const LaboratoryTab = ({
                   </td>
                   <td>{pathologyData.SGPTALT}</td>
                 </tr>
-                {/* <tr>
-                  <td>
-                    <input
-                      type="checkbox"
-                      defaultChecked={pathologyData.totalBilirubin}
-                    />
-                    ALP (IU/L)
-                  </td>
-                  <td>{pathologyData.alp}</td>
-                </tr> */}
                 <tr>
                   <td>
                     <input

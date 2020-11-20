@@ -1,16 +1,137 @@
-import React from 'react';
-import { CheckboxInput, Input, InputGroup, Label, TextArea } from 'components/Input/input';
+import React, { useState } from 'react';
+import { FormErrors, FormMessages, Input, InputGroup, Label, TextArea } from 'components/Input/input';
 import Modal from 'components/Modal/modal';
 
 import styles from './radiology.module.scss';
 import Button from 'components/Button/button';
+import requestClient from 'lib/requestClient';
 
 export interface IModalProps {
   visible: boolean;
   closeModal: () => void;
+  checkInData?: any;
+  patientNo: string;
+  checkInID: string;
+  disabled?: boolean;
 }
 
-const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal }) => {
+const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInData, patientNo, checkInID, disabled }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [messages, setMessage] = useState('');
+  const [radiologyInput, setRadiologyInput] = useState(checkInData || {
+    provisionalDiagnosis: '',
+    clinicalNotes: '',
+    examinationRequired: '',
+    XRayRoomNo: '',
+    KV: '',
+    MA: '',
+    secs: '',
+    MAS: '',
+    MCHC: '',
+    contrastInjectedType: '',
+    contrastInjectedVolume: '',
+    contrastInjectedRate: '',
+    reaction: '',
+    remarks: '',
+    report: '',
+  });
+
+  const handleInputChange = (event: { persist: () => void; target: { name: any; value: any; type: any; checked?: boolean; } }) => {
+    event.persist();
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    setRadiologyInput((input: any) => ({
+      ...input,
+      [event.target.name]: value
+    }));
+  };
+  console.log('midway',radiologyInput);
+
+  const addRadiology = (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    requestClient.post(`/laboratory/radiology/add`, {
+      "checkinId": checkInID,
+      "patientId": patientNo,
+      "provisionalDiagnosis": radiologyInput.provisionalDiagnosis,
+      "clinicalNotes": radiologyInput.clinicalNotes,
+      "examinationRequired": radiologyInput.examinationRequired,
+      "XRayRoomNo": radiologyInput.XRayRoomNo,
+      "KV": radiologyInput.KV,
+      "MA": radiologyInput.MA,
+      "shortRemarks": radiologyInput.shortRemarks,
+      "secs": radiologyInput.secs,
+      "MAS": radiologyInput.MAS,
+      "MCHC": radiologyInput.MCHC,
+      "contrastInjectedType": radiologyInput.contrastInjectedType,
+      "contrastInjectedVolume": radiologyInput.contrastInjectedVolume,
+      "contrastInjectedRate": radiologyInput.contrastInjectedRate,
+      "reaction": radiologyInput.reaction,
+      "remarks": radiologyInput.remarks,
+      "report": radiologyInput.report
+    })
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setMessage(response.data.message);
+        } else {
+          setLoading(false);
+          setError(response.data.message);
+        }
+        setTimeout(() => {
+          closeModal();
+        }, 3000)
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.message)
+      })
+  };
+
+  const completeRadiology = (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log(radiologyInput);
+    
+    requestClient.put(`/laboratory/radiology/complete`, {
+      "checkinId": checkInID,
+      "patientId": patientNo,
+      "provisionalDiagnosis": radiologyInput.provisionalDiagnosis,
+      "clinicalNotes": radiologyInput.clinicalNotes,
+      "examinationRequired": radiologyInput.examinationRequired,
+      "XRayRoomNo": radiologyInput.XRayRoomNo,
+      "KV": radiologyInput.KV,
+      "MA": radiologyInput.MA,
+      "secs": radiologyInput.secs,
+      "shortRemarks": radiologyInput.shortRemarks,
+      "MAS": radiologyInput.MAS,
+      "MCHC": radiologyInput.MCHC,
+      "contrastInjectedType": radiologyInput.contrastInjectedType,
+      "contrastInjectedVolume": radiologyInput.contrastInjectedVolume,
+      "contrastInjectedRate": radiologyInput.contrastInjectedRate,
+      "reaction": radiologyInput.reaction,
+      "remarks": radiologyInput.remarks,
+      "report": radiologyInput.report
+    })
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setMessage(response.data.message);
+        } else {
+          setLoading(false);
+          setError(response.data.message);
+        }
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 3000);
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.message)
+      })
+  }
 
   return (
     <Modal
@@ -36,80 +157,189 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal }) => {
       <div className={styles.formDetailsInput}>
         <InputGroup horizontal>
           <Label>Clinical Notes</Label>
-          <TextArea />
+          <TextArea
+            disabled={disabled}
+            name="clinicalNotes"
+            onChange={handleInputChange}>
+            {checkInData?.clinicalNotes ?? radiologyInput.clinicalNotes}
+          </TextArea>
         </InputGroup>
         <InputGroup horizontal>
           <Label>Provisional Diagnosis</Label>
-          <Input />
+          <Input
+            disabled={disabled}
+            name="provisionalDiagnosis"
+            onChange={handleInputChange}
+            type="text"
+            value={checkInData?.provisionalDiagnosis ?? radiologyInput.provisionalDiagnosis}
+          />
         </InputGroup>
         <InputGroup horizontal>
           <Label>Examination Required</Label>
-          <Input />
+          <Input
+            disabled={disabled}
+            name="examinationRequired"
+            onChange={handleInputChange}
+            type="text"
+            value={checkInData?.examinationRequired ?? radiologyInput.examinationRequired}
+          />
         </InputGroup>
         <div className={styles.formDetailsGrid}>
           <div>
             <h4>Radiographer&apos;s note</h4>
             <InputGroup horizontal>
               <Label>X-Ray Room No</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="XRayRoomNo"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.XRayRoomNo ?? radiologyInput.XRayRoomNo}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>kv</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="KV"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.KV ?? radiologyInput.KV}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>ma</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="MA"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.MA ?? radiologyInput.MA}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>secs</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="secs"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.secs ?? radiologyInput.secs}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>mas</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="MAS"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.MAS ?? radiologyInput.MAS}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>MCHC (g/l)</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="MCHC"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.MCHC ?? radiologyInput.MCHC}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>Remarks</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="shortRemarks"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.shortRemarks ?? radiologyInput.shortRemarks}
+              />
             </InputGroup>
             <h4>CONTRAST INJECTED</h4>
             <InputGroup horizontal>
               <Label>Type</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="contrastInjectedType"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.contrastInjectedType ?? radiologyInput.contrastInjectedType}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>Volume</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="contrastInjectedVolume"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.contrastInjectedVolume ?? radiologyInput.contrastInjectedVolume}
+              />
             </InputGroup>
             <InputGroup horizontal>
               <Label>Rate</Label>
-              <Input />
+              <Input
+                disabled={disabled}
+                name="contrastInjectedRate"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.contrastInjectedRate ?? radiologyInput.contrastInjectedRate}
+              />
             </InputGroup>
             <h4>Reaction</h4>
             <div className={styles.formDetailsGrid}>
               <div>
                 <InputGroup horizontal>
                   <Label>NIL</Label>
-                  <CheckboxInput />
+                  <input
+                    disabled={disabled}
+                    type="radio"
+                    value="Nil"
+                    checked={checkInData?.reaction === "Nil" ?? radiologyInput.reaction === "Nil"}
+                    defaultChecked={checkInData?.reaction === "Nil" ?? radiologyInput.reaction === "Nil"}
+                    onChange={handleInputChange}
+                    name="reaction"
+                  />
                 </InputGroup>
                 <InputGroup horizontal>
                   <Label>moderate</Label>
-                  <CheckboxInput />
+                  <input
+                    disabled={disabled}
+                    type="radio"
+                    value="Moderate"
+                    checked={checkInData?.reaction === "Moderate" ?? radiologyInput.reaction === "Moderate"}
+                    defaultChecked={checkInData?.reaction === "Moderate" ?? radiologyInput.reaction === "Moderate"}
+                    onChange={handleInputChange}
+                    name="reaction"
+                  />
                 </InputGroup>
               </div>
               <div>
                 <InputGroup horizontal>
                   <Label>mild</Label>
-                  <CheckboxInput />
+                  <input
+                    disabled={disabled}
+                    type="radio"
+                    value="Mild"
+                    checked={checkInData?.reaction === "Mild" ?? radiologyInput.reaction === "Mild"}
+                    defaultChecked={checkInData?.reaction === "Mild" ?? radiologyInput.reaction === "Mild"}
+                    onChange={handleInputChange}
+                    name="reaction"
+                  />
                 </InputGroup>
                 <InputGroup horizontal>
                   <Label>severe</Label>
-                  <CheckboxInput />
+                  <input
+                    disabled={disabled}
+                    type="radio"
+                    value="Severe"
+                    checked={checkInData?.reaction === "Severe" ?? radiologyInput.reaction === "Severe"}
+                    defaultChecked={checkInData?.reaction === "Severe" ?? radiologyInput.reaction === "Severe"}
+                    onChange={handleInputChange}
+                    name="reaction"
+                  />
                 </InputGroup>
               </div>
             </div>
@@ -117,7 +347,13 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal }) => {
           <div>
             <h4>Radiologist&apos;s Report</h4>
             <InputGroup horizontal>
-              <TextArea cols={20} rows={40} />
+              <TextArea cols={20} rows={40}
+                disabled={disabled}
+                name="report"
+                onChange={handleInputChange}
+                type="text"
+                value={checkInData?.report ?? radiologyInput.report}
+              />
             </InputGroup>
           </div>
         </div>
@@ -125,17 +361,21 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal }) => {
         <br />
         <InputGroup horizontal>
           <Label>Remarks</Label>
-          <Input />
+          <Input
+            disabled={disabled}
+            name="remarks"
+            onChange={handleInputChange}
+            type="text"
+            value={checkInData?.remarks ?? radiologyInput.remarks}
+          />
         </InputGroup>
-        <InputGroup horizontal>
-          <Label>Name of Radiologist</Label>
-          <Input />
-        </InputGroup>
+        <FormErrors errors={error} />
+        <FormMessages messages={messages} />
       </div>
       <div>
-        <Button>Add</Button>
-        <Button>Complete</Button>
-        <Button>Cancel</Button>
+        <Button loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>
+        <Button loading={loading} onClick={(e) => completeRadiology(e)}>Complete</Button>
+        <Button onClick={closeModal}>Cancel</Button>
       </div>
     </Modal>
   )

@@ -35,6 +35,7 @@ const PhysicalCheckResult = (props: {
   checkedIn: Boolean;
 }) => {
   const { physicalExaminationResult } = props;
+  
   return (
     <CheckinItem
       checkedIn={props.checkedIn}
@@ -134,9 +135,9 @@ const PhysicalCheckResult = (props: {
                 label: "Prepuce/Vulva Examination",
                 value: physicalExaminationResult.prepuceVulvaExamination,
               },
-            ].map(({ label, value }) => {
+            ].map(({label, value}, index) => {
               return (
-                <li className="exam__result__item" key={1}>
+                <li className="exam__result__item" key={index}>
                   <span className="exam__result__item--name">{label}</span>
                   <span className="exam__result__item--value">{value}</span>
                 </li>

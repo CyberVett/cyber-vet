@@ -431,16 +431,6 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 </InputGroup>
               </div>
             </div>
-            <br />
-            <InputGroup horizontal>
-              <Label>Name of Technologist</Label>
-              <input
-                type="text"
-                value={formValues.nameOfTechnologist}
-                onChange={handleInputChange}
-                name="nameOfTechnologist"
-              />
-            </InputGroup>
           </div>
           <div>
             <Button onClick={() => onAdd(formValues, "create")}>Add</Button>

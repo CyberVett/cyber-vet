@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { AppointmentHeaders, LabCompletedHeaders } from 'config/constants';
-import Button, { ButtonTypes } from 'components/Button/button';
+import { LabCompletedHeaders } from 'config/constants';
+import Button from 'components/Button/button';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
@@ -13,6 +13,7 @@ import requestClient from 'lib/requestClient';
 
 import styles from '../style.module.scss';
 import dashboardStyles from '../../Dashboard/dashboard.module.scss';
+import { formatDate } from 'lib/utils';
 
 const CompletedLab: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
@@ -21,11 +22,11 @@ const CompletedLab: React.FunctionComponent = () => {
   useEffect(() => {
     requestClient.get('laboratory/completed')
       .then(response => {
-        console.log('appointmnt', response);
-
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
-          setData(response.data.data);
+          const { data: { data: { microbiology, rtk, parasitology, pathology } } } = response;
+          let newResult: any = [...microbiology, ...rtk, ...parasitology, ...pathology]
+          setData(newResult);
         }
       })
       .catch(error => {
@@ -33,28 +34,6 @@ const CompletedLab: React.FunctionComponent = () => {
         console.log(error);
       })
   }, []);
-
-  const deleteAppointment = (id: string, patientNo: string) => {
-    setLoading(true);
-    requestClient.delete(`patients/${patientNo}/appointment/${id}`)
-      .then(response => {
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          // toggleResponseModal(true);
-        } else {
-          // setError(response.data.message);
-        }
-        setTimeout(() => {
-          // toggleResponseModal(true);
-        }, 3000)
-      })
-      .catch(error => {
-        console.log(error);
-        
-        setLoading(false);
-        // setError(error.response.data.message)
-      })
-  };
 
   return (
     <div>
@@ -77,11 +56,12 @@ const CompletedLab: React.FunctionComponent = () => {
                 headers={LabCompletedHeaders}
                 renderRow={(row) => (
                   <tr key={row.id}>
-                    <td>{row?.appointmentDate}</td>
+                    <td>{row?.patientId}</td>
+                    <td>{row?.client?.title}. {row?.client?.firstName} {row?.client?.otherName} {row?.client?.lastName}</td>
                     <td>{row?.patient?.name}</td>
-                    <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
-                    <td>{row?.reason}</td>
-                    <td>{row?.status}</td>
+                    <td>{row?.requestBy?.title}. {row?.requestBy?.firstName} {row?.requestBy?.otherName} {row?.requestBy?.lastName}</td>
+                    <td>{row?.type}</td>
+                    <td>{formatDate(row?.createdAt)}</td>
                     <td><Button>Open</Button></td>
                   </tr>
                 )} /> : <h2 style={{textAlign: 'center'}}>No completed lab request Found</h2>

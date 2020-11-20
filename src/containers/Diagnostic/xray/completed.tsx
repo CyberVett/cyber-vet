@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { AppointmentHeaders, LabCompletedHeaders } from 'config/constants';
-import Button, { ButtonTypes } from 'components/Button/button';
+import { XRayHeaders } from 'config/constants';
+import Button from 'components/Button/button';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
@@ -13,16 +13,18 @@ import requestClient from 'lib/requestClient';
 
 import styles from '../style.module.scss';
 import dashboardStyles from '../../Dashboard/dashboard.module.scss';
+import { formatDate } from 'lib/utils';
+import RadiologyModal from 'containers/Patient/Radiology/radiologyModal';
 
 const CompletedXray: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toggleEditModal, setToggleEditModal] = useState(false);
+  const [checkInData, setCheckInData] = useState({});
 
   useEffect(() => {
     requestClient.get('laboratory/x-ray/completed')
       .then(response => {
-        console.log('appointmnt', response);
-
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           setData(response.data.data);
@@ -34,27 +36,10 @@ const CompletedXray: React.FunctionComponent = () => {
       })
   }, []);
 
-  const deleteAppointment = (id: string, patientNo: string) => {
-    setLoading(true);
-    requestClient.delete(`patients/${patientNo}/appointment/${id}`)
-      .then(response => {
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          // toggleResponseModal(true);
-        } else {
-          // setError(response.data.message);
-        }
-        setTimeout(() => {
-          // toggleResponseModal(true);
-        }, 3000)
-      })
-      .catch(error => {
-        console.log(error);
-        
-        setLoading(false);
-        // setError(error.response.data.message)
-      })
-  };
+  const showRadiology = (row: any) => {
+    setCheckInData(row);
+    setToggleEditModal(true);
+  }
 
   return (
     <div>
@@ -74,20 +59,28 @@ const CompletedXray: React.FunctionComponent = () => {
             data.length > 0 ?
               <Table
                 data={data}
-                headers={LabCompletedHeaders}
+                headers={XRayHeaders}
                 renderRow={(row) => (
                   <tr key={row.id}>
-                    <td>{row?.appointmentDate}</td>
+                    <td>{row?.patientId}</td>
+                    <td>{row?.client?.title}. {row?.client?.firstName} {row?.client?.otherName} {row?.client?.lastName}</td>
                     <td>{row?.patient?.name}</td>
-                    <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
-                    <td>{row?.reason}</td>
-                    <td>{row?.status}</td>
-                    <td><Button>Open</Button></td>
+                    <td>{row?.requestBy?.title}. {row?.requestBy?.firstName} {row?.requestBy?.otherName} {row?.requestBy?.lastName}</td>
+                    <td>{formatDate(row?.createdAt)}</td>
+                    <td><Button onClick={() => showRadiology(row)}>Open</Button></td>
                   </tr>
                 )} /> : <h2 style={{textAlign: 'center'}}>No completed x-ray Found</h2>
           }
         </Card>
       </div>
+      <RadiologyModal
+        checkInData={checkInData}
+        checkInID={checkInData.id}
+        closeModal={() => setToggleEditModal(false)}
+        disabled={true}
+        patientNo={checkInData.patientId}
+        visible={toggleEditModal}
+      />
     </div>
   )
 };

@@ -21,7 +21,7 @@ export interface IModalProps {
 const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientNo, modalData, isReview }) => {
   // @ts-ignore
   const { user } = useContext(AuthContext);
-  const [appointment, setAppointment] = useState<IAppointmentInput>(modalData ?? {
+  const [appointment, setAppointment] = useState<IAppointmentInput>(modalData || {
     allDay: false,
     appointmentDate: '',
     emailReminder: false,
@@ -44,7 +44,6 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       [event.target.name]: value
     }));
   };
-
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -78,6 +77,8 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
   const updateForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log(appointment);
+    
     requestClient.put(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay,
       "appointmentDate": appointment.appointmentDate,
@@ -105,7 +106,6 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
         setError(error.response.data.message)
       })
   }
-
   const handleSubmit = (e: FormEvent) => {
     if(isReview) {
       updateForm(e);
@@ -136,7 +136,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 onChange={handleInputChange}
                 required
                 type="date"
-                value={formatDateForCalendar(modalData?.appointmentDate) ?? formatDateForCalendar(appointment?.appointmentDate)}
+                value={formatDateForCalendar(modalData?.appointmentDate) || appointment?.appointmentDate}
               />
             </InputGroup>
             <InputGroup horizontal>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, InputGroup, Label, TextArea } from "components/Input/input";
+import { Input, InputGroup, Label } from "components/Input/input";
 import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 
@@ -133,11 +133,6 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
               >
                 {formValues.result}
               </textarea>{" "}
-            </InputGroup>
-            <br />
-            <InputGroup horizontal>
-              <Label>Name of Technologist</Label>
-              <Input />
             </InputGroup>
           </div>
           <div>

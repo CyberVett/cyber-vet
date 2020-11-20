@@ -182,8 +182,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="radio"
                     value="Good"
-                    checked={formValues.conditionOfSpecimen === "Fair"}
-                    defaultChecked={formValues.conditionOfSpecimen === "Fair"}
+                    checked={formValues.conditionOfSpecimen === "Good"}
+                    defaultChecked={formValues.conditionOfSpecimen === "Good"}
                     onChange={handleInputChange}
                     name="conditionOfSpecimen"
                   />
@@ -279,12 +279,6 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                 onChange={handleInputChange}
                 name="urineAnalysisResult"
               />{" "}
-            </InputGroup>
-            <br />
-            <br />
-            <InputGroup horizontal>
-              <Label>Name of Technologist</Label>
-              <Input />
             </InputGroup>
           </div>
           <div>

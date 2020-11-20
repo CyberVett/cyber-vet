@@ -3,6 +3,7 @@ import React from 'react'
 export const VaccinationSection = ({ data }) => {
 
   return (
+    data === null ? <h2 style={{textAlign: 'center'}}>No Vaccination Recorded</h2> :
     <div>
       <h4>
         Name:{" "}
