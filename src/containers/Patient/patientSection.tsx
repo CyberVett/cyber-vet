@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './patient.module.scss';
 
-export const PatientSection = ({ data }) => {
+export const PatientSection = ({ // @ts-ignore
+  data }) => {
 console.log(data);
 
   return (

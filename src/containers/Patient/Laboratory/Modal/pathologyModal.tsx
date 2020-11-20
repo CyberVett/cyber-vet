@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Input, InputGroup, Label, TextArea } from "components/Input/input";
+import React, { useEffect, useState } from "react";
+import { InputGroup, Label } from "components/Input/input";
 import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 import styles from "../laboratory.module.scss";
@@ -74,13 +74,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
   onCancel,
   onComplete,
 }) => {
-  const [formValues, setFormValues] = useState<IPathologyData>({ ...data });
+  // @ts-ignore
+  const [formValues, setFormValues] = useState<IPathologyData>({});
   const handleInputChange = (event: {
     persist: () => void;
     target: { name: any; value: any };
   }) => {
     event.persist();
+    // @ts-ignore
     if (Object.keys(formValues).includes(`${event.target.name}Required`)) {
+      // @ts-ignore
       formValues[
         `${event.target.name}Required`
       ] = !!`${event.target.name}Required`;
@@ -90,6 +93,10 @@ const AddPathologyModal: React.FC<IModalProps> = ({
       [event.target.name]: event.target.value,
     }));
   };
+
+  useEffect(() => {
+    setFormValues(data);
+  }, [data]);
 
   return (
     <Modal closeModal={closeModal} fullMode noTitle visible={visible}>
@@ -115,7 +122,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
               <Label>Case history</Label>
               <input
                 type="text"
-                value={formValues.caseHistory}
+                value={formValues?.caseHistory}
                 onChange={handleInputChange}
                 name="caseHistory"
               />
@@ -124,7 +131,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
               <Label>Tentative Diagnosis</Label>
               <input
                 type="text"
-                value={formValues.tentativeDiagnosis}
+                value={formValues?.tentativeDiagnosis}
                 onChange={handleInputChange}
                 name="tentativeDiagnosis"
               />
@@ -133,7 +140,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
               <Label>Type of sample submitted</Label>
               <input
                 type="text"
-                value={formValues.typeOfSampleSubmitted}
+                value={formValues?.typeOfSampleSubmitted}
                 onChange={handleInputChange}
                 name="typeOfSampleSubmitted"
               />
@@ -145,7 +152,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 name={"testsRequired"}
                 onChange={handleInputChange}
               >
-                {formValues.testsRequired}
+                {formValues?.testsRequired}
               </textarea>
             </InputGroup>
             {/* <InputGroup horizontal>
@@ -167,7 +174,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Label>
                   <input
                     type="text"
-                    value={formValues.RBC}
+                    value={formValues?.RBC}
                     onChange={handleInputChange}
                     name="RBC"
                   />
@@ -177,7 +184,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
 
                   <input
                     type="text"
-                    value={formValues.haemoglobin}
+                    value={formValues?.haemoglobin}
                     onChange={handleInputChange}
                     name="haemoglobin"
                   />
@@ -187,7 +194,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
 
                   <input
                     type="text"
-                    value={formValues.PCV}
+                    value={formValues?.PCV}
                     onChange={handleInputChange}
                     name="PCV"
                   />
@@ -197,7 +204,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
 
                   <input
                     type="text"
-                    value={formValues.MCV}
+                    value={formValues?.MCV}
                     onChange={handleInputChange}
                     name="MCV"
                   />
@@ -206,7 +213,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>MCH (pg)</Label>
                   <input
                     type="text"
-                    value={formValues.MCH}
+                    value={formValues?.MCH}
                     onChange={handleInputChange}
                     name="MCH"
                   />
@@ -215,7 +222,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>MCHC (g/l)</Label>
                   <input
                     type="text"
-                    value={formValues.MCHC}
+                    value={formValues?.MCHC}
                     onChange={handleInputChange}
                     name="MCHC"
                   />
@@ -226,7 +233,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Label>
                   <input
                     type="text"
-                    value={formValues.WBC}
+                    value={formValues?.WBC}
                     onChange={handleInputChange}
                     name="WBC"
                   />
@@ -235,7 +242,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Neutrophils (&#37;)</Label>
                   <input
                     type="text"
-                    value={formValues.neutrophils}
+                    value={formValues?.neutrophils}
                     onChange={handleInputChange}
                     name="neutrophils"
                   />
@@ -244,7 +251,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>bands (&#37;)</Label>
                   <input
                     type="text"
-                    value={formValues.bands}
+                    value={formValues?.bands}
                     onChange={handleInputChange}
                     name="bands"
                   />
@@ -253,7 +260,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Lymphocytes (&#37;)</Label>
                   <input
                     type="text"
-                    value={formValues.lymphocytes}
+                    value={formValues?.lymphocytes}
                     onChange={handleInputChange}
                     name="lymphocytes"
                   />
@@ -262,7 +269,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Monocytes (&#37;)</Label>
                   <input
                     type="text"
-                    value={formValues.monocytes}
+                    value={formValues?.monocytes}
                     onChange={handleInputChange}
                     name="monocytes"
                   />
@@ -271,7 +278,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Eosinophils (&#37;)</Label>
                   <input
                     type="text"
-                    value={formValues.eosinophils}
+                    value={formValues?.eosinophils}
                     onChange={handleInputChange}
                     name="eosinophils"
                   />
@@ -282,7 +289,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Label>
                   <input
                     type="text"
-                    value={formValues.platelets}
+                    value={formValues?.platelets}
                     onChange={handleInputChange}
                     name="platelets"
                   />
@@ -291,7 +298,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>MPV (fl)</Label>
                   <input
                     type="text"
-                    value={formValues.mpv}
+                    value={formValues?.mpv}
                     onChange={handleInputChange}
                     name="mpv"
                   />
@@ -303,7 +310,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Total Protein (g/dl)</Label>
                   <input
                     type="text"
-                    value={formValues.totalProtein}
+                    value={formValues?.totalProtein}
                     onChange={handleInputChange}
                     name="totalProtein"
                   />
@@ -312,7 +319,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Total bilirubin (&micro;mol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.totalBilirubin}
+                    value={formValues?.totalBilirubin}
                     onChange={handleInputChange}
                     name="totalBilirubin"
                   />
@@ -321,7 +328,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Conjugated bilirubin (μmol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.conjugatedBilirubin}
+                    value={formValues?.conjugatedBilirubin}
                     onChange={handleInputChange}
                     name="conjugatedBilirubin"
                   />
@@ -332,7 +339,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Label>
                   <input
                     type="text"
-                    value={formValues.sodium}
+                    value={formValues?.sodium}
                     onChange={handleInputChange}
                     name="sodium"
                   />
@@ -343,7 +350,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Label>
                   <input
                     type="text"
-                    value={formValues.potassium}
+                    value={formValues?.potassium}
                     onChange={handleInputChange}
                     name="potassium"
                   />
@@ -352,7 +359,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Creatinine (μmol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.creatinine}
+                    value={formValues?.creatinine}
                     onChange={handleInputChange}
                     name="creatinine"
                   />{" "}
@@ -361,7 +368,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>BUN (μmol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.BUN}
+                    value={formValues?.BUN}
                     onChange={handleInputChange}
                     name="BUN"
                   />{" "}
@@ -370,7 +377,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Albumin (g/dl)</Label>
                   <input
                     type="text"
-                    value={formValues.albumin}
+                    value={formValues?.albumin}
                     onChange={handleInputChange}
                     name="albumin"
                   />{" "}
@@ -379,7 +386,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Glucose (μmol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.glucose}
+                    value={formValues?.glucose}
                     onChange={handleInputChange}
                     name="glucose"
                   />
@@ -388,7 +395,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>SGOT/AST (IU/L)</Label>
                   <input
                     type="text"
-                    value={formValues.SGOTAST}
+                    value={formValues?.SGOTAST}
                     onChange={handleInputChange}
                     name="SGOTAST"
                   />
@@ -397,7 +404,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>SGPT/ALT (IUL)</Label>
                   <input
                     type="text"
-                    value={formValues.SGPTALT}
+                    value={formValues?.SGPTALT}
                     onChange={handleInputChange}
                     name="SGPTALT"
                   />
@@ -406,7 +413,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>ALP (IU/L)</Label>
                   <input
                     type="text"
-                    value={formValues.ALT}
+                    value={formValues?.ALT}
                     onChange={handleInputChange}
                     name="ALT"
                   />
@@ -415,7 +422,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Liquid Profile (μmol/l)</Label>
                   <input
                     type="text"
-                    value={formValues.liquidProfile}
+                    value={formValues?.liquidProfile}
                     onChange={handleInputChange}
                     name="liquidProfile"
                   />
@@ -424,7 +431,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   <Label>Other Specified</Label>
                   <input
                     type="text"
-                    value={formValues.other}
+                    value={formValues?.other}
                     onChange={handleInputChange}
                     name="other"
                   />

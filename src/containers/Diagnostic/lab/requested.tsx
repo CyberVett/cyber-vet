@@ -18,10 +18,12 @@ import MicrobiologyModal, { IMicrobiologyData } from 'containers/Patient/Laborat
 import ParasitologyModal, { IParasitologyData } from 'containers/Patient/Laboratory/Modal/parasitologyModal';
 import AddPathologyModal, { IPathologyData } from 'containers/Patient/Laboratory/Modal/pathologyModal';
 import RapidTestModal, { IRapidTestData } from 'containers/Patient/Laboratory/Modal/rapidTestModal';
+import { defaultParasitologyFields, defaultPathologyFields, defaultRapidTestFields } from 'containers/Patient/Laboratory/laboratoryTab';
 
 const RequestedLab: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  // @ts-ignore
   const [checkInData, setCheckInData] = useState({});
   const [togglePathology, setTogglePathology] = useState(false);
   const [toggleParasitology, setToggleParasitology] = useState(false);
@@ -32,6 +34,7 @@ const RequestedLab: React.FunctionComponent = () => {
   const [pathologyData, setPathologyData] = useState<IPathologyData>();
   const [microbiologyData, setMicrobiologyData] = useState<IMicrobiologyData>();
   const [rapidTestData, setRapidTestData] = useState<IRapidTestData>();
+  // @ts-ignore
   const [modalError, setModalError] = useState({});
 
 
@@ -41,6 +44,7 @@ const RequestedLab: React.FunctionComponent = () => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           const { data: { data: { microbiology, rtk, parasitology, pathology } } } = response;
+          // @ts-ignore
           let newArray: any = [...microbiology, ...rtk, ...parasitology, ...pathology];
           setData(newArray);
         }
@@ -74,16 +78,22 @@ const RequestedLab: React.FunctionComponent = () => {
     setModalLoading(true);
 
     let _data = {
+      // @ts-ignore
       checkinId: checkInData.id,
+      // @ts-ignore
       patientId: checkInData.patientId,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultPathologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
+      // @ts-ignore
       _data = { ..._data, ...data };
+      // @ts-ignore
       delete _data.nameOfTechnologist;
     }
     const url = `/laboratory/pathology/${
@@ -107,12 +117,16 @@ const RequestedLab: React.FunctionComponent = () => {
     setModalLoading(true);
 
     let _data = {
+      // @ts-ignore
       checkinId: checkInData.id,
+      // @ts-ignore
       patientId: checkInData.patientId,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultParasitologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -139,12 +153,16 @@ const RequestedLab: React.FunctionComponent = () => {
     setModalLoading(true);
 
     let _data = {
+      // @ts-ignore
       checkinId: checkInData.id,
+      // @ts-ignore
       patientId: checkInData.patientId,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
-      Object.keys(defaultMicrobiologyFields).map((key) => {
+      Object.keys(defaultParasitologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -171,12 +189,16 @@ const RequestedLab: React.FunctionComponent = () => {
     setModalLoading(true);
 
     let _data = {
+      // @ts-ignore
       checkinId: checkInData.id,
+      // @ts-ignore
       patientId: checkInData.patientId,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultRapidTestFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -235,6 +257,7 @@ const RequestedLab: React.FunctionComponent = () => {
       <MicrobiologyModal
         closeModal={() => setToggleMicrobiology(false)}
         visible={toggleMicrobiology}
+        // @ts-ignore
         data={microbiologyData}
         onAdd={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "create");
@@ -250,6 +273,7 @@ const RequestedLab: React.FunctionComponent = () => {
       <RapidTestModal
         closeModal={() => setToggleRapidtest(false)}
         visible={toggleRapidtest}
+        // @ts-ignore
         data={rapidTestData}
         onAdd={(data: IRapidTestData) => {
           saveRapidTest(data, "create");
@@ -265,6 +289,7 @@ const RequestedLab: React.FunctionComponent = () => {
       <AddPathologyModal
         closeModal={() => setTogglePathology(false)}
         visible={togglePathology}
+        // @ts-ignore
         data={pathologyData}
         onAdd={(data: IPathologyData) => {
           savePathology(data, "create");
@@ -280,6 +305,7 @@ const RequestedLab: React.FunctionComponent = () => {
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
         visible={toggleParasitology}
+        // @ts-ignore
         data={parasitologyData}
         onAdd={(data: IParasitologyData) => {
           saveParasitology(data, "create");

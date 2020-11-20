@@ -1,6 +1,8 @@
 import React from 'react'
 
-export const VaccinationSection = ({ data }) => {
+export const VaccinationSection = ({ 
+  // @ts-ignore
+  data }) => {
 
   return (
     data === null ? <h2 style={{textAlign: 'center'}}>No Vaccination Recorded</h2> :

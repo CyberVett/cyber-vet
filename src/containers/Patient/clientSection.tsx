@@ -1,6 +1,8 @@
 import React from 'react'
 
-export const ClientSection = ({ data }) => {
+export const ClientSection = ({ 
+  // @ts-ignore
+  data }) => {
 
   return (
     <div>

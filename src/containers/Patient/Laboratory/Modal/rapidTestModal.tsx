@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Input, InputGroup, Label, TextArea } from "components/Input/input";
+import React, { useEffect, useState } from "react";
+import { InputGroup, Label } from "components/Input/input";
 import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 import styles from "../laboratory.module.scss";
@@ -32,14 +32,17 @@ const RapidTestModal: React.FC<IModalProps> = ({
   onCancel,
   onComplete,
 }) => {
-  const [formValues, setFormValues] = useState<IRapidTestData>({ ...data });
+  // @ts-ignore
+  const [formValues, setFormValues] = useState<IRapidTestData>({});
   const handleInputChange = (event: {
     persist: () => void;
     target: { name: any; value: any };
   }) => {
     event.persist();
     let value = event.target.value;
+    // @ts-ignore
     if (event.target.type === "checkbox") {
+      // @ts-ignore
       value = event.target.checked;
     }
     setFormValues((formValues: any) => ({
@@ -47,6 +50,10 @@ const RapidTestModal: React.FC<IModalProps> = ({
       [event.target.name]: value,
     }));
   };
+
+  useEffect(() => {
+    setFormValues(data);
+  }, [data]);
 
   return (
     <Modal closeModal={closeModal} fullMode noTitle visible={visible}>
@@ -70,7 +77,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
               <Label>Type of Specimen</Label>
               <input
                 type="text"
-                value={formValues.typeOfSpecimen}
+                value={formValues?.typeOfSpecimen}
                 onChange={handleInputChange}
                 name="typeOfSpecimen"
               />{" "}
@@ -82,14 +89,14 @@ const RapidTestModal: React.FC<IModalProps> = ({
                 name={"clinicalDetails"}
                 onChange={handleInputChange}
               >
-                {formValues.clinicalDetails}
+                {formValues?.clinicalDetails}
               </textarea>{" "}
             </InputGroup>
             <InputGroup horizontal>
               <Label>Tentative Diagnosis</Label>
               <input
                 type="text"
-                value={formValues.tentativeDiagnosis}
+                value={formValues?.tentativeDiagnosis}
                 onChange={handleInputChange}
                 name="tentativeDiagnosis"
               />{" "}
@@ -98,7 +105,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
               <Label>Test(s) Required</Label>
               <input
                 type="text"
-                value={formValues.testsRequired}
+                value={formValues?.testsRequired}
                 onChange={handleInputChange}
                 name="testsRequired"
               />{" "}
@@ -110,7 +117,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
                 name={"result"}
                 onChange={handleInputChange}
               >
-                {formValues.result}
+                {formValues?.result}
               </textarea>{" "}
             </InputGroup>
           </div>

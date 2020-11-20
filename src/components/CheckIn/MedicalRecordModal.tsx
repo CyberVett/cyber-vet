@@ -107,6 +107,7 @@ const MedicalRecordModal = ({
             <MedicalBill
               onCancel={closeModal}
               title={currentModal}
+              // @ts-ignore
               data={{ medicalBill: results.medicalBill }}
               onAdd={(data: {}) => getResult(data, currentModal)}
             />

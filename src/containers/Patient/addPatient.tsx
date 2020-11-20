@@ -270,6 +270,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 <Input
                   autoComplete="true"
                   onChange={handleInputChange}
+                  // @ts-ignore
                   onBlur={setAge(getAge(patientInput.dob))}
                   name="dob"
                   required

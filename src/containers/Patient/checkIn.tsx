@@ -625,7 +625,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
               <PatientDetails patientData={patientData} />
               <div style={{ padding: "1rem" }}>
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
-                <p>{patientData?.treatmentWarnings}</p>
+                <p>{// @ts-ignore
+                patientData?.treatmentWarnings}</p>
               </div>
               <FormErrors errors={modalError} />
               {checkedIn && (
@@ -635,7 +636,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 >
                   <>
                     {"Client Details" === activeCheckedInItem && (
-                      <ClientSection data={patientData?.client} />
+                      <ClientSection data={
+                        // @ts-ignore
+                        patientData?.client} />
                     )}
 
                     {"Patient Details" === activeCheckedInItem && (
@@ -644,13 +647,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                     {"Vaccination" === activeCheckedInItem && (
                       <VaccinationSection
-                        data={checkInData?.vaccination}
+                        data={
+                          // @ts-ignore
+                          checkInData?.vaccination}
                       />
                     )}
 
                     {"Medical Records" === activeCheckedInItem && (
                       <MedicalRecordsItems
-                        checkedIn={checkInData?.checkIn}
+                        checkedIn={
+                          // @ts-ignore
+                          checkInData?.checkIn}
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
                         {medicalReports.chiefComplain && (
@@ -845,7 +852,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <Appointment
                         // @ts-ignore
                         appointments={patientData?.appointments}
-                        patientNo={patientData.id}
+                        patientNo={
+                          // @ts-ignore
+                          patientData.id}
                       />
                     )}
                   </>

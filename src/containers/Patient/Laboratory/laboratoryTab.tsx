@@ -2,6 +2,7 @@ import Button, { ButtonTypes } from "components/Button/button";
 import CheckinItem from "components/CheckIn/CheckinItem";
 import { InputGroup, Label } from "components/Input/input";
 import requestClient from "lib/requestClient";
+import { formatDate } from "lib/utils";
 import React, { useEffect, useState } from "react";
 
 import styles from "./laboratory.module.scss";
@@ -14,7 +15,7 @@ import ParasitologyModal, {
 import AddPathologyModal, { IPathologyData } from "./Modal/pathologyModal";
 import RapidTestModal, { IRapidTestData } from "./Modal/rapidTestModal";
 
-const defaultPathologyFields: IPathologyData = {
+export const defaultPathologyFields: IPathologyData = {
   tentativeDiagnosis: "",
   caseHistory: "",
   testsRequired: "",
@@ -64,7 +65,7 @@ const defaultPathologyFields: IPathologyData = {
   nameOfTechnologist: "",
 };
 
-const defaultParasitologyFields: IParasitologyData = {
+export const defaultParasitologyFields: IParasitologyData = {
   tentativeDiagnosis: "",
   caseHistory: "",
   testsRequired: "",
@@ -82,7 +83,7 @@ const defaultParasitologyFields: IParasitologyData = {
   urineAnalysisResult: "",
 };
 
-const defaultMicrobiologyFields: IMicrobiologyData = {
+export const defaultMicrobiologyFields: IMicrobiologyData = {
   natureOfSpecimen: "",
   clinicalDetails: "",
   tentativeDiagnosis: "",
@@ -92,7 +93,7 @@ const defaultMicrobiologyFields: IMicrobiologyData = {
   dateOfSubmission: "",
 };
 
-const defaultRapidTestFields: IRapidTestData = {
+export const defaultRapidTestFields: IRapidTestData = {
   typeOfSpecimen: "",
   clinicalDetails: "",
   tentativeDiagnosis: "",
@@ -112,6 +113,7 @@ const LaboratoryTab = ({
   const [toggleMicrobiology, setToggleMicrobiology] = useState(false);
   const [toggleRapidtest, setToggleRapidtest] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
+  // @ts-ignore
   const [modalError, setModalError] = useState({});
 
   const [parasitologyData, setParasitologyData] = useState<IParasitologyData>(
@@ -144,12 +146,15 @@ const LaboratoryTab = ({
       patientId: patientData.id,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultPathologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
       _data = { ..._data, ...data };
+      // @ts-ignore
       delete _data.nameOfTechnologist;
     }
     const url = `/laboratory/pathology/${
@@ -161,6 +166,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setTogglePathology(false);
+          // @ts-ignore
           setPathologyData(_data);
         }
       })
@@ -178,8 +184,10 @@ const LaboratoryTab = ({
       patientId: patientData.id,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultParasitologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -194,6 +202,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setToggleParasitology(false);
+          // @ts-ignore
           setParasitologyData(_data);
         }
       })
@@ -211,8 +220,10 @@ const LaboratoryTab = ({
       patientId: patientData.id,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultMicrobiologyFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -227,6 +238,7 @@ const LaboratoryTab = ({
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setToggleMicrobiology(false);
+          // @ts-ignore
           setMicrobiologyData(_data);
         }
       })
@@ -244,8 +256,10 @@ const LaboratoryTab = ({
       patientId: patientData.id,
     };
     if (method !== "create") {
+      // @ts-ignore
       delete _data.clientId;
       Object.keys(defaultRapidTestFields).map((key) => {
+        // @ts-ignore
         _data[key] = data[key];
       });
     } else {
@@ -259,6 +273,7 @@ const LaboratoryTab = ({
       .then((response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
+          // @ts-ignore
           setRapidTestData(_data);
           setToggleRapidtest(false);
         }
@@ -486,6 +501,7 @@ const LaboratoryTab = ({
                   <td>
                     <input
                       type="checkbox"
+                      // @ts-ignore
                       defaultChecked={pathologyData.totalBilirubin}
                     />
                     Total bilirubin (μmol/l)
@@ -496,6 +512,7 @@ const LaboratoryTab = ({
                   <td>
                     <input
                       type="checkbox"
+                      // @ts-ignore
                       defaultChecked={pathologyData.conjugatedBilirubinRequired}
                     />
                     Conjugated bilirubin (μmol/l)
@@ -506,6 +523,7 @@ const LaboratoryTab = ({
                   <td>
                     <input
                       type="checkbox"
+                      // @ts-ignore
                       defaultChecked={pathologyData.totalBilirubin}
                     />
                     MCH (pg)
@@ -735,37 +753,41 @@ const LaboratoryTab = ({
           <table className={styles.overviewTable}>
             <tr>
               <td>Nature of specimen</td>
-              <td>{microbiologyData.natureOfSpecimen}</td>
+              <td>{microbiologyData?.natureOfSpecimen}</td>
             </tr>
             <tr>
               <td>Date of collection</td>
-              <td>{microbiologyData.dateOfCollection}</td>
+              <td>{
+                // @ts-ignore
+              formatDate(microbiologyData?.dateOfCollection)}</td>
             </tr>
             <tr>
               <td>Date of Submission</td>
-              <td>{microbiologyData.dateOfSubmission}</td>
+              <td>{
+                // @ts-ignore
+              formatDate(microbiologyData?.dateOfSubmission)}</td>
             </tr>
             <tr>
               <td>Clinical Details</td>
-              <td>{microbiologyData.clinicalDetails}</td>
+              <td>{microbiologyData?.clinicalDetails}</td>
             </tr>
             <tr>
               <td>Tentative Diagnosis</td>
-              <td>{microbiologyData.tentativeDiagnosis}</td>
+              <td>{microbiologyData?.tentativeDiagnosis}</td>
             </tr>
             <tr>
               <td>Tests Required</td>
-              <td>{microbiologyData.testsRequired}</td>
+              <td>{microbiologyData?.testsRequired}</td>
             </tr>
             <tr>
               <td>Result</td>
-              <td>{microbiologyData.result}</td>
+              <td>{microbiologyData?.result}</td>
             </tr>
           </table>
         </CheckinItem>
       )}
 
-      {(rapidTestData.clinicalDetails || "") && (
+      {(rapidTestData?.clinicalDetails || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
@@ -779,23 +801,23 @@ const LaboratoryTab = ({
           <table className={styles.overviewTable}>
             <tr>
               <td>Type of specimen</td>
-              <td>{rapidTestData.typeOfSpecimen}</td>
+              <td>{rapidTestData?.typeOfSpecimen}</td>
             </tr>
             <tr>
               <td>Clinical Details</td>
-              <td>{rapidTestData.clinicalDetails}</td>
+              <td>{rapidTestData?.clinicalDetails}</td>
             </tr>
             <tr>
               <td>Tentative Diagnosis</td>
-              <td>{rapidTestData.tentativeDiagnosis}</td>
+              <td>{rapidTestData?.tentativeDiagnosis}</td>
             </tr>
             <tr>
               <td>Tests Required</td>
-              <td>{rapidTestData.testsRequired}</td>
+              <td>{rapidTestData?.testsRequired}</td>
             </tr>
             <tr>
               <td>Result</td>
-              <td>{rapidTestData.result}</td>
+              <td>{rapidTestData?.result}</td>
             </tr>
           </table>
         </CheckinItem>

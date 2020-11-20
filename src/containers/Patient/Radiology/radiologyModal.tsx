@@ -57,7 +57,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     setRadiologyInput(checkInData);
   }, [checkInData]);
 
-  const addRadiology = (e: FormEvent) => {
+  const addRadiology = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     requestClient.post(`/laboratory/radiology/add`, {
@@ -98,7 +98,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
       })
   };
 
-  const completeRadiology = (e: FormEvent) => {
+  const completeRadiology = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);    
     requestClient.put(`/laboratory/radiology/complete`, {
@@ -358,7 +358,9 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 disabled={disabled}
                 name="report"
                 onChange={handleInputChange}
+                // @ts-ignore
                 type="text"
+                // @ts-ignore
                 value={radiologyInput?.report}
               />
             </InputGroup>

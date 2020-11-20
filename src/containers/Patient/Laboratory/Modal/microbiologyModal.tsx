@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Input, InputGroup, Label } from "components/Input/input";
+import React, { useEffect, useState } from "react";
+import { InputGroup, Label } from "components/Input/input";
 import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 
 import styles from "../laboratory.module.scss";
 import Button from "components/Button/button";
+import { formatDateForCalendar } from "lib/utils";
 
 export interface IModalProps {
   visible: boolean;
@@ -35,15 +36,18 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
   onCancel,
   onComplete,
 }) => {
-  const newData = data;
-  const [formValues, setFormValues] = useState<IMicrobiologyData>(newData);
+  // @ts-ignore
+  const [formValues, setFormValues] = useState<IMicrobiologyData>({});
   const handleInputChange = (event: {
     persist: () => void;
+    // @ts-ignore
     target: { name: any; value: any };
   }) => {
     event.persist();
     let value = event.target.value;
+    // @ts-ignore
     if (event.target.type === "checkbox") {
+      // @ts-ignore
       value = event.target.checked;
     }
     setFormValues((formValues: any) => ({
@@ -51,6 +55,11 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
       [event.target.name]: value,
     }));
   };
+
+  useEffect(() => {
+    setFormValues(data);
+  }, [data]);
+
   return (
     <Modal closeModal={closeModal} fullMode noTitle visible={visible}>
       {modalLoading ? (
@@ -81,8 +90,10 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
             <InputGroup horizontal>
               <Label>Date of Collection</Label>
               <input
-                type="text"
-                value={formValues?.dateOfCollection}
+                type="date"
+                value={
+                  // @ts-ignore
+                  formatDateForCalendar(formValues?.dateOfCollection)}
                 onChange={handleInputChange}
                 name="dateOfCollection"
               />
@@ -90,8 +101,10 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
             <InputGroup horizontal>
               <Label>Date of Submission</Label>
               <input
-                type="text"
-                value={formValues?.dateOfSubmission}
+                type="date"
+                value={
+                  // @ts-ignore
+                  formatDateForCalendar(formValues?.dateOfSubmission)}
                 onChange={handleInputChange}
                 name="dateOfSubmission"
               />

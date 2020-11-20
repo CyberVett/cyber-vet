@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  RadioInput,
-  Input,
   InputGroup,
   Label,
-  TextArea,
 } from "components/Input/input";
 import Modal from "components/Modal/modal";
 
@@ -49,14 +46,19 @@ const ParasitologyModal: React.FC<IModalProps> = ({
   onCancel,
   onComplete,
 }) => {
-  const [formValues, setFormValues] = useState<IParasitologyData>({ ...data });
+  // @ts-ignore
+  const [formValues, setFormValues] = useState<IParasitologyData>({});
   const handleInputChange = (event: {
     persist: () => void;
+    // @ts-ignore
     target: { name: any; value: any };
   }) => {
     event.persist();
+    // @ts-ignore
     let value = event.target.value;
+    // @ts-ignore
     if (event.target.type === "checkbox") {
+      // @ts-ignore
       value = event.target.checked;
     }
     setFormValues((formValues: any) => ({
@@ -64,6 +66,10 @@ const ParasitologyModal: React.FC<IModalProps> = ({
       [event.target.name]: value,
     }));
   };
+
+  useEffect(() => {
+    setFormValues(data);
+  }, [data]);
 
   return (
     <Modal closeModal={closeModal} fullMode noTitle visible={visible}>
@@ -87,7 +93,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Case history</Label>
               <input
                 type="text"
-                value={formValues.caseHistory}
+                value={formValues?.caseHistory}
                 onChange={handleInputChange}
                 name="caseHistory"
               />
@@ -96,7 +102,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Tentative Diagnosis</Label>
               <input
                 type="text"
-                value={formValues.tentativeDiagnosis}
+                value={formValues?.tentativeDiagnosis}
                 onChange={handleInputChange}
                 name="tentativeDiagnosis"
               />
@@ -106,7 +112,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Test(s) Required</Label>
               <input
                 type="text"
-                value={formValues.testsRequired}
+                value={formValues?.testsRequired}
                 onChange={handleInputChange}
                 name="testsRequired"
               />
@@ -124,8 +130,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <Label>Blood</Label>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues.bloodSampleSubmitted === true}
-                    checked={formValues.bloodSampleSubmitted === true}
+                    defaultChecked={formValues?.bloodSampleSubmitted === true}
+                    checked={formValues?.bloodSampleSubmitted === true}
                     onChange={handleInputChange}
                     name="bloodSampleSubmitted"
                   />
@@ -134,8 +140,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <Label>Urine</Label>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues.urineSampleSubmitted === true}
-                    checked={formValues.urineSampleSubmitted === true}
+                    defaultChecked={formValues?.urineSampleSubmitted === true}
+                    checked={formValues?.urineSampleSubmitted === true}
                     onChange={handleInputChange}
                     name="urineSampleSubmitted"
                   />
@@ -144,8 +150,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <Label>Stool</Label>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues.stoolSampleSubmitted === true}
-                    checked={formValues.stoolSampleSubmitted === true}
+                    defaultChecked={formValues?.stoolSampleSubmitted === true}
+                    checked={formValues?.stoolSampleSubmitted === true}
                     onChange={handleInputChange}
                     name="stoolSampleSubmitted"
                   />
@@ -155,10 +161,10 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="checkbox"
                     defaultChecked={["on", true].includes(
-                      formValues.skinScrappingSampleSubmitted
+                      formValues?.skinScrappingSampleSubmitted
                     )}
                     checked={["on", true].includes(
-                      formValues.skinScrappingSampleSubmitted
+                      formValues?.skinScrappingSampleSubmitted
                     )}
                     onChange={handleInputChange}
                     name="skinScrappingSampleSubmitted"
@@ -168,8 +174,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <Label>Other</Label>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues.urineSampleSubmitted === true}
-                    checked={formValues.otherSampleSubmitted === true}
+                    defaultChecked={formValues?.urineSampleSubmitted === true}
+                    checked={formValues?.otherSampleSubmitted === true}
                     onChange={handleInputChange}
                     name="otherSampleSubmitted"
                   />
@@ -182,8 +188,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="radio"
                     value="Good"
-                    checked={formValues.conditionOfSpecimen === "Good"}
-                    defaultChecked={formValues.conditionOfSpecimen === "Good"}
+                    checked={formValues?.conditionOfSpecimen === "Good"}
+                    defaultChecked={formValues?.conditionOfSpecimen === "Good"}
                     onChange={handleInputChange}
                     name="conditionOfSpecimen"
                   />
@@ -193,8 +199,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="radio"
                     value="Fair"
-                    checked={formValues.conditionOfSpecimen === "Fair"}
-                    defaultChecked={formValues.conditionOfSpecimen === "Fair"}
+                    checked={formValues?.conditionOfSpecimen === "Fair"}
+                    defaultChecked={formValues?.conditionOfSpecimen === "Fair"}
                     onChange={handleInputChange}
                     name="conditionOfSpecimen"
                   />
@@ -204,8 +210,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="radio"
                     value="Poor"
-                    checked={formValues.conditionOfSpecimen === "Poor"}
-                    defaultChecked={formValues.conditionOfSpecimen === "Poor"}
+                    checked={formValues?.conditionOfSpecimen === "Poor"}
+                    defaultChecked={formValues?.conditionOfSpecimen === "Poor"}
                     onChange={handleInputChange}
                     name="conditionOfSpecimen"
                   />
@@ -215,8 +221,8 @@ const ParasitologyModal: React.FC<IModalProps> = ({
                   <input
                     type="radio"
                     value="Other"
-                    checked={formValues.conditionOfSpecimen === "Other"}
-                    defaultChecked={formValues.conditionOfSpecimen === "Other"}
+                    checked={formValues?.conditionOfSpecimen === "Other"}
+                    defaultChecked={formValues?.conditionOfSpecimen === "Other"}
                     onChange={handleInputChange}
                     name="conditionOfSpecimen"
                   />
@@ -228,7 +234,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Blood</Label>
               <input
                 type="text"
-                value={formValues.bloodResult}
+                value={formValues?.bloodResult}
                 onChange={handleInputChange}
                 name="bloodResult"
               />
@@ -238,17 +244,16 @@ const ParasitologyModal: React.FC<IModalProps> = ({
 
               <input
                 type="text"
-                value={formValues.PCVResult}
+                value={formValues?.PCVResult}
                 onChange={handleInputChange}
                 name="PCVResult"
               />
             </InputGroup>
             <InputGroup horizontal>
               <Label>Wet mount/Blood film/ Haemoparasite</Label>
-
               <input
                 type="text"
-                value={formValues.wetMountResult}
+                value={formValues?.wetMountResult}
                 onChange={handleInputChange}
                 name="wetMountResult"
               />
@@ -257,7 +262,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Skin Scrapping</Label>
               <input
                 type="text"
-                value={formValues.skinScrappingResult}
+                value={formValues?.skinScrappingResult}
                 onChange={handleInputChange}
                 name="skinScrappingResult"
               />
@@ -266,7 +271,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Feacal analysis - Egg/ Oocyst/Parasite Count</Label>
               <input
                 type="text"
-                value={formValues.facialAnalysisResult}
+                value={formValues?.facialAnalysisResult}
                 onChange={handleInputChange}
                 name="facialAnalysisResult"
               />
@@ -275,7 +280,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <Label>Urine Analysis</Label>
               <input
                 type="text"
-                value={formValues.urineAnalysisResult}
+                value={formValues?.urineAnalysisResult}
                 onChange={handleInputChange}
                 name="urineAnalysisResult"
               />{" "}

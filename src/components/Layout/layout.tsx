@@ -14,7 +14,6 @@ import { ReactComponent as AvatarIcon } from 'assets/icons/avatar.svg';
 import { ReactComponent as WalletIcon } from 'assets/icons/wallet.svg';
 import { ReactComponent as MicroscopeIcon } from 'assets/icons/microscope.svg';
 import { ReactComponent as LogoIcon } from 'assets/icons/logo-small.svg';
-import { ReactComponent as SettingIcon } from 'assets/icons/setting.svg';
 import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg';
 import { ReactComponent as DropDownIcon } from 'assets/icons/downArrow.svg';
 import { ReactComponent as DashboardIcon } from 'assets/icons/dashboard.svg';

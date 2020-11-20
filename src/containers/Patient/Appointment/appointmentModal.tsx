@@ -7,7 +7,7 @@ import Button from 'components/Button/button';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
-import { formatDateForCalendar } from 'lib/utils';
+import { formatDate, formatDateForCalendar } from 'lib/utils';
 
 export interface IModalProps {
   visible: boolean;
@@ -54,7 +54,8 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     setLoading(true);
     requestClient.post(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay,
-      "appointmentDate": appointment.appointmentDate,
+      // @ts-ignore
+      "appointmentDate": formatDate(appointment.appointmentDate),
       "emailReminder": appointment.emailReminder,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
@@ -86,7 +87,8 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     
     requestClient.put(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay,
-      "appointmentDate": appointment.appointmentDate,
+      // @ts-ignore
+      "appointmentDate": formatDate(appointment.appointmentDate),
       "emailReminder": appointment.emailReminder,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
@@ -141,6 +143,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 onChange={handleInputChange}
                 required
                 type="date"
+                // @ts-ignore
                 value={modalData ? formatDateForCalendar(appointment?.appointmentDate) : appointment?.appointmentDate}
               />
             </InputGroup>

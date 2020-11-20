@@ -110,12 +110,15 @@ const VacinationReport = (props: {
   };
 
   useEffect(() => {
+    // @ts-ignore
     const totalPrice = formValues.services.reduce((acc, val) => {
       return acc + parseInt(val.price);
     }, 0);
-
-    const balance = totalPrice - formValues.paid;
+    // @ts-ignore
+    const balance: number = totalPrice - formValues.paid;
+    // @ts-ignore
     if (balance !== formValues.balance) {
+      // @ts-ignore
       setFormValues({ ...formValues, balance: balance });
     }
   }, [formValues]);
