@@ -30,7 +30,9 @@ import { VaccinationSection } from "./VaccinationSection";
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
-  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<IphysicalExamination>({
+  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
+    IphysicalExamination
+  >({
     rectalTemperature: "",
     respiratoryRate: "",
     pulseRate: "",
@@ -59,10 +61,87 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [showMedicalModal, setShowMedicalModal] = useState(false);
   const [medicalContentState, setMedicalContentState] = useState("");
 
-  const [patientData, setPatientData] = useState({});
+  const [patientData, setPatientData] = useState({ checkins: [] });
   const [loading, setLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState("");
+
+  const [checkinDataIndex, setCheckinDataIndex] = useState(0);
+
+  const populateCheckInData = (checkinData: any) => {
+    if (checkinData) {
+      setCheckedIn(true);
+      setCheckIndata(checkinData);
+      let _medicalReport = { ...medicalReports };
+      if (checkinData.physicalExamination) {
+        setPhysicalExaminationResult(checkinData.physicalExamination);
+      }
+
+      if (checkinData.chiefComplain) {
+        _medicalReport = {
+          ..._medicalReport,
+          chiefComplain: checkinData.chiefComplain.chiefComplain,
+        };
+      }
+
+      if (checkinData.diagnosis) {
+        _medicalReport = {
+          ..._medicalReport,
+          tentativeDiagnosis: {
+            tentative: checkinData.diagnosis.tentativeDiagnosis,
+            differential: checkinData.diagnosis.differentialDiagnosis,
+          },
+        };
+      }
+      if (checkinData.clinicalSigns) {
+        _medicalReport = {
+          ..._medicalReport,
+          clinicalSigns: checkinData.clinicalSigns.signs,
+        };
+      }
+      if (checkinData.diagnosticTest) {
+        _medicalReport = {
+          ..._medicalReport,
+          diagnosticTest: checkinData.diagnosticTest.test,
+        };
+      }
+      if (checkinData.finalDiagnosis) {
+        _medicalReport = {
+          ..._medicalReport,
+          finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
+        };
+      }
+
+      if (checkinData.treatment) {
+        _medicalReport = {
+          ..._medicalReport,
+          treatment: checkinData.treatment.treatment,
+        };
+      }
+
+      if (checkinData.notes) {
+        _medicalReport = {
+          ..._medicalReport,
+          note: checkinData.notes.note,
+        };
+      }
+
+      if (checkinData.vaccination) {
+        _medicalReport = {
+          ..._medicalReport,
+          vaccination: {
+            type: checkinData.vaccination.vaccinationType,
+            name: checkinData.vaccination.nameOfVaccine,
+            dosage: checkinData.vaccination.dosage,
+            nextDate: checkinData.vaccination.dateOfNextShot,
+            smsReminder: checkinData.vaccination.smsReminder,
+            emailReminder: checkinData.vaccination.emailReminder,
+          },
+        };
+      }
+      setMedicalReports(_medicalReport);
+    }
+  };
 
   useEffect(() => {
     requestClient
@@ -72,79 +151,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         if (response.status === 200 && response.statusText === "OK") {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
+          setCheckinDataIndex(0);
+          setCheckIndata(checkins[checkinDataIndex]);
           const checkinData = checkins.find((checkin: any) => checkin.checkIn);
-          if (checkinData) {
-            setCheckedIn(true);
-            setCheckIndata(checkinData);
-            let _medicalReport = { ...medicalReports };
-            if (checkinData.physicalExamination) {
-              setPhysicalExaminationResult(checkinData.physicalExamination);
-            }
-
-            if (checkinData.chiefComplain) {
-              _medicalReport = {
-                ..._medicalReport,
-                chiefComplain: checkinData.chiefComplain.chiefComplain,
-              };
-            }
-
-            if (checkinData.diagnosis) {
-              _medicalReport = {
-                ..._medicalReport,
-                tentativeDiagnosis: {
-                  tentative: checkinData.diagnosis.tentativeDiagnosis,
-                  differential: checkinData.diagnosis.differentialDiagnosis,
-                },
-              };
-            }
-            if (checkinData.clinicalSigns) {
-              _medicalReport = {
-                ..._medicalReport,
-                clinicalSigns: checkinData.clinicalSigns.signs,
-              };
-            }
-            if (checkinData.diagnosticTest) {
-              _medicalReport = {
-                ..._medicalReport,
-                diagnosticTest: checkinData.diagnosticTest.test,
-              };
-            }
-            if (checkinData.finalDiagnosis) {
-              _medicalReport = {
-                ..._medicalReport,
-                finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
-              };
-            }
-
-            if (checkinData.treatment) {
-              _medicalReport = {
-                ..._medicalReport,
-                treatment: checkinData.treatment.treatment,
-              };
-            }
-
-            if (checkinData.notes) {
-              _medicalReport = {
-                ..._medicalReport,
-                note: checkinData.notes.note,
-              };
-            }
-
-            if (checkinData.vaccination) {
-              _medicalReport = {
-                ..._medicalReport,
-                vaccination: {
-                  type: checkinData.vaccination.vaccinationType,
-                  name: checkinData.vaccination.nameOfVaccine,
-                  dosage: checkinData.vaccination.dosage,
-                  nextDate: checkinData.vaccination.dateOfNextShot,
-                  smsReminder: checkinData.vaccination.smsReminder,
-                  emailReminder: checkinData.vaccination.emailReminder,
-                },
-              };
-            }
-            setMedicalReports(_medicalReport);
-          }
+          populateCheckInData(checkinData);
         }
       })
       .catch((error) => {
@@ -284,22 +294,25 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
   const checkOut = (id: string) => {
     setLoading(true);
-    requestClient.put(`/patients/${id}/check-out`)
+    requestClient
+      .put(`/patients/${id}/check-out`)
       .then((response) => {
         console.log(response);
 
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 && response.statusText === "OK") {
           Router.push(`/app/dashboard`);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setLoading(false);
         console.log(error);
-      })
-  }
+      });
+  };
 
-  const [activeCheckedInItem, setActiveCheckedInItem] = useState("Medical Records");
+  const [activeCheckedInItem, setActiveCheckedInItem] = useState(
+    "Medical Records"
+  );
   const handleActiveCheckedInItemChange = (item: string) => {
     setActiveCheckedInItem(item);
   };
@@ -453,10 +466,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     setShowMedicalModal(true);
   };
 
-  // const handleEditTreatment = () => {
-  //   setMedicalContentState("Treatment");
-  //   setShowMedicalModal(true);
-  // };
+  const handleEditTreatment = () => {
+    setMedicalContentState("Treatment");
+    setShowMedicalModal(true);
+  };
 
   const handleEditFinalDiagnosis = () => {
     setMedicalContentState("Final Diagnosis");
@@ -527,308 +540,368 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   return loading ? (
     <Loader />
   ) : (
-      <div className="patient__checkin">
-        <div className="patient__checkin__container">
-          <div className="patient__checkin__container--header">
-            <h1>Patient Check In</h1>
-          </div>
-          <div className="patient__checkin__container--content">
-            <div className="checkin__card">
-              <div className="checkin__card--header">
-                <span>Signalment</span>
-                <span>{`Patient No: ${
-                  // @ts-ignore
-                  patientData.id}`}</span>
-              </div>
-              <div className="checkin__card--body">
-                <PatientDetails patientData={patientData} />
-                <div style={{ padding: "1rem" }}>
-                  <p style={{ color: "red" }}>Treatment warnings and allergies</p>
-                <p>{patientData?.treatmentWarnings}</p>
-                </div>
-                <FormErrors errors={modalError} />
-                {checkedIn && (
-                  <CheckedinItemsDisplay
-                    activeNavItem={activeCheckedInItem}
-                    onActiveItemChange={handleActiveCheckedInItemChange}
-                  >
-                    <>
-                      {"Client Details" === activeCheckedInItem && (
-                        <ClientSection data={patientData?.client} />
-                      )}
-
-                      {"Patient Details" === activeCheckedInItem && (
-                        <PatientSection data={patientData} />
-                      )}
-
-                      {"Vaccination" === activeCheckedInItem && (
-                        <VaccinationSection data={patientData?.checkins[0].vaccination} />
-                      )}
-
-                      {"Medical Records" === activeCheckedInItem && (
-                        <MedicalRecordsItems
-                          onRecordItemTypeUpdate={handleMedicalItemUpdate}
-                        >
-                          {medicalReports.chiefComplain && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={handleDeleteMedicalReport}
-                              onEdit={handleEditMedicalReport}
-                              title="Chief Complain"
-                            >
-                              {medicalReports.chiefComplain}
-                            </CheckinItem>
-                          )}
-
-                          {physicalExaminationResult &&
-                            physicalExaminationResult.respiratoryRate && (
-                              <PhysicalCheckResult
-                                checkedIn={checkedIn}
-                                onAddNew={() => setShowModal(true)}
-                                onEdit={() => setShowModal(true)}
-                                onDelete={() =>
-                                  handleDeleteItem("physicalExaminationResult")
-                                }
-                                physicalExaminationResult={
-                                  physicalExaminationResult
-                                }
-                                showModal={() => setShowModal(true)}
-                              />
-                            )}
-                          {(medicalReports.clinicalSigns.length || "") && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={() =>
-                                handleDeleteMedicalReport("clinical-sign", {
-                                  clinicalSigns: "",
-                                })
-                              }
-                              onEdit={handleEditClinicalSigns}
-                              title="Clinical Signs"
-                            >
-                              <p>{medicalReports.clinicalSigns}</p>
-                            </CheckinItem>
-                          )}
-
-                          {/* Tentative medical test */}
-                          {(medicalReports.tentativeDiagnosis.tentative.length ||
-                            "") && (
-                              <CheckinItem
-                                checkedIn={checkedIn}
-                                date={new Date().toString()}
-                                onDelete={() =>
-                                  handleDeleteMedicalReport("diagnosis", {
-                                    tentativeDiagnosis: {
-                                      differential: "",
-                                      tentative: "",
-                                    },
-                                  })
-                                }
-                                onEdit={handleEditTentativeTest}
-                                title="Diagnostic Test"
-                              >
-                                <h5>Differential</h5>
-                                <p>
-                                  {medicalReports.tentativeDiagnosis.differential}
-                                </p>
-
-                                <h5>Tentative</h5>
-                                <p>{medicalReports.tentativeDiagnosis.tentative}</p>
-                              </CheckinItem>
-                            )}
-                          {(medicalReports.diagnosticTest.length || "") && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={handleDeleteDiagnosticTest}
-                              onEdit={handleEditDiagnosticTest}
-                              title="Diagnostic Test"
-                            >
-                              <p>{medicalReports.diagnosticTest}</p>
-                            </CheckinItem>
-                          )}
-
-                          {(medicalReports.finalDiagnosis.length || "") && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={() =>
-                                handleDeleteMedicalReport("final-diagnosis", {
-                                  finalDiagnosis: "",
-                                })
-                              }
-                              onEdit={handleEditFinalDiagnosis}
-                              title="Final Diagnosis"
-                            >
-                              <p>{medicalReports.finalDiagnosis}</p>
-                            </CheckinItem>
-                          )}
-                          {(medicalReports.treatment.length || "") && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={() =>
-                                handleDeleteMedicalReport("treatment", {
-                                  treatment: "",
-                                })
-                              }
-                              onEdit={handleEditFinalDiagnosis}
-                              title="Treatment"
-                            >
-                              <p>{medicalReports.treatment}</p>
-                            </CheckinItem>
-                          )}
-
-                          {(medicalReports.vaccination.name || "") && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={() =>
-                                handleDeleteMedicalReport("vaccination", {
-                                  vaccination: {
-                                    dosage: "",
-                                    emailReminder: false,
-                                    name: "",
-                                    nextDate: "",
-                                    smsReminder: false,
-                                    type: "",
-                                  },
-                                })
-                              }
-                              onEdit={handleEditVaccination}
-                              title="Vaccination"
-                            >
-                              <ul>
-                                <li>
-                                  Name:{" "}
-                                  {medicalReports?.vaccination?.name ||
-                                    // @ts-ignore
-                                    medicalReports?.vaccination?.nameOfVaccine}
-                                </li>
-                                <li>
-                                  Type:{" "}
-                                  {medicalReports?.vaccination?.type ||
-                                    // @ts-ignore
-                                    medicalReports?.vaccination?.vaccinationType}
-                                </li>
-                                <li>
-                                  Dosage: {medicalReports?.vaccination?.dosage}
-                                </li>
-                                <li>
-                                  Date:{" "}
-                                  {medicalReports?.vaccination?.nextDate ||
-                                    // @ts-ignore
-                                    medicalReports?.vaccination?.dateOfNextShot}
-                                </li>
-                                <li>
-                                  Email Reminder:{" "}
-                                  {medicalReports?.vaccination?.emailReminder}
-                                </li>
-                                <li>
-                                  SMS Reminder:{" "}
-                                  {medicalReports?.vaccination?.smsReminder}
-                                </li>
-                              </ul>
-                            </CheckinItem>
-                          )}
-                          {medicalReports.note && (
-                            <CheckinItem
-                              checkedIn={checkedIn}
-                              date={new Date().toString()}
-                              onDelete={() =>
-                                handleDeleteMedicalReport("notes", {
-                                  note: "",
-                                })
-                              }
-                              onEdit={handleEditNoteReport}
-                              title="Note"
-                            >
-                              {medicalReports.note}
-                            </CheckinItem>
-                          )}
-
-                        </MedicalRecordsItems>
-                      )}
-
-                      {"Laboratory" === activeCheckedInItem && (
-                        <LaboratoryTab
-                          checkInData={checkInData}
-                          patientData={patientData}
-                        />
-                      )}
-                      {"Radiology" === activeCheckedInItem && <Radiology />}
-                      {"Appointment" === activeCheckedInItem &&
-                        <Appointment
-                          // @ts-ignore	
-                          appointments={patientData.appointments} patientNo={patientData.id} />}
-                    </>
-                  </CheckedinItemsDisplay>
-                )}
-                {!checkedIn && (
-                  <CheckinItemsDisplay>
-                    <PhysicalCheckResult
-                      checkedIn={checkedIn}
-                      onAddNew={() => setShowModal(true)}
-                      physicalExaminationResult={physicalExaminationResult}
-                      showModal={() => setShowModal(true)}
-                    />
-                  </CheckinItemsDisplay>
-                )}
-              </div>
+    <div className="patient__checkin">
+      <div className="patient__checkin__container">
+        <div className="patient__checkin__container--header">
+          <h1>Patient Check In</h1>
+        </div>
+        <div className="patient__checkin__container--content">
+          <div className="checkin__card">
+            <div className="checkin__card--header">
+              <span>Signalment</span>
+              <span>{`Patient No: ${
+                // @ts-ignore
+                patientData.id
+              }`}</span>
             </div>
-            <div className="patient__checkin__container--footer">
+            <div className="checkin__card--body">
+              <PatientDetails patientData={patientData} />
+              <div style={{ padding: "1rem" }}>
+                <p style={{ color: "red" }}>Treatment warnings and allergies</p>
+                <p>{patientData?.treatmentWarnings}</p>
+              </div>
+              <FormErrors errors={modalError} />
+              {checkedIn && (
+                <CheckedinItemsDisplay
+                  activeNavItem={activeCheckedInItem}
+                  onActiveItemChange={handleActiveCheckedInItemChange}
+                >
+                  <>
+                    {"Client Details" === activeCheckedInItem && (
+                      <ClientSection data={patientData?.client} />
+                    )}
+
+                    {"Patient Details" === activeCheckedInItem && (
+                      <PatientSection data={patientData} />
+                    )}
+
+                    {"Vaccination" === activeCheckedInItem && (
+                      <VaccinationSection
+                        data={patientData?.checkins[0].vaccination}
+                      />
+                    )}
+
+                    {"Medical Records" === activeCheckedInItem && (
+                      <MedicalRecordsItems
+                        checkedIn={checkInData?.checkIn}
+                        onRecordItemTypeUpdate={handleMedicalItemUpdate}
+                      >
+                        {medicalReports.chiefComplain && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={handleDeleteMedicalReport}
+                            onEdit={handleEditMedicalReport}
+                            title="Chief Complain"
+                          >
+                            {medicalReports.chiefComplain}
+                          </CheckinItem>
+                        )}
+
+                        {physicalExaminationResult &&
+                          physicalExaminationResult.respiratoryRate && (
+                            <PhysicalCheckResult
+                              checkedIn={checkedIn}
+                              onAddNew={() => setShowModal(true)}
+                              onEdit={() => setShowModal(true)}
+                              onDelete={() =>
+                                handleDeleteItem("physicalExaminationResult")
+                              }
+                              physicalExaminationResult={
+                                physicalExaminationResult
+                              }
+                              showModal={() => setShowModal(true)}
+                            />
+                          )}
+                        {(medicalReports.clinicalSigns.length || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("clinical-sign", {
+                                clinicalSigns: "",
+                              })
+                            }
+                            onEdit={handleEditClinicalSigns}
+                            title="Clinical Signs"
+                          >
+                            <p>{medicalReports.clinicalSigns}</p>
+                          </CheckinItem>
+                        )}
+
+                        {/* Tentative medical test */}
+                        {(medicalReports.tentativeDiagnosis.tentative.length ||
+                          "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("diagnosis", {
+                                tentativeDiagnosis: {
+                                  differential: "",
+                                  tentative: "",
+                                },
+                              })
+                            }
+                            onEdit={handleEditTentativeTest}
+                            title="Diagnostic Test"
+                          >
+                            <h5>Differential</h5>
+                            <p>
+                              {medicalReports.tentativeDiagnosis.differential}
+                            </p>
+
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
+                          </CheckinItem>
+                        )}
+                        {(medicalReports.diagnosticTest.length || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={handleDeleteDiagnosticTest}
+                            onEdit={handleEditDiagnosticTest}
+                            title="Diagnostic Test"
+                          >
+                            <p>{medicalReports.diagnosticTest}</p>
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.finalDiagnosis.length || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("final-diagnosis", {
+                                finalDiagnosis: "",
+                              })
+                            }
+                            onEdit={handleEditFinalDiagnosis}
+                            title="Final Diagnosis"
+                          >
+                            <p>{medicalReports.finalDiagnosis}</p>
+                          </CheckinItem>
+                        )}
+                        {(medicalReports.treatment.length || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("treatment", {
+                                treatment: "",
+                              })
+                            }
+                            onEdit={handleEditTreatment}
+                            title="Treatment"
+                          >
+                            <p>{medicalReports.treatment}</p>
+                          </CheckinItem>
+                        )}
+
+                        {(medicalReports.vaccination.name || "") && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("vaccination", {
+                                vaccination: {
+                                  dosage: "",
+                                  emailReminder: false,
+                                  name: "",
+                                  nextDate: "",
+                                  smsReminder: false,
+                                  type: "",
+                                },
+                              })
+                            }
+                            onEdit={handleEditVaccination}
+                            title="Vaccination"
+                          >
+                            <ul>
+                              <li>
+                                Name:{" "}
+                                {medicalReports?.vaccination?.name ||
+                                  // @ts-ignore
+                                  medicalReports?.vaccination?.nameOfVaccine}
+                              </li>
+                              <li>
+                                Type:{" "}
+                                {medicalReports?.vaccination?.type ||
+                                  // @ts-ignore
+                                  medicalReports?.vaccination?.vaccinationType}
+                              </li>
+                              <li>
+                                Dosage: {medicalReports?.vaccination?.dosage}
+                              </li>
+                              <li>
+                                Date:{" "}
+                                {medicalReports?.vaccination?.nextDate ||
+                                  // @ts-ignore
+                                  medicalReports?.vaccination?.dateOfNextShot}
+                              </li>
+                              <li>
+                                Email Reminder:{" "}
+                                {medicalReports?.vaccination?.emailReminder}
+                              </li>
+                              <li>
+                                SMS Reminder:{" "}
+                                {medicalReports?.vaccination?.smsReminder}
+                              </li>
+                            </ul>
+                          </CheckinItem>
+                        )}
+                        {medicalReports.note && (
+                          <CheckinItem
+                            checkedIn={checkedIn}
+                            date={new Date().toString()}
+                            onDelete={() =>
+                              handleDeleteMedicalReport("notes", {
+                                note: "",
+                              })
+                            }
+                            onEdit={handleEditNoteReport}
+                            title="Note"
+                          >
+                            {medicalReports.note}
+                          </CheckinItem>
+                        )}
+                      </MedicalRecordsItems>
+                    )}
+
+                    {"Laboratory" === activeCheckedInItem && (
+                      <LaboratoryTab
+                        checkInData={checkInData}
+                        patientData={patientData}
+                      />
+                    )}
+                    {"Radiology" === activeCheckedInItem && <Radiology />}
+                    {"Appointment" === activeCheckedInItem && (
+                      <Appointment
+                        // @ts-ignore
+                        appointments={patientData.appointments}
+                        patientNo={patientData.id}
+                      />
+                    )}
+                  </>
+                </CheckedinItemsDisplay>
+              )}
               {!checkedIn && (
-                <>
-                  {" "}
-                  <Button onClick={() => handleCheckinPatient()}> Checkin</Button>
-                  <Button>Return</Button>
-                </>
+                <CheckinItemsDisplay>
+                  <PhysicalCheckResult
+                    checkedIn={checkedIn}
+                    onAddNew={() => setShowModal(true)}
+                    physicalExaminationResult={physicalExaminationResult}
+                    showModal={() => setShowModal(true)}
+                  />
+                </CheckinItemsDisplay>
               )}
             </div>
           </div>
           {checkedIn && (
-            <div style={{ textAlign: "center", marginTop: "2rem" }}>
-              <Button onClick={() => checkOut(patientId)}>Check Out</Button>
+            <div className="patient__checkin__container--checkin--navigator">
+              <span
+                onClick={() => {
+                  const newIndex =
+                    checkinDataIndex > 0 ? checkinDataIndex - 1 : 0;
+                  setCheckinDataIndex(newIndex);
+                  setCheckIndata(patientData.checkins[newIndex]);
+                  populateCheckInData(patientData.checkins[newIndex]);
+                }}
+              >
+                <svg
+                  width="19"
+                  height="36"
+                  viewBox="0 0 19 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 18L18.75 35.3205L18.75 0.679491L0 18Z"
+                    fill="black"
+                  />
+                </svg>
+              </span>
+              <span className="checkin__navigator--counter">
+                Doc {checkinDataIndex + 1}
+                of {patientData.checkins.length}
+              </span>
+              <span
+                onClick={() => {
+                  const newIndex =
+                    checkinDataIndex < patientData.checkins.length - 1
+                      ? checkinDataIndex + 1
+                      : patientData.checkins.length - 1;
+                  setCheckinDataIndex(newIndex);
+                  setCheckIndata(patientData.checkins[newIndex]);
+                  populateCheckInData(patientData.checkins[newIndex]);
+                }}
+              >
+                <svg
+                  width="19"
+                  height="36"
+                  viewBox="0 0 19 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 18L0.25 0.679489L0.25 35.3205L19 18Z"
+                    fill="black"
+                  />
+                </svg>
+              </span>
             </div>
           )}
+          <div className="patient__checkin__container--footer">
+            {!checkedIn && (
+              <>
+                {" "}
+                <Button onClick={() => handleCheckinPatient()}> Checkin</Button>
+                <Button>Return</Button>
+              </>
+            )}
+          </div>
         </div>
-        <Modal
-          closeModal={() => {
-            setShowModal(false);
-          }}
-          fullMode={true}
-          visible={showModal}
-        >
-          <PhysicalExaminationModal
-            loading={modalLoading}
-            onAddResult={handleAddResult}
-            onCancel={() => setShowModal(false)}
-            onDeleteResult={() => handleDeleteItem("physicalExamination")}
-            onEditResult={handleEditPhysicalResult}
-            result={physicalExaminationResult}
-          />
-        </Modal>
-
-        <MedicalRecordModal
-          modalLoading={modalLoading}
-          show={showMedicalModal}
-          // @ts-ignore
-          onDeleteItem={handleDeleteItem}
-          // @ts-ignore
-          closeModal={() => {
-            setShowMedicalModal(false);
-            setMedicalContentState("");
-          }}
-          getResult={(data: object, field: string) => {
-            handleGetMedicalReportData(data, field);
-          }}
-          currentModal={medicalContentState}
-          results={medicalReports}
-        />
+        {checkedIn && (
+          <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <Button onClick={() => checkOut(patientId)}>Check Out</Button>
+          </div>
+        )}
       </div>
-    );
+      <Modal
+        closeModal={() => {
+          setShowModal(false);
+        }}
+        fullMode={true}
+        visible={showModal}
+      >
+        <PhysicalExaminationModal
+          loading={modalLoading}
+          onAddResult={handleAddResult}
+          onCancel={() => setShowModal(false)}
+          onDeleteResult={() => handleDeleteItem("physicalExamination")}
+          onEditResult={handleEditPhysicalResult}
+          result={physicalExaminationResult}
+        />
+      </Modal>
+
+      <MedicalRecordModal
+        modalLoading={modalLoading}
+        show={showMedicalModal}
+        // @ts-ignore
+        onDeleteItem={handleDeleteItem}
+        // @ts-ignore
+        closeModal={() => {
+          setShowMedicalModal(false);
+          setMedicalContentState("");
+        }}
+        getResult={(data: object, field: string) => {
+          handleGetMedicalReportData(data, field);
+        }}
+        currentModal={medicalContentState}
+        results={medicalReports}
+      />
+    </div>
+  );
 };
 
 PatientCheckIn.getInitialProps = async ({ query }: NextPageContext) => {

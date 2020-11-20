@@ -12,7 +12,7 @@ const TreatmentReport = (props: {
     props.onAdd(formValues);
   };
   const [formValues, setFormValues] = useState<{ treatment: string }>({
-    treatment: "",
+    treatment: props.data,
   });
 
   const handleInputChange = (event: {
@@ -35,7 +35,11 @@ const TreatmentReport = (props: {
     >
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
-          <textarea name={"treatment"} style={{ height: "10rem" }} onChange={handleInputChange}>
+          <textarea
+            name={"treatment"}
+            style={{ height: "10rem" }}
+            onChange={handleInputChange}
+          >
             {formValues.treatment}
           </textarea>
         </div>
