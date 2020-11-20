@@ -619,13 +619,6 @@ const LaboratoryTab = ({
               </table>
             </div>
           </div>
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
         </CheckinItem>
       )}
 
@@ -640,13 +633,95 @@ const LaboratoryTab = ({
           disableDelete
           title="Parasitology Test"
         >
-          {/* <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
+          <table className={styles.overviewTable}>
+            <tr>
+              <td>Case History</td>
+              <td>{parasitologyData.caseHistory}</td>
+            </tr>
+            <tr>
+              <td>Tentative Diagnosis</td>
+              <td>{parasitologyData.tentativeDiagnosis}</td>
+            </tr>
+            <tr>
+              <td>Test(s) required</td>
+              <td>{parasitologyData.testsRequired}</td>
+            </tr>
+            <tr>
+              <td>Condition of specimen</td>
+              <td>{parasitologyData.conditionOfSpecimen}</td>
+            </tr>
+          </table>
+          <div className={styles.labCheckinDataListContainer}>
+            <div>
+              <table>
+                <h5>Results</h5>
+                <tr>
+                  <td>Blood</td>
+                  <td>{parasitologyData.bloodResult}</td>
+                </tr>
+                <tr>
+                  <td>PCV (%)</td>
+                  <td>{parasitologyData.PCVResult}</td>
+                </tr>
+                <tr>
+                  <td>Wet mount/Blood film/ Haemoparasite</td>
+                  <td>{parasitologyData.wetMountResult}</td>
+                </tr>
+                <tr>
+                  <td>Skin Scrapping</td>
+                  <td>{parasitologyData.skinScrappingResult}</td>
+                </tr>
+                <tr>
+                  <td>Feacal analysis - Egg/ Oocyst/Parasite Count</td>
+                  <td>{parasitologyData.facialAnalysisResult}</td>
+                </tr>
+                <tr>
+                  <td>Urine Analysis</td>
+                  <td>{parasitologyData.urineAnalysisResult}</td>
+                </tr>
+              </table>
+            </div>
+            <div>
+              <h5>Sample Submitted</h5>
+              <table>
+                <tr>
+                  <td>Blood</td>
+                  <td>
+                    {parasitologyData.bloodSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Urine</td>
+                  <td>
+                    {parasitologyData.urineSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
 
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p> */}
+                <tr>
+                  <td>Skin scrapping</td>
+                  <td>
+                    {parasitologyData.skinScrappingSampleSubmitted
+                      ? "Yes"
+                      : "No"}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Stool</td>
+                  <td>
+                    {parasitologyData.stoolSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Other</td>
+                  <td>
+                    {parasitologyData.otherSampleSubmitted ? "Yes" : "No"}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </CheckinItem>
       )}
 

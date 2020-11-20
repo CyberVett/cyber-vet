@@ -34,7 +34,7 @@
 
 .labCheckinDataListContainer {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   Input {
     margin-right: 1rem;
   }
