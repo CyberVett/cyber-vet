@@ -75,7 +75,7 @@ const RequestedXray: React.FunctionComponent = () => {
       </div>
       <RadiologyModal
         checkInData={checkInData}
-        checkInID={checkInData.id}
+        checkInID={checkInData.checkinId}
         closeModal={() => setToggleEditModal(false)}
         patientNo={checkInData.patientId}
         visible={toggleEditModal}

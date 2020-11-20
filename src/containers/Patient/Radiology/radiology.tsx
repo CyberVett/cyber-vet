@@ -8,8 +8,7 @@ import styles from './radiology.module.scss';
 import RadiologyModal from './radiologyModal';
 
 const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
-  const { radiology } = checkInData;
-  
+  const { radiology } = checkInData;  
   const [toggleModal, setToggleModal] = useState(false);
   const [toggleEditModal, setToggleEditModal] = useState(false);
 
@@ -87,6 +86,10 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
             <tr>
               <td>Examination Required</td>
               <td>{radiology?.examinationRequired}</td>
+            </tr>
+            <tr>
+              <td>Remarks</td>
+              <td>{radiology?.shortRemarks}</td>
             </tr>
           </table>
         </div>

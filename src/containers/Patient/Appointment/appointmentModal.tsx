@@ -1,11 +1,10 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useContext, useState, useEffect } from 'react';
 import { CheckboxInput, FormErrors, FormMessages, Input, InputGroup, Label, Select, TextArea } from 'components/Input/input';
 import Modal from 'components/Modal/modal';
 
 import styles from './appointment.module.scss';
 import Button from 'components/Button/button';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
-import { IAppointmentInput } from 'types/user';
 import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
 import { formatDateForCalendar } from 'lib/utils';
@@ -21,7 +20,7 @@ export interface IModalProps {
 const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientNo, modalData, isReview }) => {
   // @ts-ignore
   const { user } = useContext(AuthContext);
-  const [appointment, setAppointment] = useState<IAppointmentInput>(modalData || {
+  const [appointment, setAppointment] = useState({
     allDay: false,
     appointmentDate: '',
     emailReminder: false,
@@ -31,6 +30,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     smsReminder: false,
     status: '',
   });
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [messages, setMessage] = useState('');
@@ -44,6 +44,11 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       [event.target.name]: value
     }));
   };
+
+  useEffect(() => {
+    setAppointment(modalData);
+  }, [modalData]);
+
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -76,7 +81,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
 
   const updateForm = (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true);    
     console.log(appointment);
     
     requestClient.put(`patients/${patientNo}/appointment`, {
@@ -136,13 +141,13 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 onChange={handleInputChange}
                 required
                 type="date"
-                value={formatDateForCalendar(modalData?.appointmentDate) || appointment?.appointmentDate}
+                value={modalData ? formatDateForCalendar(appointment?.appointmentDate) : appointment?.appointmentDate}
               />
             </InputGroup>
             <InputGroup horizontal>
               <Label>All Day</Label>
               <CheckboxInput
-                checked={modalData?.allDay ?? appointment?.allDay}
+                checked={appointment?.allDay}
                 name="allDay"
                 onChange={handleInputChange}
                 value="allDay"
@@ -167,7 +172,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
               name="reason"
               onChange={handleInputChange}
               required
-              value={modalData?.reason ?? appointment?.reason}
+              value={appointment?.reason}
             >
               <option value="">Select a reason</option>
               <option value="Vaccination">Vaccination</option>
@@ -199,7 +204,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
               name="status"
               onChange={handleInputChange}
               required
-              value={modalData?.status ?? appointment?.status}
+              value={appointment?.status}
             >
               <option value="">Select a status</option>
               <option value="Scheduled">Scheduled</option>
@@ -213,13 +218,13 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
               name="notes"
               onChange={handleInputChange}
               required
-              value={modalData?.notes ?? appointment?.notes}
+              value={appointment?.notes}
             />
           </InputGroup>
           <InputGroup horizontal>
             <Label>email reminder</Label>
             <CheckboxInput
-              checked={modalData?.emailReminder ?? appointment?.emailReminder}
+              checked={appointment?.emailReminder}
               name="emailReminder"
               onChange={handleInputChange}
               value="emailReminder"
@@ -228,7 +233,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
           <InputGroup horizontal>
             <Label>sms reminder</Label>
             <CheckboxInput
-              checked={modalData?.smsReminder ?? appointment?.smsReminder}
+              checked={appointment?.smsReminder}
               name="smsReminder"
               onChange={handleInputChange}
               value="smsReminder"

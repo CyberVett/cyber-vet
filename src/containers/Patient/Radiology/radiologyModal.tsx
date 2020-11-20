@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormErrors, FormMessages, Input, InputGroup, Label, TextArea } from 'components/Input/input';
 import Modal from 'components/Modal/modal';
 
@@ -19,7 +19,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [messages, setMessage] = useState('');
-  const [radiologyInput, setRadiologyInput] = useState(checkInData || {
+  const [radiologyInput, setRadiologyInput] = useState({
     provisionalDiagnosis: '',
     clinicalNotes: '',
     examinationRequired: '',
@@ -29,6 +29,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     secs: '',
     MAS: '',
     MCHC: '',
+    shortRemarks: '',
     contrastInjectedType: '',
     contrastInjectedVolume: '',
     contrastInjectedRate: '',
@@ -36,6 +37,11 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     remarks: '',
     report: '',
   });
+
+  console.log("id",checkInID );
+  console.log("pd",patientNo );
+  console.log("d",checkInData );
+  
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any; type: any; checked?: boolean; } }) => {
     event.persist();
@@ -46,7 +52,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
       [event.target.name]: value
     }));
   };
-  console.log('midway',radiologyInput);
+
+  useEffect(() => {
+    setRadiologyInput(checkInData);
+  }, [checkInData]);
 
   const addRadiology = (e: FormEvent) => {
     e.preventDefault();
@@ -91,9 +100,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
 
   const completeRadiology = (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    console.log(radiologyInput);
-    
+    setLoading(true);    
     requestClient.put(`/laboratory/radiology/complete`, {
       "checkinId": checkInID,
       "patientId": patientNo,
@@ -161,7 +168,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             disabled={disabled}
             name="clinicalNotes"
             onChange={handleInputChange}>
-            {checkInData?.clinicalNotes ?? radiologyInput.clinicalNotes}
+            {radiologyInput?.clinicalNotes}
           </TextArea>
         </InputGroup>
         <InputGroup horizontal>
@@ -171,7 +178,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             name="provisionalDiagnosis"
             onChange={handleInputChange}
             type="text"
-            value={checkInData?.provisionalDiagnosis ?? radiologyInput.provisionalDiagnosis}
+            value={radiologyInput?.provisionalDiagnosis}
           />
         </InputGroup>
         <InputGroup horizontal>
@@ -181,7 +188,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             name="examinationRequired"
             onChange={handleInputChange}
             type="text"
-            value={checkInData?.examinationRequired ?? radiologyInput.examinationRequired}
+            value={radiologyInput?.examinationRequired}
           />
         </InputGroup>
         <div className={styles.formDetailsGrid}>
@@ -194,7 +201,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="XRayRoomNo"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.XRayRoomNo ?? radiologyInput.XRayRoomNo}
+                value={radiologyInput?.XRayRoomNo}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -204,7 +211,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="KV"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.KV ?? radiologyInput.KV}
+                value={radiologyInput?.KV}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -214,7 +221,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="MA"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.MA ?? radiologyInput.MA}
+                value={radiologyInput?.MA}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -224,7 +231,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="secs"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.secs ?? radiologyInput.secs}
+                value={radiologyInput?.secs}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -234,7 +241,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="MAS"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.MAS ?? radiologyInput.MAS}
+                value={radiologyInput?.MAS}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -244,7 +251,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="MCHC"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.MCHC ?? radiologyInput.MCHC}
+                value={radiologyInput?.MCHC}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -254,7 +261,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="shortRemarks"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.shortRemarks ?? radiologyInput.shortRemarks}
+                value={radiologyInput?.shortRemarks}
               />
             </InputGroup>
             <h4>CONTRAST INJECTED</h4>
@@ -265,7 +272,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="contrastInjectedType"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.contrastInjectedType ?? radiologyInput.contrastInjectedType}
+                value={radiologyInput?.contrastInjectedType}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -275,7 +282,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="contrastInjectedVolume"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.contrastInjectedVolume ?? radiologyInput.contrastInjectedVolume}
+                value={radiologyInput?.contrastInjectedVolume}
               />
             </InputGroup>
             <InputGroup horizontal>
@@ -285,7 +292,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="contrastInjectedRate"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.contrastInjectedRate ?? radiologyInput.contrastInjectedRate}
+                value={radiologyInput?.contrastInjectedRate}
               />
             </InputGroup>
             <h4>Reaction</h4>
@@ -297,8 +304,8 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     disabled={disabled}
                     type="radio"
                     value="Nil"
-                    checked={checkInData?.reaction === "Nil" ?? radiologyInput.reaction === "Nil"}
-                    defaultChecked={checkInData?.reaction === "Nil" ?? radiologyInput.reaction === "Nil"}
+                    checked={radiologyInput?.reaction === "Nil"}
+                    defaultChecked={radiologyInput?.reaction === "Nil"}
                     onChange={handleInputChange}
                     name="reaction"
                   />
@@ -309,8 +316,8 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     disabled={disabled}
                     type="radio"
                     value="Moderate"
-                    checked={checkInData?.reaction === "Moderate" ?? radiologyInput.reaction === "Moderate"}
-                    defaultChecked={checkInData?.reaction === "Moderate" ?? radiologyInput.reaction === "Moderate"}
+                    checked={radiologyInput?.reaction === "Moderate"}
+                    defaultChecked={radiologyInput?.reaction === "Moderate"}
                     onChange={handleInputChange}
                     name="reaction"
                   />
@@ -323,8 +330,8 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     disabled={disabled}
                     type="radio"
                     value="Mild"
-                    checked={checkInData?.reaction === "Mild" ?? radiologyInput.reaction === "Mild"}
-                    defaultChecked={checkInData?.reaction === "Mild" ?? radiologyInput.reaction === "Mild"}
+                    checked={radiologyInput?.reaction === "Mild"}
+                    defaultChecked={radiologyInput?.reaction === "Mild"}
                     onChange={handleInputChange}
                     name="reaction"
                   />
@@ -335,8 +342,8 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     disabled={disabled}
                     type="radio"
                     value="Severe"
-                    checked={checkInData?.reaction === "Severe" ?? radiologyInput.reaction === "Severe"}
-                    defaultChecked={checkInData?.reaction === "Severe" ?? radiologyInput.reaction === "Severe"}
+                    checked={radiologyInput?.reaction === "Severe"}
+                    defaultChecked={radiologyInput?.reaction === "Severe"}
                     onChange={handleInputChange}
                     name="reaction"
                   />
@@ -352,7 +359,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 name="report"
                 onChange={handleInputChange}
                 type="text"
-                value={checkInData?.report ?? radiologyInput.report}
+                value={radiologyInput?.report}
               />
             </InputGroup>
           </div>
@@ -366,14 +373,14 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             name="remarks"
             onChange={handleInputChange}
             type="text"
-            value={checkInData?.remarks ?? radiologyInput.remarks}
+            value={radiologyInput?.remarks}
           />
         </InputGroup>
         <FormErrors errors={error} />
         <FormMessages messages={messages} />
       </div>
       <div>
-        <Button loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>
+       {!checkInData && <Button loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>}
         <Button loading={loading} onClick={(e) => completeRadiology(e)}>Complete</Button>
         <Button onClick={closeModal}>Cancel</Button>
       </div>

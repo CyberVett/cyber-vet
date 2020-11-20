@@ -35,7 +35,8 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
   onCancel,
   onComplete,
 }) => {
-  const [formValues, setFormValues] = useState<IMicrobiologyData>({ ...data });
+  const newData = data;
+  const [formValues, setFormValues] = useState<IMicrobiologyData>(newData);
   const handleInputChange = (event: {
     persist: () => void;
     target: { name: any; value: any };
@@ -50,7 +51,6 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
       [event.target.name]: value,
     }));
   };
-
   return (
     <Modal closeModal={closeModal} fullMode noTitle visible={visible}>
       {modalLoading ? (
@@ -73,7 +73,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
               <Label>Nature of Specimen</Label>
               <input
                 type="text"
-                value={formValues.natureOfSpecimen}
+                value={formValues?.natureOfSpecimen}
                 onChange={handleInputChange}
                 name="natureOfSpecimen"
               />{" "}
@@ -82,7 +82,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
               <Label>Date of Collection</Label>
               <input
                 type="text"
-                value={formValues.dateOfCollection}
+                value={formValues?.dateOfCollection}
                 onChange={handleInputChange}
                 name="dateOfCollection"
               />
@@ -91,7 +91,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
               <Label>Date of Submission</Label>
               <input
                 type="text"
-                value={formValues.dateOfSubmission}
+                value={formValues?.dateOfSubmission}
                 onChange={handleInputChange}
                 name="dateOfSubmission"
               />
@@ -103,14 +103,14 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
                 name={"clinicalDetails"}
                 onChange={handleInputChange}
               >
-                {formValues.clinicalDetails}
+                {formValues?.clinicalDetails}
               </textarea>
             </InputGroup>
             <InputGroup horizontal>
               <Label>Tentative Diagnosis</Label>
               <input
                 type="text"
-                value={formValues.tentativeDiagnosis}
+                value={formValues?.tentativeDiagnosis}
                 onChange={handleInputChange}
                 name="tentativeDiagnosis"
               />
@@ -119,7 +119,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
               <Label>Test(s) Required</Label>
               <input
                 type="text"
-                value={formValues.testsRequired}
+                value={formValues?.testsRequired}
                 onChange={handleInputChange}
                 name="testsRequired"
               />{" "}
@@ -131,7 +131,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
                 name={"result"}
                 onChange={handleInputChange}
               >
-                {formValues.result}
+                {formValues?.result}
               </textarea>{" "}
             </InputGroup>
           </div>
