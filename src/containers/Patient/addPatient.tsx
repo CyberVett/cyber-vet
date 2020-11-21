@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Error from 'next/error';
 import { NextPage, NextPageContext } from 'next';
 
@@ -8,14 +8,12 @@ import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
-
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
 import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
-import camera from 'lib/camera';
 
 export interface ISpecies {
   name: string;
@@ -162,11 +160,15 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
+  useEffect(() => {
+    let age = getAge(patientInput.dob);
+    setAge(age);
+  }, [patientInput.dob])
 
-  const useCamera = () => {
-    camera.startCamera();
-    camera.takeSnapshot();
-  }
+  // const useCamera = () => {
+  //   camera.startCamera();
+  //   camera.takeSnapshot();
+  // }
   return (!clientId ? <Error statusCode={404} title="No client found, kindly register a client, before adding a new patient" /> :
     <div>
       <Card>
@@ -277,7 +279,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   autoComplete="true"
                   onChange={handleInputChange}
                   // @ts-ignore
-                  onBlur={setAge(getAge(patientInput.dob))}
+                  // onBlur={setAge(() => getAge(patientInput.dob))}
                   name="dob"
                   required
                   type="date"
@@ -328,7 +330,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
-                <Button onClick={useCamera}>use camera</Button>
+                {/* <Button onClick={useCamera}>use camera</Button> */}
               </div>
               {
                 //  @ts-ignore
