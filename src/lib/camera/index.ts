@@ -27,14 +27,18 @@ const camera = function () {
         height = h;
 
         createObjects();
-
+        // @ts-ignore
         this.video = document.getElementById('video');
+        // @ts-ignore
         this.canvas = document.getElementById('canvas');
+        // @ts-ignore
         this.context = this.canvas.getContext('2d');
 
         (function (video) {
           navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            // @ts-ignore
             video.srcObject = stream;
+            // @ts-ignore
             video.play();
           });
         })(this.video)
@@ -44,6 +48,7 @@ const camera = function () {
 
 
     takeSnapshot: function () {
+      // @ts-ignore
       this.context.drawImage(this.video, 0, 0, width, height);
     },
     video: null,
