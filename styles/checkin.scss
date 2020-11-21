@@ -45,7 +45,7 @@
 
   .checkedin {
     &__items--content {
-      padding: 1rem;
+      padding: .5rem;
     }
     &__navbar {
       @media only screen and (max-width: 56.25em) {
@@ -169,7 +169,7 @@
     border: 1px solid grey;
     &--head {
       background-color: #bbb;
-      padding: 1rem;
+      padding: .5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -272,6 +272,10 @@
   }
 
   .medical__records {
+    
+    &--buttons {
+      margin: 4px 0;
+    }
     .buttons__list {
       display: flex;
       align-items: center;
@@ -308,8 +312,11 @@
       row-gap: 1rem;
       padding: 0.2rem;
 
+      >h5 {
+        margin: 8px 0;
+      }
+
       input,
-      textarea,
       select {
         width: 100%;
         height: 2rem;

@@ -1,5 +1,6 @@
+import { formatDate } from "lib/utils";
 import React from "react";
-import Button from "../Button/button";
+import Button, { ButtonTypes } from "../Button/button";
 
 const CheckinItem = (props: {
   date: string;
@@ -18,10 +19,12 @@ const CheckinItem = (props: {
         <div className="item__head--actions">
           {props.checkedIn ? (
             <>
-              <input defaultValue={props.date || new Date().toString()} />
-              <Button onClick={() => props.onEdit()}>Edit Result</Button>
+              <input defaultValue={
+                // @ts-ignore
+                formatDate(props?.date)} />
+              <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>Edit Result</Button>
               {!props.disableDelete ? (
-                <Button onClick={() => props.onDelete()}>Delete Results</Button>
+                <Button type={ButtonTypes.orange} onClick={() => props.onDelete()}>Delete Results</Button>
               ) : null}
             </>
           ) : (

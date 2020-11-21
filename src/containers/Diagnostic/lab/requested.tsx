@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
 import { LabRequestHeaders } from 'config/constants';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg';
@@ -248,7 +248,7 @@ const RequestedLab: React.FunctionComponent = () => {
                     <td>{row?.requestBy?.title}. {row?.requestBy?.firstName} {row?.requestBy?.otherName} {row?.requestBy?.lastName}</td>
                     <td>{row?.type}</td>
                     <td>{formatDate(row?.createdAt)}</td>
-                    <td><Button onClick={() => showModal(row)}>Open</Button></td>
+                    <td><Button type={ButtonTypes.primary} onClick={() => showModal(row)}>Open</Button></td>
                   </tr>
                 )} /> : <h2 style={{ textAlign: 'center' }}>No lab requests Found</h2>
           }

@@ -47,19 +47,21 @@ const DiagnosticTestReport = (props: {
       <form className="medical__report__form">
         <h5>Tentative</h5>
         <div className="physical__examination__form--input">
-          <input
+          <textarea
+            cols={10}
             name={"tentative"}
             onChange={handleInputChange}
-            defaultValue={formValues.tentativeDiagnosis.tentative}
-          />
+            rows={5}
+          >{formValues.tentativeDiagnosis.tentative}</textarea>
         </div>
         <h5>Differential</h5>
         <div className="physical__examination__form--input">
-          <input
+          <textarea
+            cols={10}
             name={"differential"}
             onChange={handleInputChange}
-            defaultValue={formValues.tentativeDiagnosis.differential}
-          />
+            rows={5}
+          >{formValues.tentativeDiagnosis.differential}</textarea>
         </div>
       </form>
     </MedicalReportModalContentTemplate>

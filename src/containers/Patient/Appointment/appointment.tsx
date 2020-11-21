@@ -76,8 +76,8 @@ const Appointment: React.FC<IAppointment> = ({
                           <td>{row.scheduledBy}</td>
                           <td>{row.reason}</td>
                           <td>{row.status}</td>
-                          <td><Button onClick={() => handleReview(row)}>Review</Button></td>
-                          <td><Button onClick={() => deleteAppointment(row.id)}>Delete</Button></td>
+                          <td><Button type={ButtonTypes.grey} onClick={() => handleReview(row)}>Review</Button></td>
+                          <td><Button type={ButtonTypes.orange} onClick={() => deleteAppointment(row.id)}>Delete</Button></td>
                         </tr>
                       )}
                     />

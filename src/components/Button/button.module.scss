@@ -27,25 +27,51 @@
   background-color: transparent;
   border-color: transparent;
   color: $color-blue;
+
+   &:hover {
+    background-color: darken($color-blue, 10%) ;
+  }
 }
 
 .outline {
   background-color: $color-white;
   border-color: $color-blue;
   color: $color-blue;
+
+  &:hover {
+    background-color: darken($color-white, 20%) ;
+  }
 }
 
 .primary {
   background-color: $color-blue;
   border-color: $color-blue;
   color: $color-white;
+
+  &:hover {
+    background-color: darken($color-blue, 10%) ;
+  }
 }
 
-// .custom {
-//   background-color: $color-green-dark;
-//   border-color: $color-green-dark;
-//   color: #fff;
-// }
+.orange {
+  background-color: $color-orange;
+  border-color: $color-orange;
+  color: $color-white;
+
+  &:hover {
+    background-color: darken($color-orange, 20%) ;
+  }
+}
+
+.grey {
+  background-color: #97A6B4;
+  border-color: #97A6B4;
+  color: $color-white;
+
+  &:hover {
+    background-color: darken(#97A6B4, 20%) ;
+  }
+}
 
 .fullWidth {
   width: 100%;

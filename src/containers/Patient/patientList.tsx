@@ -48,22 +48,23 @@ const PatientList: React.FunctionComponent = () => {
       })
   }
 
-  const checkOut = (id: string) => {
-    setLoading(true);
-    requestClient.put(`/patients/${id}/check-out`)
-      .then((response) => {
-        console.log(response);
+  // const checkOut = (id: string) => {
+  //   setLoading(true);
+  //   requestClient.put(`/patients/${id}/check-out`)
+  //     .then((response) => {
+  //       console.log(response);
 
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          Router.push(`/app/dashboard`);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      });
-  }
+  //       setLoading(false);
+  //       if (response.status === 200 && response.statusText === 'OK') {
+  //         Router.push(`/app/dashboard`);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       setLoading(false);
+  //       console.log(error);
+  //     });
+  // }
+  
   return (
     <div>
       <div className={styles.topHeader}>
@@ -92,10 +93,10 @@ const PatientList: React.FunctionComponent = () => {
                     <td>{row.breed}</td>
                     <td>{
                       // TODO: add roles and permissions
-                      actionButton(row.checkedIn, row.id, checkIn, checkOut)
+                      actionButton(row.checkedIn, row.id, checkIn)
                     }</td>
                   </tr>
-                )} /> : <h2>No Patient Record Found</h2>
+                )} /> : <h2 style={{textAlign: 'center'}}>No Patient Record Found</h2>
           }
         </Card>
       </div>
@@ -103,19 +104,19 @@ const PatientList: React.FunctionComponent = () => {
   )
 };
 
-export const actionButton = (checkedIn: boolean, id: string, checkIn: (id: string) => void, checkOut: (id: string) => void, hideEdit?: boolean) => {
+export const actionButton = (checkedIn: boolean, id: string, checkIn: (id: string) => void, hideEdit?: boolean) => {
   if (!checkedIn) {
     return (
       <div style={{ display: 'flex' }}>
-        {!hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        &nbsp;&nbsp;<Button onClick={() => checkIn(id)}>Check In</Button>
+        {!hideEdit && <Button type={ButtonTypes.grey} href={`/app/patient/edit/${id}`}>Edit</Button>}
+        &nbsp;&nbsp;<Button type={ButtonTypes.primary} onClick={() => checkIn(id)}>Check In</Button>
       </div>
     )
   } else {
     return (
       <div style={{ display: 'flex' }}>
-        { !hideEdit && <Button href={`/app/patient/edit/${id}`}>Edit</Button>}
-        &nbsp;&nbsp;<Button onClick={() => checkOut(id)}>Check Out</Button>
+        { !hideEdit && <Button type={ButtonTypes.grey} href={`/app/patient/edit/${id}`}>Edit</Button>}
+        &nbsp;&nbsp;<Button type={ButtonTypes.orange} href={`/app/patient/checkin/${id}`}>Checked In</Button>
       </div>
     )
   }

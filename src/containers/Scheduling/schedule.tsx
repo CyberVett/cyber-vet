@@ -92,8 +92,8 @@ const AppointmentList: React.FunctionComponent = () => {
                     <td>{row?.scheduler?.title}. {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
                     <td>{row?.reason}</td>
                     <td>{row?.status}</td>
-                    <td><Button onClick={() => handleReview(row)}>Review</Button></td>
-                    <td> <Button onClick={() => deleteAppointment(row.id, row.patientId)}>Delete</Button></td>
+                    <td><Button type={ButtonTypes.grey} onClick={() => handleReview(row)}>Review</Button></td>
+                    <td><Button type={ButtonTypes.orange} onClick={() => deleteAppointment(row.id, row.patientId)}>Delete</Button></td>
                   </tr>
                 )} /> : <h2>No appointments Found</h2>
           }

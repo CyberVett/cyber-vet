@@ -1,3 +1,4 @@
+import { formatDate } from "lib/utils";
 import React from "react";
 import CheckinItem from "./CheckinItem";
 
@@ -39,7 +40,9 @@ const PhysicalCheckResult = (props: {
   return (
     <CheckinItem
       checkedIn={props.checkedIn}
-      date={physicalExaminationResult.updatedAt || ""}
+      date={
+        // @ts-ignore
+        formatDate(physicalExaminationResult?.updatedAt)}
       onAddNew={() => props?.onAddNew()}
        // @ts-ignore
       onDelete={() => props?.onDelete()}

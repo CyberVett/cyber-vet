@@ -10,6 +10,8 @@ export enum ButtonTypes {
   basic = 'basic',
   outline = 'outline',
   primary = 'primary',
+  orange = 'orange',
+  grey = 'grey'
 }
 
 export interface IButtonProps {

@@ -73,22 +73,22 @@ const Dashboard: React.FunctionComponent = () => {
       })
   }
 
-  const checkOut = (id: string) => {
-    setLoading(true);
-    requestClient.put(`/patients/${id}/check-out`)
-      .then((response) => {
-        console.log(response);
+  // const checkOut = (id: string) => {
+  //   setLoading(true);
+  //   requestClient.put(`/patients/${id}/check-out`)
+  //     .then((response) => {
+  //       console.log(response);
 
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          Router.push(`/app/dashboard`);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      })
-  }
+  //       setLoading(false);
+  //       if (response.status === 200 && response.statusText === 'OK') {
+  //         Router.push(`/app/dashboard`);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       setLoading(false);
+  //       console.log(error);
+  //     })
+  // }
 
   return (
     <div className={styles.container}>
@@ -116,7 +116,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <td>{row.name}</td>
                       <td>{row.specie}</td>
                       <td>{row.breed}</td>
-                      <td>{actionButton(row.checkedIn, row.id, checkIn, checkOut, true)}</td>
+                      <td>{actionButton(row.checkedIn, row.id, checkIn, true)}</td>
                     </tr>
                   )}
                 />
