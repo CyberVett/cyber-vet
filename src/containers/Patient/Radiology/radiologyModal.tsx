@@ -3,7 +3,7 @@ import { FormErrors, FormMessages, Input, InputGroup, Label, TextArea } from 'co
 import Modal from 'components/Modal/modal';
 
 import styles from './radiology.module.scss';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 import requestClient from 'lib/requestClient';
 
 export interface IModalProps {
@@ -38,10 +38,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     report: '',
   });
 
-  console.log("id",checkInID );
-  console.log("pd",patientNo );
-  console.log("d",checkInData );
-  
+  console.log("id", checkInID);
+  console.log("pd", patientNo);
+  console.log("d", checkInData);
+
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any; type: any; checked?: boolean; } }) => {
     event.persist();
@@ -100,7 +100,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
 
   const completeRadiology = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);    
+    setLoading(true);
     requestClient.put(`/laboratory/radiology/complete`, {
       "checkinId": checkInID,
       "patientId": patientNo,
@@ -162,18 +162,20 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         </InputGroup>
       </div>
       <div className={styles.formDetailsInput}>
-        <InputGroup horizontal>
+        <InputGroup className={styles.spaceBetween} horizontal>
           <Label>Clinical Notes</Label>
           <TextArea
+            className={styles.width500}
             disabled={disabled}
             name="clinicalNotes"
             onChange={handleInputChange}>
             {radiologyInput?.clinicalNotes}
           </TextArea>
         </InputGroup>
-        <InputGroup horizontal>
+        <InputGroup className={styles.spaceBetween} horizontal>
           <Label>Provisional Diagnosis</Label>
           <Input
+            className={styles.width500}
             disabled={disabled}
             name="provisionalDiagnosis"
             onChange={handleInputChange}
@@ -181,9 +183,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             value={radiologyInput?.provisionalDiagnosis}
           />
         </InputGroup>
-        <InputGroup horizontal>
+        <InputGroup className={styles.spaceBetween} horizontal>
           <Label>Examination Required</Label>
           <Input
+            className={styles.width500}
             disabled={disabled}
             name="examinationRequired"
             onChange={handleInputChange}
@@ -194,9 +197,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         <div className={styles.formDetailsGrid}>
           <div>
             <h4>Radiographer&apos;s note</h4>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>X-Ray Room No</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="XRayRoomNo"
                 onChange={handleInputChange}
@@ -204,9 +208,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.XRayRoomNo}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>kv</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="KV"
                 onChange={handleInputChange}
@@ -214,9 +219,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.KV}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>ma</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="MA"
                 onChange={handleInputChange}
@@ -224,9 +230,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.MA}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>secs</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="secs"
                 onChange={handleInputChange}
@@ -234,9 +241,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.secs}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>mas</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="MAS"
                 onChange={handleInputChange}
@@ -244,9 +252,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.MAS}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>MCHC (g/l)</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="MCHC"
                 onChange={handleInputChange}
@@ -254,9 +263,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.MCHC}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Remarks</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="shortRemarks"
                 onChange={handleInputChange}
@@ -265,9 +275,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
               />
             </InputGroup>
             <h4>CONTRAST INJECTED</h4>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Type</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="contrastInjectedType"
                 onChange={handleInputChange}
@@ -275,9 +286,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.contrastInjectedType}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Volume</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="contrastInjectedVolume"
                 onChange={handleInputChange}
@@ -285,9 +297,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 value={radiologyInput?.contrastInjectedVolume}
               />
             </InputGroup>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Rate</Label>
               <Input
+                className={styles.width250}
                 disabled={disabled}
                 name="contrastInjectedRate"
                 onChange={handleInputChange}
@@ -298,9 +311,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             <h4>Reaction</h4>
             <div className={styles.formDetailsGrid}>
               <div>
-                <InputGroup horizontal>
+                <InputGroup className={styles.spaceBetween} horizontal>
                   <Label>NIL</Label>
                   <input
+                    className={styles.width250}
                     disabled={disabled}
                     type="radio"
                     value="Nil"
@@ -310,9 +324,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     name="reaction"
                   />
                 </InputGroup>
-                <InputGroup horizontal>
+                <InputGroup className={styles.spaceBetween} horizontal>
                   <Label>moderate</Label>
                   <input
+                    className={styles.width250}
                     disabled={disabled}
                     type="radio"
                     value="Moderate"
@@ -324,9 +339,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                 </InputGroup>
               </div>
               <div>
-                <InputGroup horizontal>
+                <InputGroup className={styles.spaceBetween} horizontal>
                   <Label>mild</Label>
                   <input
+                    className={styles.width250}
                     disabled={disabled}
                     type="radio"
                     value="Mild"
@@ -336,9 +352,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
                     name="reaction"
                   />
                 </InputGroup>
-                <InputGroup horizontal>
+                <InputGroup className={styles.spaceBetween} horizontal>
                   <Label>severe</Label>
                   <input
+                    className={styles.width250}
                     disabled={disabled}
                     type="radio"
                     value="Severe"
@@ -353,8 +370,9 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
           </div>
           <div>
             <h4>Radiologist&apos;s Report</h4>
-            <InputGroup horizontal>
+            <InputGroup className={styles.spaceBetween} horizontal>
               <TextArea cols={20} rows={40}
+                // className={styles.width250}
                 disabled={disabled}
                 name="report"
                 onChange={handleInputChange}
@@ -368,9 +386,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         </div>
         <br />
         <br />
-        <InputGroup horizontal>
+        <InputGroup className={styles.spaceBetween} horizontal>
           <Label>Remarks</Label>
           <Input
+            className={styles.width500}
             disabled={disabled}
             name="remarks"
             onChange={handleInputChange}
@@ -381,10 +400,10 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         <FormErrors errors={error} />
         <FormMessages messages={messages} />
       </div>
-      <div>
-       {!checkInData && <Button loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>}
-        <Button loading={loading} onClick={(e) => completeRadiology(e)}>Complete</Button>
-        <Button onClick={closeModal}>Cancel</Button>
+      <div className={styles.buttonContainer}>
+        {!checkInData && <Button type={ButtonTypes.primary} loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>}
+        <Button type={ButtonTypes.orange} loading={loading} onClick={(e) => completeRadiology(e)}>Complete</Button>
+        <Button type={ButtonTypes.grey} onClick={closeModal}>Cancel</Button>
       </div>
     </Modal>
   )

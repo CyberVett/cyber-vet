@@ -4,7 +4,7 @@ import { NextPage, NextPageContext } from 'next';
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardHeader } from 'components/Card/card';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 
 
 import styles from './patient.module.scss';
@@ -13,6 +13,7 @@ import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
+import camera from 'lib/camera';
 
 export interface ISpecies {
   name: string;
@@ -159,6 +160,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
+  const useCamera = () => {
+    camera.startCamera();
+    camera.takeSnapshot();
+  }
   return (
     <div>
       <Card>
@@ -318,6 +323,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
+                <Button onClick={useCamera}>use camera</Button>
               </div>
               {
                 //  @ts-ignore
@@ -491,9 +497,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
           <FormErrors errors={error} />
           <div className={styles.button}>
             <Button
+            type={ButtonTypes.primary}
               htmlType="sumbit"
               loading={loading}
-            >Add New Patient</Button><Button href="/app/dashboard">Cancel</Button>
+            >Add New Patient</Button><Button href="/app/client" type={ButtonTypes.grey}>Cancel</Button>
           </div>
         </form>
         <Modal

@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Card from 'components/Card/card';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import requestClient from 'lib/requestClient';
 import Modal from 'components/Modal/modal';
@@ -299,7 +299,7 @@ const AddStaff: React.FunctionComponent = () => {
                   <FormErrors errors={error} />
                   {/* <FormMessages messages={response} /> */}
                   <div className={styles.button}>
-                    <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Cancel</Button>
+                    <Button htmlType="submit" loading={loading} type={ButtonTypes.primary}>Continue</Button> <Button href="/app/admin" type={ButtonTypes.grey}>Cancel</Button>
                   </div>
                 </div>
               </form>

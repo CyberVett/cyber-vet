@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 
 import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
@@ -176,7 +176,7 @@ const AddClient: React.FunctionComponent = () => {
                 <FormErrors errors={error} />
                 <FormMessages messages={response} />
                 <div className={styles.button}>
-                  <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Cancel</Button>
+                  <Button htmlType="submit" loading={loading} type={ButtonTypes.primary}>Continue</Button> <Button type={ButtonTypes.grey} href="/app/patient">Cancel</Button>
                 </div>
               </form>
             </div>
