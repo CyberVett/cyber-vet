@@ -30,7 +30,6 @@ import { VaccinationSection } from "./VaccinationSection";
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
-  console.log('Home', checkInData);
   
   const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
     IphysicalExamination

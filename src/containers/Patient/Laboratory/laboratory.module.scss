@@ -3,7 +3,7 @@
 .formMenu {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-around;
   padding-bottom: 16px;
   > * {
     margin: 2px 4px;
@@ -18,11 +18,21 @@
   &Info {
     display: flex;
     justify-content: space-between;
+
+    >h4 {
+      text-transform: uppercase;
+    }
   }
 
   &Input {
     border-top: 1px solid #c4c4c4;
     padding: 24px 16px 0;
+  }
+
+  &SmallGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    column-gap: 64px;
   }
 
   &Grid {
@@ -49,4 +59,22 @@
   Td {
     padding: 0.2rem 0.1rem;
   }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.width500 {
+  width: 500px;
+}
+
+.width250 {
+  width: 250px;
+}
+
+.spaceBetween {
+  justify-content: space-between;
 }

@@ -3,7 +3,7 @@ import { InputGroup, Label } from "components/Input/input";
 import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 import styles from "../laboratory.module.scss";
-import Button from "components/Button/button";
+import Button, { ButtonTypes } from "components/Button/button";
 
 export interface IModalProps {
   visible: boolean;
@@ -60,76 +60,81 @@ const RapidTestModal: React.FC<IModalProps> = ({
       {modalLoading ? (
         <Loader />
       ) : (
-        <>
-          <div className={styles.formMenu}>
-            <h3>Rapid Test Kit</h3>
-            <InputGroup horizontal>
-              <Label>Date Requested</Label>
-              <input disabled placeholder={new Date().toLocaleString()} />
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Date Completed</Label>
-              <input disabled placeholder={new Date().toLocaleString()} />
-            </InputGroup>
-          </div>
-          <div className={styles.formDetailsInput}>
-            <InputGroup horizontal>
-              <Label>Type of Specimen</Label>
-              <input
-                type="text"
-                value={formValues?.typeOfSpecimen}
-                onChange={handleInputChange}
-                name="typeOfSpecimen"
-              />{" "}
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Clinical Details</Label>
-              <textarea
-                style={{ height: "10rem" }}
-                name={"clinicalDetails"}
-                onChange={handleInputChange}
-              >
-                {formValues?.clinicalDetails}
-              </textarea>{" "}
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Tentative Diagnosis</Label>
-              <input
-                type="text"
-                value={formValues?.tentativeDiagnosis}
-                onChange={handleInputChange}
-                name="tentativeDiagnosis"
-              />{" "}
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Test(s) Required</Label>
-              <input
-                type="text"
-                value={formValues?.testsRequired}
-                onChange={handleInputChange}
-                name="testsRequired"
-              />{" "}
-            </InputGroup>
-            <InputGroup horizontal>
-              <Label>Result(s)</Label>
-              <textarea
-                style={{ height: "10rem" }}
-                name={"result"}
-                onChange={handleInputChange}
-              >
-                {formValues?.result}
-              </textarea>{" "}
-            </InputGroup>
-          </div>
-          <div>
-            <Button onClick={() => onAdd(formValues, "create")}>Add</Button>
-            <Button onClick={() => onComplete(formValues, "complete")}>
-              Complete
+          <>
+            <div className={styles.formMenu}>
+              <h3>Rapid Test Kit</h3>
+              <InputGroup horizontal>
+                <Label>Date Requested</Label>
+                <input disabled placeholder={new Date().toLocaleString()} />
+              </InputGroup>
+              <InputGroup horizontal>
+                <Label>Date Completed</Label>
+                <input disabled placeholder={new Date().toLocaleString()} />
+              </InputGroup>
+            </div>
+            <div className={styles.formDetailsInput}>
+              <InputGroup className={styles.spaceBetween} horizontal>
+                <Label>Type of Specimen</Label>
+                <input
+                  className={styles.width500}
+                  type="text"
+                  value={formValues?.typeOfSpecimen}
+                  onChange={handleInputChange}
+                  name="typeOfSpecimen"
+                />{" "}
+              </InputGroup>
+              <InputGroup className={styles.spaceBetween} horizontal>
+                <Label>Clinical Details</Label>
+                <textarea
+                  className={styles.width500}
+                  style={{ height: "10rem" }}
+                  name={"clinicalDetails"}
+                  onChange={handleInputChange}
+                >
+                  {formValues?.clinicalDetails}
+                </textarea>{" "}
+              </InputGroup>
+              <InputGroup className={styles.spaceBetween} horizontal>
+                <Label>Tentative Diagnosis</Label>
+                <input
+                  className={styles.width500}
+                  type="text"
+                  value={formValues?.tentativeDiagnosis}
+                  onChange={handleInputChange}
+                  name="tentativeDiagnosis"
+                />{" "}
+              </InputGroup>
+              <InputGroup className={styles.spaceBetween} horizontal>
+                <Label>Test(s) Required</Label>
+                <input
+                  className={styles.width500}
+                  type="text"
+                  value={formValues?.testsRequired}
+                  onChange={handleInputChange}
+                  name="testsRequired"
+                />{" "}
+              </InputGroup>
+              <InputGroup className={styles.spaceBetween} horizontal>
+                <Label>Result(s)</Label>
+                <textarea
+                  className={styles.width500}
+                  style={{ height: "10rem" }}
+                  name={"result"}
+                  onChange={handleInputChange}
+                >
+                  {formValues?.result}
+                </textarea>{" "}
+              </InputGroup>
+            </div>
+            <div className={styles.buttonContainer}>
+              <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>
+              <Button type={ButtonTypes.orange} onClick={() => onComplete(formValues, "complete")}>
+                Complete
             </Button>
-            <Button onClick={() => onCancel()}>Cancel</Button>
-          </div>
-        </>
-      )}
+              <Button type={ButtonTypes.grey} onClick={() => onCancel()}>Cancel</Button>
+            </div>
+          </>
+        )}
     </Modal>
   );
 };
