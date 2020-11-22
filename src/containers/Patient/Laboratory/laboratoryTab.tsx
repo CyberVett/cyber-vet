@@ -132,6 +132,7 @@ const LaboratoryTab = ({
   );
 
   useEffect(() => {
+    console.log("parasitology changed");
     setParasitologyData(checkInData?.parasitology || defaultParasitologyFields);
     setPathologyData(checkInData?.pathology || defaultPathologyFields);
     setMicrobiologyData(checkInData?.microbiology || defaultMicrobiologyFields);
@@ -164,7 +165,10 @@ const LaboratoryTab = ({
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (
+          [201, 200].includes(response.status) &&
+          ["Created", "OK"].includes(response.statusText)
+        ) {
           setTogglePathology(false);
           // @ts-ignore
           setPathologyData(_data);
@@ -200,7 +204,10 @@ const LaboratoryTab = ({
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (
+          [201, 200].includes(response.status) &&
+          ["Created", "OK"].includes(response.statusText)
+        ) {
           setToggleParasitology(false);
           // @ts-ignore
           setParasitologyData(_data);
@@ -236,7 +243,10 @@ const LaboratoryTab = ({
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (
+          [201, 200].includes(response.status) &&
+          ["Created", "OK"].includes(response.statusText)
+        ) {
           setToggleMicrobiology(false);
           // @ts-ignore
           setMicrobiologyData(_data);
@@ -272,7 +282,12 @@ const LaboratoryTab = ({
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        console.log(response.status, response.statusText);
+
+        if (
+          [201, 200].includes(response.status) &&
+          ["Created", "OK"].includes(response.statusText)
+        ) {
           // @ts-ignore
           setRapidTestData(_data);
           setToggleRapidtest(false);
@@ -757,15 +772,21 @@ const LaboratoryTab = ({
             </tr>
             <tr>
               <td>Date of collection</td>
-              <td>{
-                // @ts-ignore
-              formatDate(microbiologyData?.dateOfCollection)}</td>
+              <td>
+                {
+                  // @ts-ignore
+                  formatDate(microbiologyData?.dateOfCollection)
+                }
+              </td>
             </tr>
             <tr>
               <td>Date of Submission</td>
-              <td>{
-                // @ts-ignore
-              formatDate(microbiologyData?.dateOfSubmission)}</td>
+              <td>
+                {
+                  // @ts-ignore
+                  formatDate(microbiologyData?.dateOfSubmission)
+                }
+              </td>
             </tr>
             <tr>
               <td>Clinical Details</td>
