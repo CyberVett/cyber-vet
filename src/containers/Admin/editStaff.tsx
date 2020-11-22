@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import Card from 'components/Card/card';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import requestClient from 'lib/requestClient';
 import Modal from 'components/Modal/modal';
@@ -63,6 +63,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
   const [percentage, setPercentage] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
+  const [response, setResponse] = useState('');
   const fileInput = useRef();
 
 
@@ -128,7 +129,6 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
       })
   }, [])
 
-
   const submitStaffForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -141,11 +141,9 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
       "phoneNumber": staffInput.phoneNumber
     })
       .then(response => {
-        console.log(response);
-
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
-          // setResponse(response.data.message);
+          setResponse('Staff has been successfully updated');
           setShowModal(true);
           setTimeout(() => {
             Router.push({
@@ -163,12 +161,54 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
       })
   };
 
+  const removeStaff = () => {
+    setLoading(true);
+    requestClient.delete(`staff/${staffId}`)
+      .then(response => {        
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setResponse('Staff has been successfully removed');
+          setShowModal(true);
+          setTimeout(() => {
+            Router.push({
+              pathname: '/app/admin',
+            });
+          }, 3000);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.data.message);
+      })
+  }
+
+   const revokeStaff = () => {
+    setLoading(true);
+    requestClient.put(`staff/revoke-access/${staffId}`)
+      .then(response => {        
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setResponse('Staff has been successfully revoked');
+          setShowModal(true);
+          setTimeout(() => {
+            Router.push({
+              pathname: '/app/admin',
+            });
+          }, 3000);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.data.message);
+      })
+  }
+
   return (
     <div className={styles.container}>
       <div>
         <div>
           <Card>
-            <SectionHeader title="Edit Staff" ><Button>Revoke Access</Button></SectionHeader>
+            <SectionHeader title="Edit Staff" ><Button onClick={revokeStaff}  type={ButtonTypes.orange}>Revoke Access</Button></SectionHeader>
             <div className={styles.formBody}>
               <form onSubmit={(e) => { submitStaffForm(e) }}>
                 <div className={patientStyles.cardBodyPatient}>
@@ -253,8 +293,8 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
                     <InputGroup horizontal>
                       <Label>role</Label>
                       <Select
-                        onChange={handleInputChange}
                         name="role"
+                        onChange={handleInputChange}
                         required
                         value={staffInput.role}
                       >
@@ -299,7 +339,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
                   <FormErrors errors={error} />
                   {/* <FormMessages messages={response} /> */}
                   <div className={styles.button}>
-                    <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Remove Staff</Button>
+                    <Button htmlType="submit" loading={loading}type={ButtonTypes.primary} >Continue</Button> <Button onClick={removeStaff} type={ButtonTypes.red} >Remove Staff</Button>
                   </div>
                 </div>
               </form>
@@ -307,7 +347,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
             <Modal
               visible={showModal}
               title="Staff Details Updated"
-              subtitle="Staff has been successfully updated"
+              subtitle={response}
               closeModal={() => { setShowModal(false) }}
             />
           </Card>
