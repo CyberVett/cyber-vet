@@ -71,8 +71,6 @@ const VacinationReport = (props: {
         }
       }
 
-      alert(total);
-
       return formValues;
     });
   };
@@ -98,9 +96,7 @@ const VacinationReport = (props: {
         return parseInt(val.price) + acc;
       }, 0);
 
-      console.log(total);
-
-      // setTotalValues(total);
+      setTotalValues(total);
       return _formValues;
     });
   };
@@ -116,11 +112,17 @@ const VacinationReport = (props: {
       let item = (services || [])[parseInt(event.target.name)];
 
       if (item) {
-        item.price = event.target.value;
+        const val = parseInt(event.target.value);
+        item.price = val && val > 1 ? val : 0;
       }
 
       const _formValues = { ...formValues };
       _formValues.services.splice(parseInt(event.target.name), 1, item);
+      const total = _formValues.services.reduce((acc, val) => {
+        return parseInt(val.price || 0) + acc;
+      }, 0);
+
+      setTotalValues(total);
 
       return _formValues;
     });
@@ -207,12 +209,7 @@ const VacinationReport = (props: {
           />
         </div>
         <div className="physical__examination__form--input">
-          <input
-            type="number"
-            name={"Total"}
-            onChange={handleBillValueChange}
-            defaultValue={totalValue}
-          />
+          <input type="number" name={"Total"} value={`${totalValue}`} />
         </div>
         {/* </div> */}
 
