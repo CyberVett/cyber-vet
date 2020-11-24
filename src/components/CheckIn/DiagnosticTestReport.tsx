@@ -6,6 +6,8 @@ const DiagnosticTestReport = (props: {
   onAdd: Function;
   onCancel: Function;
   data: string;
+  date?: string;
+  added: boolean;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -32,10 +34,16 @@ const DiagnosticTestReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+      date={props.date}
+      canEdit={props.added}
     >
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
-          <textarea name={"0"} style={{ height: "10rem" }} onChange={handleInputChange}>
+          <textarea
+            name={"0"}
+            style={{ height: "10rem" }}
+            onChange={handleInputChange}
+          >
             {formValues.diagnosticTest}
           </textarea>
         </div>

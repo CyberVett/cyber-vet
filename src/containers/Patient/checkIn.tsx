@@ -30,10 +30,11 @@ import { VaccinationSection } from "./VaccinationSection";
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
   const [checkInData, setCheckIndata] = useState(null);
-  
-  const [physicalExaminationResult, setPhysicalExaminationResult] = useState<
-    IphysicalExamination
-  >({
+
+  const [
+    physicalExaminationResult,
+    setPhysicalExaminationResult,
+  ] = useState<IphysicalExamination>({
     rectalTemperature: "",
     respiratoryRate: "",
     pulseRate: "",
@@ -106,6 +107,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           chiefComplain: checkinData.chiefComplain.chiefComplain,
+          chiefComplainDate: checkinData.chiefComplain?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -121,6 +123,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             differential: checkinData.diagnosis.differentialDiagnosis,
             tentative: checkinData.diagnosis.tentativeDiagnosis,
           },
+          tentativeDiagnosisDate: checkinData.tentativeDiagnosis?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -135,6 +138,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           clinicalSigns: checkinData.clinicalSigns.signs,
+          clinicalSignsDate: checkinData.clinicalSigns?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -146,6 +150,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           diagnosticTest: checkinData.diagnosticTest.test,
+          diagnosticTestDate: checkinData.diagnosticTest?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -157,6 +162,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           finalDiagnosis: checkinData.finalDiagnosis.diagnosis,
+          finalDiagnosisDate: checkinData.finalDiagnosis?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -169,6 +175,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           treatment: checkinData.treatment.treatment,
+          treatmentDate: checkinData.treatment?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -181,6 +188,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         _medicalReport = {
           ..._medicalReport,
           note: checkinData.notes.note,
+          noteDate: checkinData.notes?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -200,6 +208,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             smsReminder: checkinData.vaccination.smsReminder,
             emailReminder: checkinData.vaccination.emailReminder,
           },
+          vaccinationDate: checkinData.vaccination?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -280,6 +289,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     // @ts-ignore
     delete data.patientId;
     // @ts-ignore
+    delete data.clientId;
+    // @ts-ignore
+    delete data.hospitalId;
+    // @ts-ignore
     delete data.updatedAt;
     // @ts-ignore
     delete data.lastModifiedBy;
@@ -287,12 +300,19 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     delete data.createdAt;
     // @ts-ignore
     delete data.addedBy;
+    // delete data.checkinId
+
     requestClient
       .put(`/patients/${patientId}/physical-examination`, data)
-      .then((response) => {
+      .then(async (response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
-          setPhysicalExaminationResult(physicalResult);
+          const json = response.data.data;
+          // setPhysicalExaminationResult({
+          //   ...physicalResult,
+          //   createdAt: json.createdAt,
+          //   updatedAt: json.updatedAt,
+          // });
           setShowModal(false);
         } else {
         }
@@ -408,12 +428,14 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // Adding new chief complain
       // @ts-ignore
       body.chiefComplain = data.chiefComplain;
+      data.chiefComplainDate = new Date().toString();
       method = "post";
     } else if (field === "Clinical Signs") {
       method = !medicalReports.clinicalSigns ? "post" : "put";
       endpoint = "clinical-sign";
       // @ts-ignore
       body.signs = data.clinicalSigns;
+      data.clinicalSignsDate = new Date().toString();
     } else if (field === "Tentative Diagnosis") {
       method = !medicalReports.tentativeDiagnosis.tentative ? "post" : "put";
       endpoint = "diagnosis";
@@ -424,6 +446,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         differentialDiagnosis: data.tentativeDiagnosis.differential,
       };
+      data.tentativeDiagnosisDate = new Date().toString();
     } else if (field === "Diagnosis Test") {
       // diagnostic-test
       method = !medicalReports.diagnosticTest ? "post" : "put";
@@ -433,6 +456,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         test: data.diagnosticTest,
       };
+      data.diagnosticTestDate = new Date().toString();
     } else if (field === "Final Diagnosis") {
       // diagnostic-test
       method = !medicalReports.finalDiagnosis ? "post" : "put";
@@ -442,6 +466,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         diagnosis: data.finalDiagnosis,
       };
+      data.finalDiagnosisDate = new Date().toString();
     } else if (field === "Treatment") {
       // diagnostic-test
       method = !medicalReports.treatment ? "post" : "put";
@@ -451,6 +476,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         treatment: data.treatment,
       };
+      data.treatmentDate = new Date().toString();
     } else if (field === "Vaccination") {
       // // diagnostic-test
       method = !medicalReports.vaccination.name ? "post" : "put";
@@ -470,6 +496,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         smsReminder: data.vaccination.emailReminder === "on",
       };
+      data.vaccinationDate = new Date().toString();
     } else if (field === "Note") {
       // // diagnostic-test
       method = !medicalReports.note ? "post" : "put";
@@ -479,6 +506,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         note: data.note,
       };
+      data.noteDate = new Date().toString();
     }
     // @ts-ignore
     requestClient[method](`/patients/${patientId}/${endpoint}`, body)
@@ -624,8 +652,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
               <PatientDetails patientData={patientData} />
               <div style={{ padding: "1rem" }}>
                 <p style={{ color: "red" }}>Treatment warnings and allergies</p>
-                <p>{// @ts-ignore
-                patientData?.treatmentWarnings}</p>
+                <p>
+                  {
+                    // @ts-ignore
+                    patientData?.treatmentWarnings
+                  }
+                </p>
               </div>
               <FormErrors errors={modalError} />
               {checkedIn && (
@@ -635,9 +667,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                 >
                   <>
                     {"Client Details" === activeCheckedInItem && (
-                      <ClientSection data={
-                        // @ts-ignore
-                        patientData?.client} />
+                      <ClientSection
+                        data={
+                          // @ts-ignore
+                          patientData?.client
+                        }
+                      />
                     )}
 
                     {"Patient Details" === activeCheckedInItem && (
@@ -648,7 +683,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <VaccinationSection
                         data={
                           // @ts-ignore
-                          checkInData?.vaccination}
+                          checkInData?.vaccination
+                        }
                       />
                     )}
 
@@ -656,13 +692,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       <MedicalRecordsItems
                         checkedIn={
                           // @ts-ignore
-                          checkInData?.checkIn}
+                          checkInData?.checkIn
+                        }
                         onRecordItemTypeUpdate={handleMedicalItemUpdate}
                       >
                         {medicalReports.chiefComplain && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={
+                              medicalReports.chiefComplain.createdAt ||
+                              new Date().toString()
+                            }
                             onDelete={handleDeleteMedicalReport}
                             onEdit={handleEditMedicalReport}
                             title="Chief Complain"
@@ -683,13 +723,14 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               physicalExaminationResult={
                                 physicalExaminationResult
                               }
+                              // date={}
                               showModal={() => setShowModal(true)}
                             />
                           )}
                         {(medicalReports.clinicalSigns.length || "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.clinicalSignsDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("clinical-sign", {
                                 clinicalSigns: "",
@@ -707,7 +748,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.tentativeDiagnosisDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("diagnosis", {
                                 tentativeDiagnosis: {
@@ -717,23 +758,23 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               })
                             }
                             onEdit={handleEditTentativeTest}
-                            title="Diagnostic Test"
+                            title="Tentative Diagnosis"
                           >
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
                             <h5>Differential</h5>
                             <p>
                               {medicalReports.tentativeDiagnosis.differential}
                             </p>
+                            <h5>Tentative</h5>
+                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
                           </CheckinItem>
                         )}
                         {(medicalReports.diagnosticTest.length || "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.diagnosticTestDate}
                             onDelete={handleDeleteDiagnosticTest}
                             onEdit={handleEditDiagnosticTest}
-                            title="Diagnostic Test"
+                            title="Tentative Diagnosis"
                           >
                             <p>{medicalReports.diagnosticTest}</p>
                           </CheckinItem>
@@ -742,7 +783,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         {(medicalReports.finalDiagnosis.length || "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.finalDiagnosisDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("final-diagnosis", {
                                 finalDiagnosis: "",
@@ -757,7 +798,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         {(medicalReports.treatment.length || "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.treatmentDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("treatment", {
                                 treatment: "",
@@ -773,7 +814,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         {(medicalReports.vaccination.name || "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.vaccinationDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("vaccination", {
                                 vaccination: {
@@ -825,7 +866,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         {medicalReports.note && (
                           <CheckinItem
                             checkedIn={checkedIn}
-                            date={new Date().toString()}
+                            date={medicalReports.noteDate}
                             onDelete={() =>
                               handleDeleteMedicalReport("notes", {
                                 note: "",
@@ -846,14 +887,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         patientData={patientData}
                       />
                     )}
-                    {"Radiology" === activeCheckedInItem && <Radiology checkInData={checkInData} />}
+                    {"Radiology" === activeCheckedInItem && (
+                      <Radiology checkInData={checkInData} />
+                    )}
                     {"Appointment" === activeCheckedInItem && (
                       <Appointment
                         // @ts-ignore
                         appointments={patientData?.appointments}
                         patientNo={
                           // @ts-ignore
-                          patientData.id}
+                          patientData.id
+                        }
                       />
                     )}
                   </>

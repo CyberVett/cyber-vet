@@ -3,7 +3,7 @@ import React from "react";
 import Button, { ButtonTypes } from "../Button/button";
 
 const CheckinItem = (props: {
-  date: string;
+  date?: string;
   onEdit: Function;
   onAddNew?: Function;
   onDelete: Function;
@@ -19,12 +19,22 @@ const CheckinItem = (props: {
         <div className="item__head--actions">
           {props.checkedIn ? (
             <>
-              <input defaultValue={
-                // @ts-ignore
-                formatDate(props?.date)} />
-              <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>Edit Result</Button>
+              <input
+                defaultValue={
+                  // @ts-ignore
+                  formatDate(props?.date)
+                }
+              />
+              <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>
+                Edit Result
+              </Button>
               {!props.disableDelete ? (
-                <Button type={ButtonTypes.orange} onClick={() => props.onDelete()}>Delete Results</Button>
+                <Button
+                  type={ButtonTypes.orange}
+                  onClick={() => props.onDelete()}
+                >
+                  Delete Results
+                </Button>
               ) : null}
             </>
           ) : (

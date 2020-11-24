@@ -18,6 +18,8 @@ const VacinationReport = (props: {
   onAdd: Function;
   onCancel: Function;
   data: IData;
+  date?: string;
+  added: boolean;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -46,6 +48,8 @@ const VacinationReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+      date={props.date}
+      canEdit={props.added}
     >
       <form className="medical__report__form">
         <div className="medical__report__form--input">
@@ -79,7 +83,7 @@ const VacinationReport = (props: {
           <div className="physical__examination__form--input">
             <label>Date of next shot</label>
             <input
-              type='date'
+              type="date"
               name={"nextDate"}
               onChange={handleInputChange}
               defaultValue={formValues.vaccination.nextDate}

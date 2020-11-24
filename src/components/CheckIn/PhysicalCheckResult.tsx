@@ -36,17 +36,21 @@ const PhysicalCheckResult = (props: {
   checkedIn: Boolean;
 }) => {
   const { physicalExaminationResult } = props;
-  
+
   return (
     <CheckinItem
       checkedIn={props.checkedIn}
       date={
         // @ts-ignore
-        formatDate(physicalExaminationResult?.updatedAt)}
+        new Date().toString()
+        // formatDate(
+        //   physicalExaminationResult?.updatedAt || new Date().toString()
+        // )
+      }
       onAddNew={() => props?.onAddNew()}
-       // @ts-ignore
+      // @ts-ignore
       onDelete={() => props?.onDelete()}
-       // @ts-ignore
+      // @ts-ignore
       onEdit={() => props?.onEdit()}
       title="Physical Examination"
     >
@@ -138,7 +142,7 @@ const PhysicalCheckResult = (props: {
                 label: "Prepuce/Vulva Examination",
                 value: physicalExaminationResult.prepuceVulvaExamination,
               },
-            ].map(({label, value}, index) => {
+            ].map(({ label, value }, index) => {
               return (
                 <li className="exam__result__item" key={index}>
                   <span className="exam__result__item--name">{label}</span>
