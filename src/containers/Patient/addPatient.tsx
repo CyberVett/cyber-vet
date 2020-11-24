@@ -71,7 +71,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // const [species, setSpecies] = useState<ISpecies[]>([]);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
   const fileInput = useRef();
@@ -83,21 +82,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
       [event.target.name]: event.target.value
     }));
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   requestClient.get('settings/species')
-  //     .then(response => {
-  //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
-  //         setSpecies(response.data.data);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       setLoading(false);
-  //       console.log(error);
-  //     })
-  // }, []);
 
   const handleFileChange = (e: any) => {
     e.preventDefault();
@@ -278,8 +262,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 <Input
                   autoComplete="true"
                   onChange={handleInputChange}
-                  // @ts-ignore
-                  // onBlur={setAge(() => getAge(patientInput.dob))}
                   name="dob"
                   required
                   type="date"
@@ -346,7 +328,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
               <InputGroup horizontal>
                 <Label>Age when acquired</Label>
                 <Input
-                  autoComplete="true"
                   handleInputChange={handleInputChange}
                   name="ageWhenAcquired"
                   required
@@ -431,7 +412,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   <option value="Borehole">Borehole</option>
                   <option value="Tap Water">Tap Water</option>
                   <option value="Well Water">Well Water</option>
-                  <option value="Stream<">Stream</option>
+                  <option value="Stream">Stream</option>
                 </Select>
               </InputGroup>
               <InputGroup horizontal>

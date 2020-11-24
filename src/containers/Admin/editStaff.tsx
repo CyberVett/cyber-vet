@@ -37,6 +37,7 @@ interface IAddStaff {
   role: string;
   imageUrl: string;
   accountId: string;
+  accessRevoked: boolean;
 }
 
 const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
@@ -57,6 +58,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     email: '',
     imageUrl: '',
     accountId: '',
+    accessRevoked: false,
   });
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<IRole[]>([]);
@@ -203,12 +205,33 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
       })
   }
 
+  const grantAccess = () => {
+    setLoading(true);
+    requestClient.put(`staff/grant-access/${staffId}`)
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setResponse('Staff has been successfully restored');
+          setShowModal(true);
+          setTimeout(() => {
+            Router.push({
+              pathname: '/app/admin',
+            });
+          }, 3000);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.data.message);
+      })
+  }
+
   return (
     <div className={styles.container}>
       <div>
         <div>
           <Card>
-            <SectionHeader title="Edit Staff" ><Button onClick={revokeStaff}  type={ButtonTypes.orange}>Revoke Access</Button></SectionHeader>
+            <SectionHeader title="Edit Staff" ><Button onClick={staffInput.accessRevoked ? grantAccess : revokeStaff} type={staffInput.accessRevoked ? ButtonTypes.primary : ButtonTypes.orange}>{staffInput.accessRevoked ? 'Restore Access' : 'Revoke Access'}</Button></SectionHeader>
             <div className={styles.formBody}>
               <form onSubmit={(e) => { submitStaffForm(e) }}>
                 <div className={patientStyles.cardBodyPatient}>
@@ -348,7 +371,12 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
               visible={showModal}
               title="Staff Details Updated"
               subtitle={response}
-              closeModal={() => { setShowModal(false) }}
+              closeModal={() => { 
+                setShowModal(false)
+                Router.push({
+                  pathname: '/app/admin',
+                });
+               }}
             />
           </Card>
         </div>

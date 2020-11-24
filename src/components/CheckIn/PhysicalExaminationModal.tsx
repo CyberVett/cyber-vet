@@ -44,7 +44,7 @@ const PhysicalExaminationModal = (props: {
         <React.Fragment>
           <form className="physical__examination__form">
             <div className="physical__examination__form--input">
-              <label>Rectal Temperatur (°C)</label>
+              <label>Rectal Temperature (°C)</label>
               <input
                 type="text"
                 name="rectalTemperature"

@@ -1,4 +1,4 @@
-import {format, formatDistance } from "date-fns";
+import {format, formatDistanceStrict } from "date-fns";
 /* Combine a number of classes removing undefined values
 * @param {string} styles A list of classes to compose together
 */
@@ -32,7 +32,7 @@ export const formatPhoneNumber = (phoneNo: string) => {
   return formattedPhoneNo
 };
 
-export const getAge = (dob: Date | string): string => dob ? formatDistance(new Date(), new Date(dob)) : 'Enter Date of Birth'
+export const getAge = (dob: Date | string): string => dob ? formatDistanceStrict(new Date(), new Date(dob)) : 'Enter Date of Birth'
  
 export const formatDate = (datetime: Date | number): string => datetime ? format(new Date(datetime), 'MMM d, yyyy') : '';
 

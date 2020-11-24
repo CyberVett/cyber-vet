@@ -211,6 +211,10 @@
   padding: 10px 0;
   text-decoration: none;
 
+  > svg {
+    margin: 0 8px;
+  }
+
 }
 
 .navItemActive {

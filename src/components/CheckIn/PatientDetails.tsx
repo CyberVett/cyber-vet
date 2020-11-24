@@ -7,7 +7,7 @@ const PatientDetails = (patientData: any) => {
       <div className="patient__details--info">
         <div className="patient__info--title">Client&apos;s Name</div>
         <div className="patient__info--value">
-          {patientData?.patientData?.clientId}
+          {patientData?.patientData?.client?.title} {patientData?.patientData?.client?.firstName} {patientData?.patientData?.client?.lastName}
         </div>
         <div className="patient__info--title">Patient Name</div>
         <div className="patient__info--value">

@@ -24,6 +24,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     allDay: false,
     appointmentDate: '',
     emailReminder: false,
+    id: '',
     notes: '',
     otherReason: '',
     reason: '',
@@ -53,14 +54,14 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     e.preventDefault();
     setLoading(true);
     requestClient.post(`patients/${patientNo}/appointment`, {
-      "allDay": appointment.allDay,
+      "allDay": appointment.allDay || false,
       // @ts-ignore
-      "appointmentDate": formatDate(appointment.appointmentDate),
+      // "appointmentDate": formatDate(appointment.appointmentDate),
       "emailReminder": appointment.emailReminder,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
-      "smsReminder": appointment.smsReminder,
-      "status": appointment.status,
+      "smsReminder": appointment.smsReminder || false,
+      "status": appointment.status || false,
     })
       .then(response => {
         setLoading(false);
@@ -83,16 +84,15 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
   const updateForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);    
-    console.log(appointment);
     
-    requestClient.put(`patients/${patientNo}/appointment`, {
+    requestClient.put(`patients/${patientNo}/appointment/${appointment.id}`, {
       "allDay": appointment.allDay,
       // @ts-ignore
       "appointmentDate": formatDate(appointment.appointmentDate),
-      "emailReminder": appointment.emailReminder,
+      "emailReminder": appointment.emailReminder || false,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
-      "smsReminder": appointment.smsReminder,
+      "smsReminder": appointment.smsReminder || false,
       "status": appointment.status,
     })
       .then(response => {
@@ -134,7 +134,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
         className={styles.formDetailsInput}
         onSubmit={(e:FormEvent) => handleSubmit(e)}>
         <div>
-          <div className={styles.dateTime}>
+          {/* <div className={styles.dateTime}> */}
             <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Date</Label>
               <Input
@@ -148,7 +148,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 value={modalData ? formatDateForCalendar(appointment?.appointmentDate) : appointment?.appointmentDate}
               />
             </InputGroup>
-            <InputGroup className={styles.spaceBetween} horizontal>
+            {/* <InputGroup className={styles.spaceBetween} horizontal>
               <Label>All Day</Label>
               <CheckboxInput
                 checked={appointment?.allDay}
@@ -156,8 +156,8 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 onChange={handleInputChange}
                 value="allDay"
               />
-            </InputGroup>
-          </div>
+            </InputGroup> */}
+          {/* </div> */}
           {/* TODO: possible fix later one */}
           <InputGroup className={styles.spaceBetween} horizontal>
             <Label>Scheduled By</Label>

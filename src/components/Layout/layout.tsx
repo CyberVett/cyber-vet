@@ -154,6 +154,7 @@ const navLinks = [
 
 const SideNav = () => {
   const router = useRouter();
+  const { logoutUser } = useContext(AuthContext);
   return (
     <aside className={styles.sideMenu}>
       <ul className={styles.navList}>
@@ -180,22 +181,28 @@ const SideNav = () => {
               {
                 ((router as any).asPath.includes(item.href) && (item.childMenu && item?.childMenu?.length > 0)) &&
                 <ul className={styles.navListChild}>
-                  {
-                    item.childMenu?.map(child => (
-                      <>
-                        <li key={child.id}>
-                          <Link href={child.href}>
-                            <a key={item.id}>{child.name}&nbsp;<RightArrow /></a>
-                          </Link>
-                        </li>
-                      </>
-                    ))
-                  }
+                  <>
+                    {
+                      item.childMenu?.map(child => (
+                        <>
+                          <li key={child.id}>
+                            <Link href={child.href}>
+                              <a key={item.id}>{child.name}&nbsp;<RightArrow /></a>
+                            </Link>
+                          </li>
+                        </>
+                      ))
+                    }
+                  </>
                 </ul>
               }
             </>
           ))
         }
+        <li onClick={logoutUser} className={styles.navItem}>
+          <AdminIcon />
+          <span>Logout&nbsp;<RightArrow /></span>
+        </li>
       </ul>
     </aside>
   );
