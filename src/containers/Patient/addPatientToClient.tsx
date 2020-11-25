@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
 
 import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardHeader } from 'components/Card/card';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 
 
 import styles from './patient.module.scss';
@@ -13,6 +13,7 @@ import { getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
+import camera from 'lib/camera';
 
 export interface ISpecies {
   name: string;
@@ -43,7 +44,7 @@ interface IAddPatient {
 }
 
 const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
-
+  const [age, setAge] = useState('');
   const [patientInput, setPatientInput] = useState<IAddPatient>({
     clientId: clientId,
     name: '',
@@ -83,20 +84,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
     }));
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   requestClient.get('settings/species')
-  //     .then(response => {
-  //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
-  //         setSpecies(response.data.data);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       setLoading(false);
-  //       console.log(error);
-  //     })
-  // }, []);
+  useEffect(() => {
+    let age = getAge(patientInput.dob);
+    setAge(age);
+  }, [patientInput.dob])
 
   const handleFileChange = (e: any) => {
     e.preventDefault();
@@ -159,6 +150,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
+  const useCamera = () => {
+    camera.startCamera();
+    camera.takeSnapshot();
+  }
   return (
     <div>
       <Card>
@@ -278,7 +273,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 <Input
                   required
                   disabled
-                  defaultValue={getAge(patientInput.dob)}
+                  defaultValue={age}
                 />
               </InputGroup>
               <InputGroup horizontal>
@@ -318,6 +313,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
+                <Button onClick={useCamera}>use camera</Button>
               </div>
               {
                 //  @ts-ignore
@@ -375,14 +371,14 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   value={patientInput.purposeOfKepping}
                 >
                   <option value="">select the purpose of keeping</option>
-                  <option value="1">Breeding</option>
-                  <option value="2">Companion</option>
-                  <option value="3">Security</option>
-                  <option value="4">Consumption</option>
-                  <option value="5">Others</option>
+                  <option value="Breeding">Breeding</option>
+                  <option value="Companion">Companion</option>
+                  <option value="Security">Security</option>
+                  <option value="Consumption">Consumption</option>
+                  <option value="Others">Others</option>
                 </Select>
               </InputGroup>
-              {patientInput.purposeOfKepping === '5' &&
+              {patientInput.purposeOfKepping === 'Others' &&
                 <InputGroup horizontal>
                   <Label>Enter purpose of keeping</Label>
                   <Input
@@ -415,10 +411,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   value={patientInput.waterSource}
                 >
                   <option value="">select a water source</option>
-                  <option value="1">Borehole</option>
-                  <option value="2">Tap Water</option>
-                  <option value="3">Well Water</option>
-                  <option value="4">Stream</option>
+                  <option value="Borehole">Borehole</option>
+                  <option value="Tap Water">Tap Water</option>
+                  <option value="Well Water">Well Water</option>
+                  <option value="Stream">Stream</option>
                 </Select>
               </InputGroup>
               <InputGroup horizontal>
@@ -430,9 +426,9 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   value={patientInput.managementSystem}
                 >
                   <option value="">select a management system</option>
-                  <option value="1">Intensive</option>
-                  <option value="2">Semi-Intensive</option>
-                  <option value="3">Extensive</option>
+                  <option value="Intensive">Intensive</option>
+                  <option value="Semi-Intensive">Semi-Intensive</option>
+                  <option value="Extensive">Extensive</option>
                 </Select>
               </InputGroup>
               <InputGroup horizontal>
@@ -444,14 +440,14 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   value={patientInput.vaccination}
                 >
                   <option value="">select a vaccination</option>
-                  <option value="1">Rabies</option>
-                  <option value="2">DHLPP</option>
-                  <option value="3">Rabies and DHLPP</option>
-                  <option value="4">Others</option>
-                  <option value="5">None</option>
+                  <option value="Rabies">Rabies</option>
+                  <option value="DHLPP">DHLPP</option>
+                  <option value="Rabies and DHLPP">Rabies and DHLPP</option>
+                  <option value="Others">Others</option>
+                  <option value="None">None</option>
                 </Select>
               </InputGroup>
-              {patientInput.vaccination === '4' &&
+              {patientInput.vaccination === 'Others' &&
                 <InputGroup horizontal>
                   <Label>Enter vaccination type</Label>
                   <Input
@@ -491,9 +487,10 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
           <FormErrors errors={error} />
           <div className={styles.button}>
             <Button
+            type={ButtonTypes.primary}
               htmlType="sumbit"
               loading={loading}
-            >Add New Patient</Button><Button href="/app/dashboard">Cancel</Button>
+            >Add New Patient</Button><Button href="/app/client" type={ButtonTypes.grey}>Cancel</Button>
           </div>
         </form>
         <Modal

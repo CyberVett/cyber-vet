@@ -11,7 +11,8 @@ export enum ButtonTypes {
   outline = 'outline',
   primary = 'primary',
   orange = 'orange',
-  grey = 'grey'
+  grey = 'grey',
+  red = 'red'
 }
 
 export interface IButtonProps {

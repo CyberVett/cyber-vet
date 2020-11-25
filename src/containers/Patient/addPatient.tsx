@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Error from 'next/error';
 import { NextPage, NextPageContext } from 'next';
 
@@ -6,8 +6,7 @@ import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } fr
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardHeader, CardTabs } from 'components/Card/card';
 import { PatientTabs } from 'config/constants';
-import Button from 'components/Button/button';
-
+import Button, { ButtonTypes } from 'components/Button/button';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
@@ -72,7 +71,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // const [species, setSpecies] = useState<ISpecies[]>([]);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
   const fileInput = useRef();
@@ -84,21 +82,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
       [event.target.name]: event.target.value
     }));
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   requestClient.get('settings/species')
-  //     .then(response => {
-  //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
-  //         setSpecies(response.data.data);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       setLoading(false);
-  //       console.log(error);
-  //     })
-  // }, []);
 
   const handleFileChange = (e: any) => {
     e.preventDefault();
@@ -161,6 +144,15 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
+  useEffect(() => {
+    let age = getAge(patientInput.dob);
+    setAge(age);
+  }, [patientInput.dob])
+
+  // const useCamera = () => {
+  //   camera.startCamera();
+  //   camera.takeSnapshot();
+  // }
   return (!clientId ? <Error statusCode={404} title="No client found, kindly register a client, before adding a new patient" /> :
     <div>
       <Card>
@@ -270,8 +262,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 <Input
                   autoComplete="true"
                   onChange={handleInputChange}
-                  // @ts-ignore
-                  onBlur={setAge(getAge(patientInput.dob))}
                   name="dob"
                   required
                   type="date"
@@ -313,7 +303,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   hidden
                   //  @ts-ignore
                   ref={fileInput}
-                  required
                   type="file"
                   accept="image/gif, image/jpeg, image/png"
                   onChange={handleFileChange}
@@ -323,6 +312,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
+                {/* <Button onClick={useCamera}>use camera</Button> */}
               </div>
               {
                 //  @ts-ignore
@@ -338,7 +328,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
               <InputGroup horizontal>
                 <Label>Age when acquired</Label>
                 <Input
-                  autoComplete="true"
                   handleInputChange={handleInputChange}
                   name="ageWhenAcquired"
                   required
@@ -423,7 +412,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   <option value="Borehole">Borehole</option>
                   <option value="Tap Water">Tap Water</option>
                   <option value="Well Water">Well Water</option>
-                  <option value="Stream<">Stream</option>
+                  <option value="Stream">Stream</option>
                 </Select>
               </InputGroup>
               <InputGroup horizontal>
@@ -496,9 +485,10 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
           <FormErrors errors={error} />
           <div className={styles.button}>
             <Button
+              type={ButtonTypes.primary}
               htmlType="sumbit"
               loading={loading}
-            >Add New Patient</Button><Button href="/app/dashboard">Cancel</Button>
+            >Add New Patient</Button><Button type={ButtonTypes.grey} href="/app/patient">Cancel</Button>
           </div>
         </form>
         <Modal

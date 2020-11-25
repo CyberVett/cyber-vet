@@ -34,7 +34,7 @@ const Appointment: React.FC<IAppointment> = ({
 
   const deleteAppointment = (id: string) => {
     setLoading(true);
-    requestClient.delete(`patients/${patientNo}/appointment/${id}`)
+    requestClient.delete(`appointment/${id}`)
       .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
@@ -73,7 +73,7 @@ const Appointment: React.FC<IAppointment> = ({
                         <tr key={row.id}>
                           <td>{formatDate(row.createdAt)}</td>
                           <td>{row.patientId}</td>
-                          <td>{row.scheduledBy}</td>
+                          <td>{row?.scheduler?.title} {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
                           <td>{row.reason}</td>
                           <td>{row.status}</td>
                           <td><Button type={ButtonTypes.grey} onClick={() => handleReview(row)}>Review</Button></td>

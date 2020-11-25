@@ -55,7 +55,7 @@ const ClientList: React.FunctionComponent = () => {
                 <td>{row.title}. {row.firstName} {row.lastName}</td>
                 <td>{row.address}</td>
                 <td>{row.phoneNumber}</td>
-                <td><Button href={`/app/client/edit/${row.id}`}>edit</Button> <Button href={`/app/client/${row.id}`} >Open</Button></td>
+                <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
               </tr>
             )} />
           }
