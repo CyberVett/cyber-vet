@@ -34,7 +34,7 @@ const Appointment: React.FC<IAppointment> = ({
 
   const deleteAppointment = (id: string) => {
     setLoading(true);
-    requestClient.delete(`appointment/${id}`)
+    requestClient.delete(`appointments/${id}`)
       .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {

@@ -1,4 +1,3 @@
-import { formatDate } from "lib/utils";
 import React from "react";
 import CheckinItem from "./CheckinItem";
 

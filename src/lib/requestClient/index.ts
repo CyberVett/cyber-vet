@@ -6,7 +6,7 @@ import config from 'config';
 const requestClient = axios.create({
     baseURL: config.apiRoot,
     headers: {},
-    timeout: 10000,
+    timeout: 30000,
 });
 
 
@@ -21,6 +21,8 @@ requestClient.interceptors.request.use(
         // If it's an excluded route, continue as normal by returning the original request config
         const EXCLUDED_ROUTES = [
             'users/login',
+            'users/reset-password',
+            'users/update-password',
         ];
         if (EXCLUDED_ROUTES.includes(requestRoute)) {
             return requestConfig;

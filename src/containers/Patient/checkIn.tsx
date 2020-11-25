@@ -307,7 +307,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .then(async (response) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
-          const json = response.data.data;
+          // const json = response.data.data;
           // setPhysicalExaminationResult({
           //   ...physicalResult,
           //   createdAt: json.createdAt,
@@ -428,6 +428,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // Adding new chief complain
       // @ts-ignore
       body.chiefComplain = data.chiefComplain;
+      // @ts-ignore
       data.chiefComplainDate = new Date().toString();
       method = "post";
     } else if (field === "Clinical Signs") {
@@ -435,6 +436,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       endpoint = "clinical-sign";
       // @ts-ignore
       body.signs = data.clinicalSigns;
+      // @ts-ignore
       data.clinicalSignsDate = new Date().toString();
     } else if (field === "Tentative Diagnosis") {
       method = !medicalReports.tentativeDiagnosis.tentative ? "post" : "put";
@@ -446,6 +448,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         differentialDiagnosis: data.tentativeDiagnosis.differential,
       };
+      // @ts-ignore
       data.tentativeDiagnosisDate = new Date().toString();
     } else if (field === "Diagnosis Test") {
       // diagnostic-test
@@ -456,6 +459,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         test: data.diagnosticTest,
       };
+      // @ts-ignore
       data.diagnosticTestDate = new Date().toString();
     } else if (field === "Final Diagnosis") {
       // diagnostic-test
@@ -466,6 +470,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         diagnosis: data.finalDiagnosis,
       };
+      // @ts-ignore
       data.finalDiagnosisDate = new Date().toString();
     } else if (field === "Treatment") {
       // diagnostic-test
@@ -476,6 +481,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         treatment: data.treatment,
       };
+      // @ts-ignore
       data.treatmentDate = new Date().toString();
     } else if (field === "Vaccination") {
       // // diagnostic-test
@@ -496,6 +502,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         smsReminder: data.vaccination.emailReminder === "on",
       };
+      // @ts-ignore
       data.vaccinationDate = new Date().toString();
     } else if (field === "Note") {
       // // diagnostic-test
@@ -506,6 +513,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         note: data.note,
       };
+      // @ts-ignore
       data.noteDate = new Date().toString();
     }
     // @ts-ignore
@@ -700,6 +708,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={
+                              // @ts-ignore
                               medicalReports.chiefComplain.createdAt ||
                               new Date().toString()
                             }

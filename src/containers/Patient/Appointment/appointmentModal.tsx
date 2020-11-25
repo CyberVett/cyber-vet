@@ -56,7 +56,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     requestClient.post(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay || false,
       // @ts-ignore
-      // "appointmentDate": formatDate(appointment.appointmentDate),
+      "appointmentDate": appointment.appointmentDate,
       "emailReminder": appointment.emailReminder,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
