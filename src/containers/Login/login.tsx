@@ -118,7 +118,7 @@ const Login: React.FunctionComponent = () => {
             <FormErrors errors={error} />
             <FormMessages messages={response} />
           </form>
-          <div style={{ textAlign: 'center' }}><Link href="/auth/forgot-password"><span style={{ color: '#1E638F' }}>Forgot Password&nbsp;&#63;</span></Link></div>
+          <div style={{ textAlign: 'center' }}><Link href="/auth/forgot-password"><span style={{ color: '#1E638F', cursor: 'pointer' }}>Forgot Password&nbsp;&#63;</span></Link></div>
         </Card>
       </div>
     </div>

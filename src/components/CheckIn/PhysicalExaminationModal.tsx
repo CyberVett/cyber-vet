@@ -3,6 +3,7 @@ import Button, { ButtonTypes } from "../Button/button";
 import CheckInModalContent from "./CheckInModalContent";
 import { ReactComponent as Loader } from "../../assets/icons/loader.svg";
 import { IphysicalExamination } from "./PhysicalCheckResult";
+import { formatDate } from "lib/utils";
 
 const PhysicalExaminationModal = (props: {
   onAddResult: Function;
@@ -36,7 +37,8 @@ const PhysicalExaminationModal = (props: {
   return (
     <CheckInModalContent
       title="Physical Examination Result"
-      date={physicalExamination.updatedAt}
+      // @ts-ignore
+      date={formatDate(physicalExamination?.updatedAt)}
     >
       {props.loading ? (
         <Loader />
