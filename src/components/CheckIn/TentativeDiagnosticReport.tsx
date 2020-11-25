@@ -9,6 +9,8 @@ const DiagnosticTestReport = (props: {
     differential: string;
     tentative: string;
   };
+  added: boolean;
+  date?: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -43,17 +45,10 @@ const DiagnosticTestReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+      date={props.date}
+      canEdit={props.added}
     >
       <form className="medical__report__form">
-        <h5>Tentative</h5>
-        <div className="physical__examination__form--input">
-          <textarea
-            cols={10}
-            name={"tentative"}
-            onChange={handleInputChange}
-            rows={5}
-          >{formValues.tentativeDiagnosis.tentative}</textarea>
-        </div>
         <h5>Differential</h5>
         <div className="physical__examination__form--input">
           <textarea
@@ -61,7 +56,20 @@ const DiagnosticTestReport = (props: {
             name={"differential"}
             onChange={handleInputChange}
             rows={5}
-          >{formValues.tentativeDiagnosis.differential}</textarea>
+          >
+            {formValues.tentativeDiagnosis.differential}
+          </textarea>
+        </div>
+        <h5>Tentative</h5>
+        <div className="physical__examination__form--input">
+          <textarea
+            cols={10}
+            name={"tentative"}
+            onChange={handleInputChange}
+            rows={5}
+          >
+            {formValues.tentativeDiagnosis.tentative}
+          </textarea>
         </div>
       </form>
     </MedicalReportModalContentTemplate>

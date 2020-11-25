@@ -36,7 +36,7 @@ const PhysicalExaminationModal = (props: {
   return (
     <CheckInModalContent
       title="Physical Examination Result"
-      date="16/08/2020 12:46 PM"
+      date={physicalExamination.updatedAt}
     >
       {props.loading ? (
         <Loader />
@@ -167,23 +167,23 @@ const PhysicalExaminationModal = (props: {
                 name="conformation"
               />
             </div>
-              <div className="divider" />
-              <div className="physical__examination__form--input">
-                <label>Any Diarrhea</label>
-                <select
-                  onChange={handleInputChange}
-                  defaultValue="true"
-                  value={physicalExamination.anyDiarrhea}
-                  name="anyDiarrhea"
-                >
-                  <option label="Yes" value="true">
-                    Yes
+            <div className="divider" />
+            <div className="physical__examination__form--input">
+              <label>Any Diarrhea</label>
+              <select
+                onChange={handleInputChange}
+                defaultValue="true"
+                value={physicalExamination.anyDiarrhea}
+                name="anyDiarrhea"
+              >
+                <option label="Yes" value="true">
+                  Yes
                 </option>
-                  <option label="No" value="false">
-                    Yes
+                <option label="No" value="false">
+                  Yes
                 </option>
-                </select>
-              </div>
+              </select>
+            </div>
 
             <div className="physical__examination__form--input">
               <label>Nature of Diarrhea</label>

@@ -43,6 +43,8 @@ const MedicalRecordModal = ({
               onCancel={closeModal}
               title={currentModal}
               data={results.chiefComplain}
+              date={results.chiefComplainDate}
+              added={!!results.chiefComplainDate}
               onAdd={(data: {}) => getResult(data, currentModal)}
             />
           )}
@@ -52,6 +54,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.clinicalSigns}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.clinicalSignsDate}
+              added={!!results.clinicalSignsDate}
             />
           )}
           {currentModal === "Tentative Diagnosis" && (
@@ -60,6 +64,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.tentativeDiagnosis}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.tentativeDiagnosisDate}
+              added={!!results.tentativeDiagnosisDate}
             />
           )}
           {currentModal === "Diagnosis Test" && (
@@ -68,6 +74,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.diagnosticTest}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.diagnosticTestDate}
+              added={!!results.diagnosticTestDate}
             />
           )}
 
@@ -77,6 +85,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.treatment}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.treatmentDate}
+              added={!!results.treatmentDate}
             />
           )}
           {currentModal === "Final Diagnosis" && (
@@ -85,6 +95,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.finalDiagnosis}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.finalDiagnosisDate}
+              added={!!results.finalDiagnosisDate}
             />
           )}
           {currentModal === "Vaccination" && (
@@ -93,6 +105,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={{ vaccination: results.vaccination }}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.vaccinationDate}
+              added={!!results.vaccinationDate}
             />
           )}
           {currentModal === "Note" && (
@@ -101,6 +115,8 @@ const MedicalRecordModal = ({
               title={currentModal}
               data={results.note}
               onAdd={(data: {}) => getResult(data, currentModal)}
+              date={results.noteDate}
+              added={!!results.noteDate}
             />
           )}
           {currentModal === "Medical Bill" && (
@@ -125,11 +141,18 @@ enum PaymentMethod {
 
 export interface IMedicalReport {
   chiefComplain: string;
+  chiefComplainDate?: string;
   note: string;
+  noteDate?: string;
   clinicalSigns: string;
+  clinicalSignsDate?: string;
   diagnosticTest: string;
+  diagnosticTestDate?: string;
   treatment: string;
+  treatmentDate?: string;
   finalDiagnosis: string;
+  finalDiagnosisDate?: string;
+
   vaccination: {
     type: string;
     name: string;
@@ -138,10 +161,13 @@ export interface IMedicalReport {
     smsReminder: boolean;
     emailReminder: boolean;
   };
+  vaccinationDate?: string;
+
   tentativeDiagnosis: {
     differential: string;
     tentative: string;
   };
+  tentativeDiagnosisDate?: string;
   medicalBill: {
     services: [{ name: string; price: string }] | null;
     paid: string;

@@ -6,6 +6,8 @@ const FinalDiagnosisReport = (props: {
   onAdd: Function;
   onCancel: Function;
   data: string;
+  added: boolean;
+  date?: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -32,6 +34,8 @@ const FinalDiagnosisReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+      date={props.date}
+      canEdit={props.added}
     >
       <form className="medical__report__form">
         <div className="physical__examination__form--input">
@@ -39,9 +43,9 @@ const FinalDiagnosisReport = (props: {
             style={{ height: "10rem" }}
             name={"finalDiagnosis"}
             onChange={handleInputChange}
-            >
-              {formValues.finalDiagnosis}
-            </textarea>
+          >
+            {formValues.finalDiagnosis}
+          </textarea>
         </div>
       </form>
     </MedicalReportModalContentTemplate>

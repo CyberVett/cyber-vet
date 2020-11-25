@@ -3,9 +3,11 @@ import MedicalReportModalContentTemplate from "./MedicalReportModalContentTempla
 
 const ChiefComplainReport = (props: {
   title: string;
+  added: boolean;
   onAdd: Function;
   onCancel: Function;
-  data: string;
+  data?: string;
+  date?: string;
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -31,6 +33,8 @@ const ChiefComplainReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+      date={props.date}
+      canEdit={props.added}
     >
       <form className="medical__report__form">
         <div className="medical__report__form--input">

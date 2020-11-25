@@ -45,7 +45,7 @@
 
   .checkedin {
     &__items--content {
-      padding: .5rem;
+      padding: 0.5rem;
     }
     &__navbar {
       @media only screen and (max-width: 56.25em) {
@@ -169,7 +169,7 @@
     border: 1px solid grey;
     &--head {
       background-color: #bbb;
-      padding: .5rem;
+      padding: 0.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -195,11 +195,11 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 2rem;
-      padding: 1rem;
+      padding: 0 1rem;
       border-bottom: 1px solid gray;
       .content {
         &__title {
-          font-size: 1.5rem;
+          // font-size: 1.5rem;
         }
         &__date {
           display: inline-flex;
@@ -272,7 +272,6 @@
   }
 
   .medical__records {
-    
     &--buttons {
       margin: 4px 0;
     }
@@ -312,7 +311,7 @@
       row-gap: 1rem;
       padding: 0.2rem;
 
-      >h5 {
+      > h5 {
         margin: 8px 0;
       }
 

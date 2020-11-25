@@ -51,6 +51,8 @@ const VacinationReport = (props: {
     services: defaultServices,
   });
 
+  const [totalValue, setTotalValues] = useState<Number>(0);
+
   const handleInputChange = (event: {
     persist: () => void;
     target: { name: any; value: any };
@@ -61,6 +63,13 @@ const VacinationReport = (props: {
         ...formValues,
         [event.target.name]: event.target.value,
       };
+      let total = 0;
+      for (const key in formValues) {
+        if (Object.prototype.hasOwnProperty.call(formValues, key)) {
+          const element = formValues[key];
+          total += element;
+        }
+      }
 
       return formValues;
     });
@@ -83,7 +92,11 @@ const VacinationReport = (props: {
       }
       const _formValues = { ...formValues };
       _formValues.services.splice(parseInt(event.target.name), 1, item);
+      const total = _formValues.services.reduce((acc, val) => {
+        return parseInt(val.price) + acc;
+      }, 0);
 
+      setTotalValues(total);
       return _formValues;
     });
   };
@@ -99,11 +112,17 @@ const VacinationReport = (props: {
       let item = (services || [])[parseInt(event.target.name)];
 
       if (item) {
-        item.price = event.target.value;
+        const val = parseInt(event.target.value);
+        item.price = val && val > 1 ? val : 0;
       }
 
       const _formValues = { ...formValues };
       _formValues.services.splice(parseInt(event.target.name), 1, item);
+      const total = _formValues.services.reduce((acc, val) => {
+        return parseInt(val.price || 0) + acc;
+      }, 0);
+
+      setTotalValues(total);
 
       return _formValues;
     });
@@ -178,6 +197,21 @@ const VacinationReport = (props: {
             </>
           );
         })}
+
+        {/* <div style={{ display: "grid" }}> */}
+        <div className="physical__examination__form--input">
+          <input
+            name={`total`}
+            disabled
+            defaultValue="Total"
+            // onChange={handleBillValueChange}
+            // defaultValue={service.price}
+          />
+        </div>
+        <div className="physical__examination__form--input">
+          <input type="number" name={"Total"} value={`${totalValue}`} />
+        </div>
+        {/* </div> */}
 
         <div>
           <div className="physical__examination__form--input">
