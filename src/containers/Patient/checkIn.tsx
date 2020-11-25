@@ -123,7 +123,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             differential: checkinData.diagnosis.differentialDiagnosis,
             tentative: checkinData.diagnosis.tentativeDiagnosis,
           },
-          tentativeDiagnosisDate: checkinData.tentativeDiagnosis?.updatedAt,
+          tentativeDiagnosisDate: checkinData.diagnosis?.updatedAt,
         };
       } else {
         _medicalReport = {
