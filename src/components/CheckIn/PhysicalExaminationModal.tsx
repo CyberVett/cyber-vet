@@ -38,7 +38,7 @@ const PhysicalExaminationModal = (props: {
     <CheckInModalContent
       title="Physical Examination Result"
       // @ts-ignore
-      date={formatDate(physicalExamination?.updatedAt)}
+      date={physicalExamination?.updatedAt}
     >
       {props.loading ? (
         <Loader />

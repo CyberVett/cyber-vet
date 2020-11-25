@@ -732,7 +732,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               physicalExaminationResult={
                                 physicalExaminationResult
                               }
-                              // date={}
+                              date={physicalExaminationResult.updatedAt}
                               showModal={() => setShowModal(true)}
                             />
                           )}
