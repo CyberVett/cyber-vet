@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import Button, { ButtonTypes } from '../Button/button';
 import { composeClasses } from '../../lib/utils';
@@ -24,8 +24,8 @@ import styles from './layout.module.scss';
 import { AuthContext } from 'contexts/auth';
 
 const TopNav = () => {
-  const { hospital, staff } = useContext(AuthContext)
-
+  const { hospital, staff, logoutUser } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
   return (
     <nav className={styles.nav}>
       <div className={styles.navLeft}>
@@ -36,9 +36,37 @@ const TopNav = () => {
         <NotificationIcon />
         <HelpIcon />
         <AvatarIcon />
-        <div className={styles.userSection}>
+        <div className={styles.userSection} onClick={() => setShowDropdown(!showDropdown)}>
           <span>{staff?.firstName} {staff?.lastName}</span>
           <DropDownIcon />
+          {showDropdown &&
+            <ul className={styles.dropdown}>
+              <li onClick={(event) => {
+                event.preventDefault();
+                Router.push('/app/change-password');
+              }}
+              >
+                <AdminIcon />
+                <span
+                  className={styles.logoutButton}
+                >
+                  change password
+            </span>
+              </li>
+              <li onClick={(event) => {
+                event.preventDefault();
+                logoutUser();
+                Router.push('/auth/login');
+              }}
+              >
+                <AdminIcon />
+                <span
+                  className={styles.logoutButton}
+                >
+                  Logout
+            </span>
+              </li>
+            </ul>}
         </div>
       </div>
     </nav>
@@ -154,7 +182,6 @@ const navLinks = [
 
 const SideNav = () => {
   const router = useRouter();
-  const { logoutUser } = useContext(AuthContext);
   return (
     <aside className={styles.sideMenu}>
       <ul className={styles.navList}>
@@ -199,10 +226,6 @@ const SideNav = () => {
             </>
           ))
         }
-        <li onClick={logoutUser} className={styles.navItem}>
-          <AdminIcon />
-          <span>Logout&nbsp;<RightArrow /></span>
-        </li>
       </ul>
     </aside>
   );

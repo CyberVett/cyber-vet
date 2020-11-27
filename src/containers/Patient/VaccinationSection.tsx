@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from 'lib/utils'
 
 export const VaccinationSection = ({ 
   // @ts-ignore
@@ -26,7 +27,7 @@ export const VaccinationSection = ({
         Date:{" "}
         {data?.nextDate ||
           // @ts-ignore
-          data?.dateOfNextShot}
+          formatDate(data?.dateOfNextShot)}
       </h4>
       <h4>
         Email Reminder:{" "}

@@ -53,13 +53,12 @@
 }
 
 .userSection {
-
+  position: relative;
   >span {
     color: $color-white;
     margin-right: 4px;
   }
 }
-
 
 .sideMenu {
   width: 240px;
@@ -233,4 +232,45 @@
   path {
     fill: currentColor;
   }
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 111;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.07), 0 15px 35px 0 rgba(56, 56, 56, 0.2);
+  background-color: $color-blue;
+  padding: 15px;
+  border-radius: 3px;
+  top: 32px;
+  width: 200px;
+  right: -8px;
+  color: $color-white;
+  > * {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    cursor: pointer;
+    padding: 4px 0 8px 0;
+  }
+
+  >li:not(:last-child) {
+    border-bottom: 1px solid $color-white;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 90px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid $color-blue;
+  }
+}
+
+.logoutButton {
+  color: $color-white;
+  margin: 0 8px
 }

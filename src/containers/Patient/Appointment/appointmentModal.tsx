@@ -88,7 +88,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     requestClient.put(`patients/${patientNo}/appointment/${appointment.id}`, {
       "allDay": appointment.allDay,
       // @ts-ignore
-      "appointmentDate": formatDate(appointment.appointmentDate),
+      "appointmentDate": appointment.appointmentDate,
       "emailReminder": appointment.emailReminder || false,
       "notes": appointment.notes,
       "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,

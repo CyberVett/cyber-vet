@@ -374,7 +374,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient
       .post(`/patients/${patientId}/check-in`, {})
       .then((response) => {
-        console.log(response.data);
       })
       .catch((error) => {
         setLoading(false);
@@ -387,8 +386,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient
       .put(`/patients/${id}/check-out`)
       .then((response) => {
-        console.log(response);
-
         setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           Router.push(`/app/dashboard`);
