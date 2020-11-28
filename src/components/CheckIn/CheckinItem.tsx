@@ -24,6 +24,7 @@ const CheckinItem = (props: {
                   // @ts-ignore
                   formatDate(props?.date)
                 }
+                disabled
               />
               <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>
                 Edit Result

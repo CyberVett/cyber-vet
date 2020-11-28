@@ -3,8 +3,6 @@ import styles from './patient.module.scss';
 
 export const PatientSection = ({ // @ts-ignore
   data }) => {
-console.log(data);
-
   return (
     <div className={styles.columnGrid}>
       <div>

@@ -38,11 +38,6 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     report: '',
   });
 
-  console.log("id", checkInID);
-  console.log("pd", patientNo);
-  console.log("d", checkInData);
-
-
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any; type: any; checked?: boolean; } }) => {
     event.persist();
     const target = event.target;
