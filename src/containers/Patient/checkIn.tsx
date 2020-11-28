@@ -22,10 +22,12 @@ import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
 import requestClient from "lib/requestClient";
 import Router from "next/router";
-import { FormErrors } from "components/Input/input";
+import { FormErrors} from "components/Input/input";
 import { ClientSection } from "./clientSection";
 import { PatientSection } from "./patientSection";
 import { VaccinationSection } from "./VaccinationSection";
+import { ReactComponent as CalculatorIcon } from '../../assets/icons/calculator.svg';
+import { CalculatorModal } from "./calculatorModal";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
@@ -59,7 +61,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   });
   const [showModal, setShowModal] = useState(false);
   const [checkedIn, setCheckedIn] = useState(false);
-
+  const [showCalculator, setShowCalculator] = useState(false);
   const [showMedicalModal, setShowMedicalModal] = useState(false);
   const [medicalContentState, setMedicalContentState] = useState("");
 
@@ -374,6 +376,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient
       .post(`/patients/${patientId}/check-in`, {})
       .then((response) => {
+        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
@@ -643,6 +646,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       <div className="patient__checkin__container">
         <div className="patient__checkin__container--header">
           <h1>Patient Check In</h1>
+          <CalculatorIcon onClick={() => setShowCalculator(true)} />
         </div>
         <div className="patient__checkin__container--content">
           <div className="checkin__card">
@@ -1023,6 +1027,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         currentModal={medicalContentState}
         results={medicalReports}
       />
+      <CalculatorModal closeModal={() => setShowCalculator(false)} visible={showCalculator} />
     </div>
   );
 };

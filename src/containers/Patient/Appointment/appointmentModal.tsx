@@ -7,7 +7,7 @@ import Button, { ButtonTypes } from 'components/Button/button';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
-import { formatDate, formatDateForCalendar } from 'lib/utils';
+import { formatDateForCalendar } from 'lib/utils';
 
 export interface IModalProps {
   visible: boolean;
