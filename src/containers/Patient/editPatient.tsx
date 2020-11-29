@@ -12,7 +12,6 @@ import { formatDateForCalendar, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import  Router  from 'next/router';
-import { ISpecies } from './addPatient';
 
 interface IEditPatient {
   clientId: string;
@@ -40,7 +39,7 @@ interface IEditPatient {
 }
 
 const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
-  const [species, setSpecies] = useState<ISpecies[]>([]);
+  // const [species, setSpecies] = useState<ISpecies[]>([]);
   const [age, setAge] = useState('');
   const [patientInput, setPatientInput] = useState<IEditPatient>({
     clientId: '',
@@ -98,20 +97,20 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
       })
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    requestClient.get('settings/species')
-      .then(response => {
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          setSpecies(response.data.data);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      })
-  }, [])
+  // useEffect(() => {
+  //   setLoading(true);
+  //   requestClient.get('settings/species')
+  //     .then(response => {
+  //       setLoading(false);
+  //       if (response.status === 200 && response.statusText === 'OK') {
+  //         setSpecies(response.data.data);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       setLoading(false);
+  //       console.log(error);
+  //     })
+  // }, [])
 
   const handleFileChange = (e: any) => {
     e.preventDefault();
@@ -237,7 +236,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
               }
               <InputGroup horizontal>
                 <Label>Breed</Label>
-                <Select
+                {/* <Select
                   onChange={handleInputChange}
                   name="breed"
                   required
@@ -247,7 +246,16 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                   {
                     species.length > 0 && species.map(specie => <option key={species.indexOf(specie)} value={specie.name}>{specie.name}</option>)
                   }
-                </Select>
+                </Select> */}
+                 <Input
+                    autoComplete="true"
+                    handleInputChange={handleInputChange}
+                    name="breed"
+                    required
+                    type="text"
+                    validation={InputValidationTypes.text}
+                    value={patientInput.breed}
+                  />
               </InputGroup>
               <InputGroup horizontal>
                 <Label>Gender</Label>

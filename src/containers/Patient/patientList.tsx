@@ -46,24 +46,7 @@ const PatientList: React.FunctionComponent = () => {
         setLoading(false);
         console.log(error);
       })
-  }
-
-  // const checkOut = (id: string) => {
-  //   setLoading(true);
-  //   requestClient.put(`/patients/${id}/check-out`)
-  //     .then((response) => {
-  //       console.log(response);
-
-  //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
-  //         Router.push(`/app/dashboard`);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       setLoading(false);
-  //       console.log(error);
-  //     });
-  // }
+    }
   
   return (
     <div>

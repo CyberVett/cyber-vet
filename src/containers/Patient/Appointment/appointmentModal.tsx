@@ -7,7 +7,7 @@ import Button, { ButtonTypes } from 'components/Button/button';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import { AuthContext } from 'contexts/auth';
 import requestClient from 'lib/requestClient';
-import { formatDate, formatDateForCalendar } from 'lib/utils';
+import { formatDateForCalendar } from 'lib/utils';
 
 export interface IModalProps {
   visible: boolean;
@@ -127,7 +127,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       fullMode
       noTitle
       visible={visible}>
-      <SectionHeader title="New Appointment" >
+      <SectionHeader title={isReview ? "Edit Appointment" : "New Appointment"} >
         <span>{`Patient No: ${patientNo}`}</span>
       </SectionHeader>
       <form

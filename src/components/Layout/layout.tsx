@@ -41,7 +41,7 @@ const TopNav = () => {
           <DropDownIcon />
           {showDropdown &&
             <ul className={styles.dropdown}>
-              <li onClick={(event) => {
+              <li key={1} onClick={(event) => {
                 event.preventDefault();
                 Router.push('/app/change-password');
               }}
@@ -53,7 +53,7 @@ const TopNav = () => {
                   change password
             </span>
               </li>
-              <li onClick={(event) => {
+              <li key={2} onClick={(event) => {
                 event.preventDefault();
                 logoutUser();
                 Router.push('/auth/login');
@@ -102,14 +102,14 @@ const navLinks = [
       //   name: 'referred patient',
       // },
       {
-        href: '/app/client',
+        href: '/app/patient/client',
         id: 400,
         name: 'Client List',
       }
     ]
   },
   {
-    href: '/app/diagnostic/lab/requested',
+    href: '/app/diagnostic',
     icon: MicroscopeIcon,
     id: 3,
     name: 'Diagnostic Unit',
@@ -175,6 +175,11 @@ const navLinks = [
         href: '/app/admin/add',
         id: 900,
         name: 'add new staff',
+      },
+      {
+        href: '/app/admin/billing',
+        id: 950,
+        name: 'billing',
       }
     ]
   },

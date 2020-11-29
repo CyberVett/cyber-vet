@@ -35,9 +35,7 @@ export const formatPhoneNumber = (phoneNo: string) => {
 
 export const getAge = (dob: Date | string): string => dob ? formatDistanceStrict(new Date(), new Date(dob)) : 'Enter Date of Birth'
  
-export const formatDate = (datetime: Date | number): string => {
-  console.log(datetime);
-  
+export const formatDate = (datetime: Date | number): string => {  
   return datetime ? format(new Date(datetime), "MMM d, yyyy hh:mma") : "";
 }
 

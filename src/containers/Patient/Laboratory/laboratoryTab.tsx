@@ -299,6 +299,8 @@ const LaboratoryTab = ({
       });
   };
 
+  console.log('checkin', checkInData);
+  
   return (
     <section>
       <div className={styles.formMenu}>
@@ -333,7 +335,7 @@ const LaboratoryTab = ({
         <div className={styles.formDetailsInfo}>
           <InputGroup>
             <Label>Check In</Label>
-            <input disabled placeholder={new Date().toLocaleString()} />
+            <input disabled placeholder={formatDate(checkInData?.createdAt)} />
           </InputGroup>
           <InputGroup>
             <Label>Visit Type</Label>
@@ -344,11 +346,11 @@ const LaboratoryTab = ({
           </InputGroup>
           <InputGroup>
             <Label>Doctor</Label>
-            <input disabled placeholder={`Wande Coal`} />
+            <input disabled placeholder={`${checkInData?.checkInBy?.firstName} ${checkInData?.checkInBy?.otherName} ${checkInData?.checkInBy?.lastName}`} />
           </InputGroup>
           <InputGroup>
             <Label>Check Out</Label>
-            <input disabled placeholder={new Date().toLocaleString()} />
+            <input disabled placeholder={''} />
           </InputGroup>
         </div>
       </div>

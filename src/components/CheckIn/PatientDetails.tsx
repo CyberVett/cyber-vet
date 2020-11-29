@@ -44,7 +44,7 @@ const PatientDetails = (patientData: any) => {
 
       <div className="patient__details--img">
         <img
-          src={patientData?.patientData?.imageUrl}
+          src={patientData?.patientData?.imageUrl || require('../../assets/images/figure.png') }
           alt={`${patientData?.patientData?.name}'s Photo`}
         />
 

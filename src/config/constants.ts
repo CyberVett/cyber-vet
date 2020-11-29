@@ -297,6 +297,29 @@ export const AppointmentHeaders = [
   },
 ];
 
+export const BillingHeaders = [
+  {
+    id: 1,
+    label: 'Departments',
+  },
+  {
+    id: 2,
+    label: 'Services',
+  },
+  {
+    id: 3,
+    label: 'Charges(N)',
+  },
+  {
+    id: 6,
+    label: 'Actions',
+  },
+  {
+    id: 8,
+    label: '',
+  },
+];
+
 export const AppointmentDashboardHeaders = [
   {
     id: 1,
