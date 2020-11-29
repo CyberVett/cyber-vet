@@ -299,8 +299,8 @@ const LaboratoryTab = ({
       });
   };
 
-  console.log('checkin', checkInData);
-  
+  console.log("checkin", checkInData);
+
   return (
     <section>
       <div className={styles.formMenu}>
@@ -346,11 +346,14 @@ const LaboratoryTab = ({
           </InputGroup>
           <InputGroup>
             <Label>Doctor</Label>
-            <input disabled placeholder={`${checkInData?.checkInBy?.firstName} ${checkInData?.checkInBy?.otherName} ${checkInData?.checkInBy?.lastName}`} />
+            <input
+              disabled
+              placeholder={`${checkInData?.checkInBy?.firstName} ${checkInData?.checkInBy?.otherName} ${checkInData?.checkInBy?.lastName}`}
+            />
           </InputGroup>
           <InputGroup>
             <Label>Check Out</Label>
-            <input disabled placeholder={''} />
+            <input disabled placeholder={""} />
           </InputGroup>
         </div>
       </div>
@@ -414,7 +417,7 @@ const LaboratoryTab = ({
           setToggleParasitology(false);
         }}
       ></ParasitologyModal>
-      {(pathologyData.albumin || "") && (
+      {(checkInData?.pathologyData || pathologyData.albumin || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
@@ -653,7 +656,7 @@ const LaboratoryTab = ({
         </CheckinItem>
       )}
 
-      {(parasitologyData.caseHistory || "") && (
+      {(checkInData?.parasitology || parasitologyData.caseHistory || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
@@ -756,7 +759,9 @@ const LaboratoryTab = ({
         </CheckinItem>
       )}
 
-      {(microbiologyData.clinicalDetails || "") && (
+      {(checkInData?.microbiology ||
+        microbiologyData.clinicalDetails ||
+        "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
@@ -810,7 +815,7 @@ const LaboratoryTab = ({
         </CheckinItem>
       )}
 
-      {(rapidTestData?.clinicalDetails || "") && (
+      {(checkInData?.rapidTest || rapidTestData?.clinicalDetails || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
