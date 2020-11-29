@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { string } from "yup";
 import MedicalReportModalContentTemplate from "./MedicalReportModalContentTemplate";
 enum PaymentMethod {
   cash = "CASH",
@@ -6,32 +7,11 @@ enum PaymentMethod {
 }
 
 interface IData {
-  services: any;
+  services: [];
   paid: string;
   balance: string;
   method: PaymentMethod;
 }
-
-const Services = [
-  { name: "Registration", value: "Registration", price: 100 },
-  {
-    name: "Heamoparasite screening",
-    value: "Heamoparasite screening",
-    price: 200,
-  },
-  { name: "Endectocides", value: "Endectocides", price: 300 },
-  { name: "Vit Bco", value: "Vit Bco", price: 400 },
-];
-
-const defaultServices = [
-  { name: "Registration", price: "100" },
-  {
-    name: "Heamoparasite screening",
-    price: 200,
-  },
-  { name: "Endectocides", price: "300" },
-  { name: "Vit Bco", price: "400" },
-];
 
 const VacinationReport = (props: {
   title: string;
@@ -48,7 +28,8 @@ const VacinationReport = (props: {
     paid: "0",
     balance: "0",
     method: PaymentMethod.card,
-    services: props.data,
+    services: [],
+    // services: props.data,
   });
 
   const [totalBalance, setTotalBalance] = useState(0);
@@ -113,7 +94,30 @@ const VacinationReport = (props: {
     setTotalBalance(balance);
 
     setTotalPrice(total);
-    return formValues;
+
+    const services = [];
+    cummulativeValues.map((val) => {
+      if (val) {
+        const service = actualBillingValues[index];
+        services.push({
+          name: service.name,
+          charges: service.charges,
+        });
+      }
+    });
+
+    console.log(services);
+
+    const _formValues = {
+      paid: paidAmount,
+      balance: balance,
+      method: formValues.method,
+      services: [...services],
+    };
+
+    setFormValues(_formValues);
+
+    return _formValues;
   };
 
   const handleBillValueChange = (event: {
@@ -135,16 +139,19 @@ const VacinationReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: IData) => {
-      formValues = {
+      let _formValues = {
         ...formValues,
         [event.target.name]: event.target.value,
       };
 
-      setPaidAmount(event.target.value);
-      const balance = totalPrice - event.target.value;
-      setTotalBalance(balance);
+      if (event.target.name === "paid") {
+        setPaidAmount(event.target.value);
+        const balance = totalPrice - event.target.value;
+        setTotalBalance(balance);
+        _formValues.balance = balance;
+      }
 
-      return formValues;
+      return _formValues;
     });
   };
 

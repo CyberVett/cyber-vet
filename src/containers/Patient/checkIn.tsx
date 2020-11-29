@@ -531,9 +531,32 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       };
       // @ts-ignore
       data.noteDate = new Date().toString();
+    } else if (field === "Medical Bill") {
+      // // diagnostic-test
+      method = !checkInData.medicalBill ? "post" : "put";
+      endpoint = "/billings/medical-bill";
+      body = {
+        ...body,
+        // @ts-ignore
+        ...data,
+        patientId: patientId,
+        paymentMethod: data.method,
+        amountPaid: data.paid,
+        amountToBalance: data.balance,
+      };
+      delete body.paid;
+      delete body.method;
+      delete body.balance;
+      // @ts-ignore
+      data.medicalBillDate = new Date().toString();
+      console.log(body);
     }
+    const __url =
+      field === "Medical Bill"
+        ? endpoint
+        : `/patients/${patientId}/${endpoint}`;
     // @ts-ignore
-    requestClient[method](`/patients/${patientId}/${endpoint}`, body)
+    requestClient[method](__url, body)
       .then((response: any) => {
         // setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
