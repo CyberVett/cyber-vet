@@ -1,5 +1,6 @@
 import React from "react";
 import Button, { ButtonTypes } from "../Button/button";
+import { formatDate } from "lib/utils";
 
 const MedicalReportModalContentTemplate = (props: {
   children: any;
@@ -19,11 +20,7 @@ const MedicalReportModalContentTemplate = (props: {
         </span>
         <span className="template__head--date">
           <span>Date Recorded</span>
-          <input
-            defaultValue={props?.date || new Date().toString()}
-            disabled
-            type="text"
-          />
+          <input defaultValue={formatDate(props?.date)} disabled type="text" />
         </span>
       </div>
 
