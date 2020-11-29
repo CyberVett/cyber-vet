@@ -22,11 +22,11 @@ import Radiology from "./Radiology/radiology";
 import Appointment from "./Appointment/appointment";
 import requestClient from "lib/requestClient";
 import Router from "next/router";
-import { FormErrors} from "components/Input/input";
+import { FormErrors } from "components/Input/input";
 import { ClientSection } from "./clientSection";
 import { PatientSection } from "./patientSection";
 import { VaccinationSection } from "./VaccinationSection";
-import { ReactComponent as CalculatorIcon } from '../../assets/icons/calculator.svg';
+import { ReactComponent as CalculatorIcon } from "../../assets/icons/calculator.svg";
 import { CalculatorModal } from "./calculatorModal";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
@@ -71,6 +71,22 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [modalError, setModalError] = useState("");
 
   const [checkinDataIndex, setCheckinDataIndex] = useState(0);
+
+  const [billingServices, setBillingServices] = useState(null);
+
+  useEffect(() => {
+    requestClient
+      .get(`billings/services`)
+      .then((response) => {
+        // setLoading(false);
+        if (response.status === 200 && response.statusText === "OK") {
+          setBillingServices(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const populateCheckInData = (checkinData: any) => {
     if (checkinData) {
@@ -125,7 +141,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             differential: checkinData.diagnosis.differentialDiagnosis,
             tentative: checkinData.diagnosis.tentativeDiagnosis,
           },
-          tentativeDiagnosisDate: checkinData.tentativeDiagnosis?.updatedAt,
+          tentativeDiagnosisDate: checkinData.diagnosis?.updatedAt,
         };
       } else {
         _medicalReport = {
@@ -515,9 +531,32 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       };
       // @ts-ignore
       data.noteDate = new Date().toString();
+    } else if (field === "Medical Bill") {
+      // // diagnostic-test
+      method = !checkInData.medicalBill ? "post" : "put";
+      endpoint = "/billings/medical-bill";
+      body = {
+        ...body,
+        // @ts-ignore
+        ...data,
+        patientId: patientId,
+        paymentMethod: data.method,
+        amountPaid: data.paid,
+        amountToBalance: data.balance,
+      };
+      delete body.paid;
+      delete body.method;
+      delete body.balance;
+      // @ts-ignore
+      data.medicalBillDate = new Date().toString();
+      console.log(body);
     }
+    const __url =
+      field === "Medical Bill"
+        ? endpoint
+        : `/patients/${patientId}/${endpoint}`;
     // @ts-ignore
-    requestClient[method](`/patients/${patientId}/${endpoint}`, body)
+    requestClient[method](__url, body)
       .then((response: any) => {
         // setLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
@@ -734,11 +773,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               physicalExaminationResult={
                                 physicalExaminationResult
                               }
-                              // date={}
+                              date={physicalExaminationResult.updatedAt}
                               showModal={() => setShowModal(true)}
                             />
                           )}
-                        {(medicalReports.clinicalSigns.length || "") && (
+                        {(checkInData?.clinicalSigns ||
+                          medicalReports.clinicalSigns.length ||
+                          "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.clinicalSignsDate}
@@ -755,7 +796,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         )}
 
                         {/* Tentative medical test */}
-                        {(medicalReports.tentativeDiagnosis.tentative.length ||
+                        {(checkInData?.tentativeDiagnosis ||
+                          medicalReports.tentativeDiagnosis.tentative.length ||
                           "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
@@ -779,7 +821,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             <p>{medicalReports.tentativeDiagnosis.tentative}</p>
                           </CheckinItem>
                         )}
-                        {(medicalReports.diagnosticTest.length || "") && (
+                        {(checkInData?.diagnosticTest ||
+                          medicalReports.diagnosticTest.length ||
+                          "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.diagnosticTestDate}
@@ -791,7 +835,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           </CheckinItem>
                         )}
 
-                        {(medicalReports.finalDiagnosis.length || "") && (
+                        {(checkInData?.finalDiagnosis ||
+                          medicalReports.finalDiagnosis.length ||
+                          "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.finalDiagnosisDate}
@@ -806,7 +852,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             <p>{medicalReports.finalDiagnosis}</p>
                           </CheckinItem>
                         )}
-                        {(medicalReports.treatment.length || "") && (
+                        {(checkInData?.treatment ||
+                          medicalReports.treatment.length ||
+                          "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.treatmentDate}
@@ -822,7 +870,9 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           </CheckinItem>
                         )}
 
-                        {(medicalReports.vaccination.name || "") && (
+                        {(checkInData?.vaccination ||
+                          medicalReports.vaccination.name ||
+                          "") && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.vaccinationDate}
@@ -874,7 +924,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             </ul>
                           </CheckinItem>
                         )}
-                        {medicalReports.note && (
+                        {(checkInData?.notes || medicalReports.note) && (
                           <CheckinItem
                             checkedIn={checkedIn}
                             date={medicalReports.noteDate}
@@ -1022,13 +1072,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setShowMedicalModal(false);
           setMedicalContentState("");
         }}
+        billingServices={billingServices}
         getResult={(data: object, field: string) => {
           handleGetMedicalReportData(data, field);
         }}
         currentModal={medicalContentState}
         results={medicalReports}
       />
-      <CalculatorModal closeModal={() => setShowCalculator(false)} visible={showCalculator} />
+      <CalculatorModal
+        closeModal={() => setShowCalculator(false)}
+        visible={showCalculator}
+      />
     </div>
   );
 };

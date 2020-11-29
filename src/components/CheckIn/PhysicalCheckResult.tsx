@@ -33,6 +33,7 @@ const PhysicalCheckResult = (props: {
   onEdit?: Function;
   onDelete?: Function;
   checkedIn: Boolean;
+  date?: string;
 }) => {
   const { physicalExaminationResult } = props;
 
@@ -41,10 +42,7 @@ const PhysicalCheckResult = (props: {
       checkedIn={props.checkedIn}
       date={
         // @ts-ignore
-        new Date().toString()
-        // formatDate(
-        //   physicalExaminationResult?.updatedAt || new Date().toString()
-        // )
+        props?.date || new Date().toString()
       }
       onAddNew={() => props?.onAddNew()}
       // @ts-ignore

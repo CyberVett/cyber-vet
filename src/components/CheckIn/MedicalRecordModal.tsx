@@ -7,7 +7,7 @@ import TreatmentReport from "./TreatmentReport";
 import FinalDiagnosisReport from "././FinalDiagnosisReport";
 import TentativeDiagnosticReport from "./TentativeDiagnosticReport";
 import VacinationReport from "./VacinationReport";
-// import MedicalBill from "./MedicalBill";
+import MedicalBill from "./MedicalBill";
 import Modal from "../Modal/modal";
 import { ReactComponent as Loader } from "../../assets/icons/loader.svg";
 
@@ -18,6 +18,7 @@ const MedicalRecordModal = ({
   closeModal,
   results,
   modalLoading,
+  billingServices,
 }: {
   show: boolean;
   modalLoading: boolean;
@@ -25,6 +26,7 @@ const MedicalRecordModal = ({
   getResult: Function;
   closeModal: Function;
   results: IMedicalReport;
+  billingServices: object;
 }) => {
   return (
     <Modal
@@ -119,15 +121,16 @@ const MedicalRecordModal = ({
               added={!!results.noteDate}
             />
           )}
-          {/* {currentModal === "Medical Bill" && (
+          {currentModal === "Medical Bill" && (
             <MedicalBill
               onCancel={closeModal}
               title={currentModal}
+              billingServices={billingServices}
               // @ts-ignore
               data={{ medicalBill: results.medicalBill }}
               onAdd={(data: {}) => getResult(data, currentModal)}
             />
-          )} */}
+          )}
         </>
       )}
     </Modal>
