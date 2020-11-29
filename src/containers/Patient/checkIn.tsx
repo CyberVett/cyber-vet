@@ -690,6 +690,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
 
                     {"Vaccination" === activeCheckedInItem && (
                       <VaccinationSection
+                        checkInData={checkInData}
                         data={
                           // @ts-ignore
                           checkInData?.vaccination
@@ -768,7 +769,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               })
                             }
                             onEdit={handleEditTentativeTest}
-                            title="Tentative Diagnosis"
+                            title="Diagnostic Test"
                           >
                             <h5>Differential</h5>
                             <p>
@@ -784,7 +785,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             date={medicalReports.diagnosticTestDate}
                             onDelete={handleDeleteDiagnosticTest}
                             onEdit={handleEditDiagnosticTest}
-                            title="Tentative Diagnosis"
+                            title="Diagnostic Test"
                           >
                             <p>{medicalReports.diagnosticTest}</p>
                           </CheckinItem>

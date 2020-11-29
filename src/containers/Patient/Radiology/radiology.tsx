@@ -36,13 +36,13 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
             <Label>Doctor</Label>
             <input
               disabled
-              placeholder={`Wande Coal`} />
+              placeholder={`${checkInData?.checkInBy?.firstName} ${checkInData?.checkInBy?.otherName} ${checkInData?.checkInBy?.lastName}`} />
           </InputGroup>
           <InputGroup>
             <Label>Check Out</Label>
             <input
               disabled
-              placeholder={new Date().toLocaleString()} />
+              placeholder={''} />
           </InputGroup>
         </div>
       </div>

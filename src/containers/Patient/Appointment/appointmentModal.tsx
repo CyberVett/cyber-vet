@@ -127,7 +127,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       fullMode
       noTitle
       visible={visible}>
-      <SectionHeader title="New Appointment" >
+      <SectionHeader title={isReview ? "Edit Appointment" : "New Appointment"} >
         <span>{`Patient No: ${patientNo}`}</span>
       </SectionHeader>
       <form

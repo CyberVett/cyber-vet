@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { ReactComponent as FolderIcon } from "../../assets/icons/folder.svg";
-import { ReactComponent as PawIcon } from "../../assets/icons/paw.svg";
+// import { ReactComponent as PawIcon } from "../../assets/icons/paw.svg";
 import { ReactComponent as Loader } from "../../assets/icons/loader.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
 
@@ -166,7 +166,7 @@ const Dashboard: React.FunctionComponent = () => {
               <div>
                 <img
                   alt="admin photo"
-                  src={require("../../assets/images/photo.png")}
+                  src={require("../../assets/images/figure.png")}
                 />
               </div>
               <h3>
@@ -178,29 +178,29 @@ const Dashboard: React.FunctionComponent = () => {
             <p>Patient(s)</p>
           </Card>
         </div>
-        <div>
+        {/* <div>
           <InfoCards data={12} text="New patients today" />
           <InfoCards data={12} text="Total patients" />
-        </div>
+        </div> */}
       </aside>
     </div>
   );
 };
 
-interface IInfoCard {
-  data: number;
-  text: string;
-}
-const InfoCards: React.FC<IInfoCard> = ({ data, text }) => (
-  <div className={styles.infoCards}>
-    <div className={styles.infoCardsCircle}>
-      <PawIcon />
-    </div>
-    <div>
-      <h2>{data}</h2>
-      <p>{text}</p>
-    </div>
-  </div>
-);
+// interface IInfoCard {
+//   data: number;
+//   text: string;
+// }
+// const InfoCards: React.FC<IInfoCard> = ({ data, text }) => (
+//   <div className={styles.infoCards}>
+//     <div className={styles.infoCardsCircle}>
+//       <PawIcon />
+//     </div>
+//     <div>
+//       <h2>{data}</h2>
+//       <p>{text}</p>
+//     </div>
+//   </div>
+// );
 
 export default Dashboard;

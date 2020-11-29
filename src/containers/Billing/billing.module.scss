@@ -1,0 +1,87 @@
+@import "../../../styles/variable";
+
+.formMenu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  > * {
+    margin: 2px 4px;
+  }
+}
+
+.formDetails {
+  margin-top: 16px;
+  background-color: $color-blue-lighter;
+  padding: 16px 8px 0;
+
+  &Info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &Input {
+    border-top: 1px solid #C4C4C4;
+    padding: 24px 16px 0;
+  }
+
+  &Grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+  }
+}
+
+.appointmentCardBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.reminder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.width500 {
+  border-radius: 0 !important;
+  width: 500px !important;
+}
+
+.width250 {
+  border-radius: 0 !important;
+  width: 250px !important;
+}
+
+.spaceBetween {
+  justify-content: space-between;
+
+  >div {
+  > input[type="checkbox"] {
+    margin: 0 4px;
+    padding: 8px;
+    width: 40px;
+    height: 80px;
+  }
+}
+}
+
+.dateTime {
+  display: grid;
+  grid-column-gap: 20px;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: 60px;
+}
+
+.topHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -14,6 +14,7 @@ import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
 import { NextPage, NextPageContext } from 'next';
+import Router from 'next/router';
 
 const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
   const [data, setData] = useState([]);
@@ -33,6 +34,21 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
         console.log(error);
       })
   },[]);
+
+  const checkIn = (id: string) => {
+    setLoading(true);
+    requestClient.put(`/patients/${id}/check-in`)
+      .then((response) => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          Router.push(`/app/patient/checkin/${id}`);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error);
+      })
+  }
 
   return (
     <div>
@@ -58,7 +74,7 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
                 <td>{row.name}</td>
                 <td>{row.specie}</td>
                 <td>{row.breed}</td>
-                <td><Button>Check In</Button></td>
+                <td><Button onClick={() => checkIn(row.id)}>Check In</Button></td>
               </tr>
             )} />
           }

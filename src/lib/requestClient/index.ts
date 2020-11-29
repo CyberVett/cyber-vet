@@ -1,14 +1,11 @@
 import axios from 'axios';
 import config from 'config';
 
-
-
 const requestClient = axios.create({
     baseURL: config.apiRoot,
     headers: {},
     timeout: 30000,
 });
-
 
 //This is used to handle routes that require and do not require accessToken for authentication
 requestClient.interceptors.request.use(
@@ -16,7 +13,6 @@ requestClient.interceptors.request.use(
         // Get the request route
         // @ts-ignore
         const requestRoute = requestConfig?.url.substr(requestConfig?.baseURL);
-        
 
         // If it's an excluded route, continue as normal by returning the original request config
         const EXCLUDED_ROUTES = [
@@ -40,5 +36,14 @@ requestClient.interceptors.request.use(
     }),
     error => Promise.reject(error),
 );
+
+requestClient.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (['invalid token', 'jwt expired'].includes(error.response.data.message)) {
+        window.location.href = '/auth/login';
+    }
+    return Promise.reject(error);
+});
 
 export default requestClient;
