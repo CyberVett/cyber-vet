@@ -55,14 +55,19 @@ const VacinationReport = (props: {
   useEffect(() => {
     setTotalBalance(props.data.amountToBalance);
 
-    const total = props.data.services.reduce((acc: number, service) => {
-      const price = service.price || 0;
-      return parseInt(price || 0, 10) + acc;
-    }, 0);
+    const total = props.data.services
+      ? props.data.services.reduce((acc: number, service) => {
+          const price = service.price || 0;
+          return parseInt(price || 0, 10) + acc;
+        }, 0)
+      : 0;
 
     setTotalPrice(total);
-    setPaidAmount(props.data.amountPaid);
-    setFormValues({ ...formValues, paymentMethod: props.data.paymentMethod });
+    setPaidAmount(props.data.amountPaid || 0);
+    setFormValues({
+      ...formValues,
+      paymentMethod: props.data.paymentMethod || "Card",
+    });
   }, [props.data]);
 
   const handleSelectedBillItemChange = (event: {
@@ -88,6 +93,7 @@ const VacinationReport = (props: {
     }, 0);
 
     const balance = total - paidAmount;
+    console.log(balance, total, paidAmount);
     setTotalBalance(balance);
 
     setTotalPrice(total);
@@ -177,8 +183,13 @@ const VacinationReport = (props: {
       <form className="medical__report__form medical--bill">
         {[...availableBillingValues].map((service, index) => {
           //  @ts-ignore
-          const savedService = props.data.services[index] || {};
-          const price = savedService.price || cummulativeValues[index];
+          const savedService =
+            props.data.services && props.data.services[index]
+              ? props.data.services[index]
+              : {};
+          const price = savedService
+            ? savedService.price
+            : cummulativeValues[index];
           return service.name ? (
             <>
               <div className="physical__examination__form--input">

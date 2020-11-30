@@ -90,16 +90,17 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   }, []);
 
   const fetchMedicalBillForCheckin = (checkinId: string) => {
+    setCheckInMedicalBill({});
     requestClient
       .get(`billings/medical-bill/${checkinId}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.status === 200 && response.statusText === "OK") {
-          console.log(response.data);
+          // console.log(response.data);
           const data = response.data.data;
           data.services = data.details;
-          console.log(data);
+          // console.log(data);
           setCheckInMedicalBill(data);
         }
       })
@@ -281,9 +282,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
           setCheckinDataIndex(0);
+          // console.log(checkins)
           setCheckIndata(checkins[checkinDataIndex]);
-          const checkinData = checkins.find((checkin: any) => checkin.checkIn);
-          populateCheckInData(checkinData);
+          if (checkins[checkinDataIndex]) {
+            fetchMedicalBillForCheckin(checkins[checkinDataIndex].id);
+          }
+          populateCheckInData(checkins[checkinDataIndex]);
         }
       })
       .catch((error) => {
@@ -584,7 +588,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       delete body.balance;
       // @ts-ignore
       data.medicalBillDate = new Date().toString();
-      console.log(body);
     }
     const __url =
       field === "Medical Bill"
@@ -594,9 +597,18 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient[method](__url, body)
       .then((response: any) => {
         // setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (
+          (response.status === 200 && response.statusText === "OK") ||
+          (response.status === 201 && response.statusText === "Created")
+        ) {
           setModalLoading(false);
-          setMedicalReports({ ...medicalReports, ...data });
+          if (field !== "Medical Bill") {
+            setMedicalReports({ ...medicalReports, ...data });
+            setShowMedicalModal(false);
+          } else {
+            fetchMedicalBillForCheckin(checkInData.id);
+            setShowMedicalModal(false);
+          }
           setShowMedicalModal(false);
         }
       })
