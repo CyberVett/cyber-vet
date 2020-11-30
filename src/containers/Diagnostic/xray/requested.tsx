@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { XRayHeaders } from 'config/constants';
+import { XRayRequestHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
@@ -59,7 +59,7 @@ const RequestedXray: React.FunctionComponent = () => {
             data.length > 0 ?
               <Table
                 data={data}
-                headers={XRayHeaders}
+                headers={XRayRequestHeaders}
                 renderRow={(row) => (
                   <tr key={row.id}>
                     <td>{row?.patientId}</td>

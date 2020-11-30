@@ -15,7 +15,7 @@ import styles from '../style.module.scss';
 import dashboardStyles from '../../Dashboard/dashboard.module.scss';
 import { formatDate } from 'lib/utils';
 import MicrobiologyModal, { IMicrobiologyData } from 'containers/Patient/Laboratory/Modal/microbiologyModal';
-import { defaultPathologyFields, defaultParasitologyFields, defaultRapidTestFields } from 'containers/Patient/Laboratory/laboratoryTab';
+import { defaultPathologyFields, defaultParasitologyFields, defaultRapidTestFields, defaultMicrobiologyFields } from 'containers/Patient/Laboratory/laboratoryTab';
 import ParasitologyModal, { IParasitologyData } from 'containers/Patient/Laboratory/Modal/parasitologyModal';
 import AddPathologyModal, { IPathologyData } from 'containers/Patient/Laboratory/Modal/pathologyModal';
 import RapidTestModal, { IRapidTestData } from 'containers/Patient/Laboratory/Modal/rapidTestModal';
@@ -59,9 +59,9 @@ const CompletedLab: React.FunctionComponent = () => {
 
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
+      checkinId: data.checkinId,
       // @ts-ignore
-      patientId: checkInData.patientId,
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -97,9 +97,9 @@ const CompletedLab: React.FunctionComponent = () => {
 
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
+      checkinId: data.checkinId,
       // @ts-ignore
-      patientId: checkInData.patientId,
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -129,24 +129,23 @@ const CompletedLab: React.FunctionComponent = () => {
   };
 
   const saveMicrobiology = (data: IMicrobiologyData, method = "create") => {
-    setModalLoading(true);
-
+    setModalLoading(true);    
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
+      checkinId: data.checkinId,
       // @ts-ignore
-      patientId: checkInData.patientId,
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
       delete _data.clientId;
-      Object.keys(defaultParasitologyFields).map((key) => {
+      Object.keys(defaultMicrobiologyFields).map((key) => {
         // @ts-ignore
         _data[key] = data[key];
       });
     } else {
       _data = { ..._data, ...data };
-    }
+    }    
     const url = `/laboratory/microbiology/${
       method === "create" ? "add" : "complete"
     }`;
@@ -169,9 +168,9 @@ const CompletedLab: React.FunctionComponent = () => {
 
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
+      checkinId: data.checkinId,
       // @ts-ignore
-      patientId: checkInData.patientId,
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -201,7 +200,6 @@ const CompletedLab: React.FunctionComponent = () => {
   };
 
   const showModal = (row: any) => {
-    console.log(row);
     if(row.type === 'MICROBIOLOGY'){
       setMicrobiologyData(row);
       setToggleMicrobiology(true);
@@ -244,7 +242,7 @@ const CompletedLab: React.FunctionComponent = () => {
                     <td>{row?.patient?.name}</td>
                     <td>{row?.requestBy?.title}. {row?.requestBy?.firstName} {row?.requestBy?.otherName} {row?.requestBy?.lastName}</td>
                     <td>{row?.type}</td>
-                    <td>{formatDate(row?.createdAt)}</td>
+                    <td>{formatDate(row?.dateCompleted)}</td>
                     <td><Button type={ButtonTypes.primary} onClick={() => showModal(row)}>Open</Button></td>
                   </tr>
                 )} /> : <h2 style={{textAlign: 'center'}}>No completed lab request Found</h2>
@@ -259,13 +257,14 @@ const CompletedLab: React.FunctionComponent = () => {
         onAdd={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "create");
         }}
-        onComplete={(data: IPathologyData) => {
-          savePathology(data, "complete");
+        onComplete={(data: IMicrobiologyData) => {
+          saveMicrobiology(data, "complete");
         }}
         modalLoading={modalLoading}
         onCancel={() => {
           setToggleMicrobiology(false);
         }}
+        isReview={true}
       />
       <RapidTestModal
         closeModal={() => setToggleRapidtest(false)}
@@ -282,6 +281,7 @@ const CompletedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setToggleRapidtest(false);
         }}
+        isReview={true}
       />
       <AddPathologyModal
         closeModal={() => setTogglePathology(false)}
@@ -298,6 +298,7 @@ const CompletedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setTogglePathology(false);
         }}
+        isReview={true}
       />
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
@@ -314,6 +315,7 @@ const CompletedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setToggleParasitology(false);
         }}
+        isReview={true}
       />
     </div>
   )

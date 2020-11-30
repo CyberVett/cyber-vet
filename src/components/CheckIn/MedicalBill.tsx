@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { string } from "yup";
 import MedicalReportModalContentTemplate from "./MedicalReportModalContentTemplate";
 enum PaymentMethod {
   cash = "CASH",
@@ -18,7 +17,7 @@ const VacinationReport = (props: {
   onAdd: Function;
   onCancel: Function;
   data: IData;
-  billingServices: object;
+  billingServices: [];
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
@@ -38,38 +37,41 @@ const VacinationReport = (props: {
 
   const [cummulativeValues, setCummulativeValues] = useState([]);
 
-  const [selectedBillingValues, setSelectedBillinServices] = useState([]);
+  // const [selectedBillingValues, setSelectedBillinServices] = useState([]);
   const [actualBillingValues, setActualBillinServices] = useState([]);
   const [availableBillingValues, setAvailableBillinServices] = useState([]);
 
   useEffect(() => {
+    // @ts-ignore
     const services = props.billingServices.filter((b) => b.name);
     setActualBillinServices(services);
     setAvailableBillinServices(services);
 
     const _cumm = Array.from({ length: services.length }).fill("");
+    //  @ts-ignore
     setCummulativeValues(_cumm);
   }, []);
 
-  const handleBillItemChange = (event: {
-    persist: () => void;
-    target: { name: any; value: any };
-  }) => {
-    event.persist();
+  // const handleBillItemChange = (event: {
+  //   persist: () => void;
+  //   target: { name: any; value: any };
+  // }) => {
+  //   event.persist();
 
-    if (event.target.value) {
-      const billingData = availableBillingValues.find((b) => {
-        return event.target.name === b.name;
-      });
-      setSelectedBillinServices([...selectedBillingValues, billingData]);
+  //   if (event.target.value) {
+  //     const billingData = availableBillingValues.find((b) => {
+  //       return event.target.name === b.name;
+  //     });
+  //     // @ts-ignore
+  //     setSelectedBillinServices([...selectedBillingValues, billingData]);
 
-      const availableData = availableBillingValues.filter((b) => {
-        return event.target.name !== b.name;
-      });
-      setAvailableBillinServices(availableData);
-    }
-    return formValues;
-  };
+  //     const availableData = availableBillingValues.filter((b) => {
+  //       return event.target.name !== b.name;
+  //     });
+  //     setAvailableBillinServices(availableData);
+  //   }
+  //   return formValues;
+  // };
 
   const handleSelectedBillItemChange = (event: {
     persist: () => void;
@@ -78,10 +80,13 @@ const VacinationReport = (props: {
     event.persist();
 
     const index = event.target.name;
+    // @ts-ignore
     const charge = actualBillingValues[index].charges;
     if (event.target.value) {
+      // @ts-ignore
       cummulativeValues.splice(index, 1, charge);
     } else {
+      // @ts-ignore
       cummulativeValues.splice(index, 1, 0);
     }
     setCummulativeValues([...cummulativeValues]);
@@ -94,42 +99,40 @@ const VacinationReport = (props: {
     setTotalBalance(balance);
 
     setTotalPrice(total);
-
+    // @ts-ignore
     const services = [];
     cummulativeValues.map((val) => {
       if (val) {
         const service = actualBillingValues[index];
         services.push({
-          name: service.name,
+          // @ts-ignore
           charges: service.charges,
+          // @ts-ignore
+          name: service.name,
         });
       }
     });
-
-    console.log(services);
 
     const _formValues = {
       paid: paidAmount,
       balance: balance,
       method: formValues.method,
+      // @ts-ignore
       services: [...services],
     };
-
+    // @ts-ignore
     setFormValues(_formValues);
 
     return _formValues;
   };
 
-  const handleBillValueChange = (event: {
-    persist: () => void;
-    target: { name: any; value: any };
-  }) => {
-    event.persist();
-
-    console.log(event.target.value);
-
-    return formValues;
-  };
+  // const handleBillValueChange = (event: {
+  //   persist: () => void;
+  //   target: { name: any; value: any };
+  // }) => {
+  //   event.persist();
+  //   return formValues;
+  // };
 
   // const [totalValue, setTotalValues] = useState<Number>(0);
 
@@ -148,6 +151,7 @@ const VacinationReport = (props: {
         setPaidAmount(event.target.value);
         const balance = totalPrice - event.target.value;
         setTotalBalance(balance);
+        // @ts-ignore
         _formValues.balance = balance;
       }
 
@@ -179,6 +183,7 @@ const VacinationReport = (props: {
     >
       <form className="medical__report__form medical--bill">
         {[...availableBillingValues].map((service, index) => {
+          //  @ts-ignore
           return service.name ? (
             <>
               <div className="physical__examination__form--input">
@@ -188,10 +193,13 @@ const VacinationReport = (props: {
                   defaultValue={""}
                 >
                   <option value="">Select One</option>
-                  {[...availableBillingValues].map((serviceName) => {
+                  {[...availableBillingValues].map((serviceName, index) => {
                     return (
-                      <option value={serviceName.name || ""}>
-                        {serviceName.name}
+                        //  @ts-ignore
+                      <option key={index} value={serviceName.name || ""}>
+                        {
+                        //  @ts-ignore
+                        serviceName.name}
                       </option>
                     );
                   })}
@@ -247,8 +255,8 @@ const VacinationReport = (props: {
             name="method"
             defaultValue={formValues.method}
           >
-            {["Cash", "Card"].map((method) => {
-              return <option value={method}>{method}</option>;
+            {["Cash", "Card"].map((method, index) => {
+              return <option key={index} value={method}>{method}</option>;
             })}
           </select>
         </div>

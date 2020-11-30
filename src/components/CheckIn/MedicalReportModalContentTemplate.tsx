@@ -20,7 +20,9 @@ const MedicalReportModalContentTemplate = (props: {
         </span>
         <span className="template__head--date">
           <span>Date Recorded</span>
-          <input defaultValue={formatDate(props?.date)} disabled type="text" />
+          <input defaultValue={
+            // @ts-ignore
+            formatDate(props?.date)} disabled type="text" />
         </span>
       </div>
 

@@ -8,6 +8,7 @@ import Modal from "components/Modal/modal";
 import styles from "../laboratory.module.scss";
 import Button, { ButtonTypes } from "components/Button/button";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
+import { formatDate } from "lib/utils";
 
 export interface IModalProps {
   visible: boolean;
@@ -17,6 +18,7 @@ export interface IModalProps {
   onComplete: Function;
   onCancel: Function;
   modalLoading: boolean;
+  isReview?: boolean;
 }
 
 export interface IParasitologyData {
@@ -35,6 +37,8 @@ export interface IParasitologyData {
   skinScrappingResult: string;
   facialAnalysisResult: string;
   urineAnalysisResult: string;
+  dateCompleted?: string;
+  createdAt?: string;
 }
 
 const ParasitologyModal: React.FC<IModalProps> = ({
@@ -45,6 +49,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
   onAdd,
   onCancel,
   onComplete,
+  isReview
 }) => {
   // @ts-ignore
   const [formValues, setFormValues] = useState<IParasitologyData>({});
@@ -81,11 +86,15 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               <h3>Parasitology Form</h3>
               <InputGroup horizontal>
                 <Label>Date Requested</Label>
-                <input disabled placeholder={new Date().toLocaleString()} />
+                <input disabled placeholder={
+                  // @ts-ignore
+                  formatDate(data?.createdAt) || new Date().toLocaleString()} />
               </InputGroup>
               <InputGroup horizontal>
                 <Label>Date Completed</Label>
-                <input disabled placeholder={new Date().toLocaleString()} />
+                <input disabled placeholder={
+                  // @ts-ignore
+                  formatDate(data?.dateCompleted) || ''} />
               </InputGroup>
             </div>
             <div className={styles.formDetailsInput}>
@@ -292,7 +301,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
               </InputGroup>
             </div>
             <div className={styles.buttonContainer}>
-              <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>
+            {!isReview && <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>}
               <Button type={ButtonTypes.orange} onClick={() => onComplete(formValues, "complete")}>
                 Complete
             </Button>

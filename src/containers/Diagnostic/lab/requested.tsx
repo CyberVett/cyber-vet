@@ -18,7 +18,7 @@ import MicrobiologyModal, { IMicrobiologyData } from 'containers/Patient/Laborat
 import ParasitologyModal, { IParasitologyData } from 'containers/Patient/Laboratory/Modal/parasitologyModal';
 import AddPathologyModal, { IPathologyData } from 'containers/Patient/Laboratory/Modal/pathologyModal';
 import RapidTestModal, { IRapidTestData } from 'containers/Patient/Laboratory/Modal/rapidTestModal';
-import { defaultParasitologyFields, defaultPathologyFields, defaultRapidTestFields } from 'containers/Patient/Laboratory/laboratoryTab';
+import { defaultMicrobiologyFields, defaultParasitologyFields, defaultPathologyFields, defaultRapidTestFields } from 'containers/Patient/Laboratory/laboratoryTab';
 
 const RequestedLab: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
@@ -76,12 +76,11 @@ const RequestedLab: React.FunctionComponent = () => {
 
   const savePathology = (data: IPathologyData, method = "create") => {
     setModalLoading(true);
-
     let _data = {
-      // @ts-ignore
-      checkinId: checkInData.id,
-      // @ts-ignore
-      patientId: checkInData.patientId,
+       // @ts-ignore
+       checkinId: data.checkinId,
+       // @ts-ignore
+       patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -118,9 +117,9 @@ const RequestedLab: React.FunctionComponent = () => {
 
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
-      // @ts-ignore
-      patientId: checkInData.patientId,
+      checkinId: data.checkinId,
+     // @ts-ignore
+     patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -150,24 +149,24 @@ const RequestedLab: React.FunctionComponent = () => {
   };
 
   const saveMicrobiology = (data: IMicrobiologyData, method = "create") => {
-    setModalLoading(true);
-
+    setModalLoading(true);    
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
+      checkinId: data.checkinId,
       // @ts-ignore
-      patientId: checkInData.patientId,
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
       delete _data.clientId;
-      Object.keys(defaultParasitologyFields).map((key) => {
+      Object.keys(defaultMicrobiologyFields).map((key) => {
         // @ts-ignore
         _data[key] = data[key];
       });
     } else {
       _data = { ..._data, ...data };
     }
+    console.log("hhh", _data);
     const url = `/laboratory/microbiology/${
       method === "create" ? "add" : "complete"
     }`;
@@ -190,9 +189,9 @@ const RequestedLab: React.FunctionComponent = () => {
 
     let _data = {
       // @ts-ignore
-      checkinId: checkInData.id,
-      // @ts-ignore
-      patientId: checkInData.patientId,
+      checkinId: data.checkinId,
+     // @ts-ignore
+     patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -262,13 +261,14 @@ const RequestedLab: React.FunctionComponent = () => {
         onAdd={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "create");
         }}
-        onComplete={(data: IPathologyData) => {
-          savePathology(data, "complete");
+        onComplete={(data: IMicrobiologyData) => {
+          saveMicrobiology(data, "complete");
         }}
         modalLoading={modalLoading}
         onCancel={() => {
           setToggleMicrobiology(false);
         }}
+        isReview={true}
       />
       <RapidTestModal
         closeModal={() => setToggleRapidtest(false)}
@@ -285,6 +285,7 @@ const RequestedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setToggleRapidtest(false);
         }}
+        isReview={true}
       />
       <AddPathologyModal
         closeModal={() => setTogglePathology(false)}
@@ -301,6 +302,7 @@ const RequestedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setTogglePathology(false);
         }}
+        isReview={true}
       />
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
@@ -317,6 +319,7 @@ const RequestedLab: React.FunctionComponent = () => {
         onCancel={() => {
           setToggleParasitology(false);
         }}
+        isReview={true}
       />
     </div>
   )
