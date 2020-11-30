@@ -53,19 +53,23 @@ const VacinationReport = (props: {
   }, []);
 
   useEffect(() => {
+    // @ts-ignore
     setTotalBalance(props.data.amountToBalance);
 
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
+         // @ts-ignore
           const price = service.price || 0;
           return parseInt(price || 0, 10) + acc;
         }, 0)
       : 0;
 
     setTotalPrice(total);
+     // @ts-ignore
     setPaidAmount(props.data.amountPaid || 0);
     setFormValues({
       ...formValues,
+       // @ts-ignore
       paymentMethod: props.data.paymentMethod || "Card",
     });
   }, [props.data]);
@@ -176,6 +180,7 @@ const VacinationReport = (props: {
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
+       // @ts-ignore
       date={props.date}
       // @ts-ignore
       canEdit={!!props.date}
@@ -188,14 +193,17 @@ const VacinationReport = (props: {
               ? props.data.services[index]
               : {};
           const price = savedService
+           // @ts-ignore
             ? savedService.price
             : cummulativeValues[index];
+             // @ts-ignore
           return service.name ? (
             <>
               <div className="physical__examination__form--input">
                 <select
                   onChange={handleSelectedBillItemChange}
                   name={`${index}`}
+                   // @ts-ignore
                   defaultValue={savedService.name || ""}
                 >
                   <option value="">Select One</option>

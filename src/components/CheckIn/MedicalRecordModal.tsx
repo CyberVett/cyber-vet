@@ -131,7 +131,9 @@ const MedicalRecordModal = ({
               billingServices={billingServices}
               // @ts-ignore
               data={medicalBillData}
-              date={medicalBillData.createdAt}
+              date={
+                 // @ts-ignore
+                medicalBillData.createdAt}
               onAdd={(data: {}) => getResult(data, currentModal)}
             />
           )}

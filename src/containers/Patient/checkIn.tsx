@@ -606,7 +606,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
             setMedicalReports({ ...medicalReports, ...data });
             setShowMedicalModal(false);
           } else {
-            fetchMedicalBillForCheckin(checkInData.id);
+             // @ts-ignore
+            fetchMedicalBillForCheckin(checkInData?.id);
             setShowMedicalModal(false);
           }
           setShowMedicalModal(false);
@@ -970,6 +971,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   {medicalReports?.vaccination?.type ||
                                     // @ts-ignore
                                     medicalReports?.vaccination
+                                     // @ts-ignore
                                       ?.vaccinationType}
                                 </li>
                                 <li>
@@ -1016,6 +1018,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                           checkInMedicalBill && checkInMedicalBill.id && (
                             <CheckinItem
                               checkedIn={checkedIn}
+                               // @ts-ignore
                               date={checkInMedicalBill.createdAt}
                               onDelete={() => handleDeleteMedicalBill()}
                               onEdit={() => {
@@ -1024,9 +1027,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               title="Medical Bill"
                             >
                               <ul className="medical__bill__report">
-                                {checkInMedicalBill.services.map((service) => {
+                                { // @ts-ignore
+                                checkInMedicalBill.services.map((service, index) => {
                                   return (
-                                    <li>
+                                    <li key={index}>
                                       <span>{service.name}</span>
                                       <span>
                                         ₦{service.amount || service.charge}
@@ -1040,7 +1044,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   </span>
                                   <span style={{ color: "#1E638F" }}>
                                     <strong>
-                                      ₦{checkInMedicalBill.amountPaid}
+                                      ₦{ // @ts-ignore
+                                      checkInMedicalBill.amountPaid}
                                     </strong>
                                   </span>
                                 </li>
@@ -1050,7 +1055,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   </span>
                                   <span style={{ color: "#F2761D" }}>
                                     <strong>
-                                      ₦{checkInMedicalBill.amountToBalance}
+                                      ₦{ // @ts-ignore
+                                      checkInMedicalBill.amountToBalance}
                                     </strong>
                                   </span>
                                 </li>
@@ -1060,7 +1066,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   </span>
                                   <span>
                                     <strong>
-                                      {checkInMedicalBill.paymentMethod}
+                                      { // @ts-ignore
+                                      checkInMedicalBill.paymentMethod}
                                     </strong>
                                   </span>
                                 </li>
@@ -1113,6 +1120,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     checkinDataIndex > 0 ? checkinDataIndex - 1 : 0;
                   setCheckinDataIndex(newIndex);
                   setCheckIndata(patientData.checkins[newIndex]);
+                   // @ts-ignore
                   fetchMedicalBillForCheckin(patientData.checkins[newIndex].id);
                   populateCheckInData(patientData.checkins[newIndex]);
                 }}
@@ -1141,6 +1149,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       : patientData.checkins.length - 1;
                   setCheckinDataIndex(newIndex);
                   setCheckIndata(patientData.checkins[newIndex]);
+                   // @ts-ignore
                   fetchMedicalBillForCheckin(patientData.checkins[newIndex].id);
                   populateCheckInData(patientData.checkins[newIndex]);
                 }}

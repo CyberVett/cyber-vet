@@ -10,10 +10,11 @@ import Button, { ButtonTypes } from 'components/Button/button';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
-import { getAge } from 'lib/utils';
+import { dataURLtoFile, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
+import Camera from 'react-html5-camera-photo';
 
 export interface ISpecies {
   name: string;
@@ -71,6 +72,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
   const fileInput = useRef();
@@ -81,28 +83,6 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
       ...input,
       [event.target.name]: event.target.value
     }));
-  };
-
-  const handleFileChange = (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    let formData = new FormData();
-    //  @ts-ignore
-    formData.append('image', fileInput?.current?.files[0]);
-    requestClient.post('images', formData, {
-      onUploadProgress: (ProgressEvent) => {
-        const { loaded, total } = ProgressEvent;
-        setPercentage(Math.floor((loaded * 100) / total));
-      }
-    })
-      .then(res => {
-        setLoading(false);
-        patientInput.imageUrl = res.data.imageUrl;
-      })
-      .catch(err => {
-        setLoading(false);
-        console.log(err);
-      });
   };
 
   const submitPatientForm = (e: any) => {
@@ -147,12 +127,49 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
   useEffect(() => {
     let age = getAge(patientInput.dob);
     setAge(age);
-  }, [patientInput.dob])
+  }, [patientInput.dob]);
 
-  // const useCamera = () => {
-  //   camera.startCamera();
-  //   camera.takeSnapshot();
-  // }
+  const sendToCloudinary = (formData: FormData) => {
+    requestClient.post('images', formData, {
+      onUploadProgress: (ProgressEvent) => {
+        const { loaded, total } = ProgressEvent;
+        setPercentage(Math.floor((loaded * 100) / total));
+      }
+    })
+      .then(res => {
+        setLoading(false);
+        patientInput.imageUrl = res.data.imageUrl;
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err);
+      });
+  }
+
+  const handleFileChange = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', fileInput?.current?.files[0]);
+    sendToCloudinary(formData);
+  };
+
+
+  const handleTakePhoto = (dataUri: any) => {
+    const randomNumber = Math.floor(Math.random() * Math.floor(1000000));
+    const file = dataURLtoFile(dataUri, `patientImage${randomNumber}.png`)
+    setShowCameraModal(false);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', file);
+    sendToCloudinary(formData);
+  }
+
+  const useCamera = () => {
+    setShowCameraModal(true);
+  }
+
   return (!clientId ? <Error statusCode={404} title="No client found, kindly register a client, before adding a new patient" /> :
     <div>
       <Card>
@@ -208,7 +225,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   />
                 </InputGroup>
               }
-                <InputGroup horizontal>
+              <InputGroup horizontal>
                 <Label>Breed</Label>
                 {/* <Select
                   onChange={handleInputChange}
@@ -312,7 +329,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
-                {/* <Button onClick={useCamera}>use camera</Button> */}
+                <Button htmlType="button" onClick={useCamera}>use camera</Button>
               </div>
               {
                 //  @ts-ignore
@@ -500,12 +517,20 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
             Router.push('/app/patient');
           }}
         >
-          <Button 
-          className={styles.centerButton}
-          onClick={() => {
-            setShowModal(false);
-            Router.push('/app/patient');
-          }}>OK, Go back to patient list</Button>
+          <Button
+            className={styles.centerButton}
+            onClick={() => {
+              setShowModal(false);
+              Router.push('/app/patient');
+            }}>OK, Go back to patient list</Button>
+        </Modal>
+        <Modal
+          closeModal={() => setShowCameraModal(false)}
+          visible={showCameraModal}
+        >
+          <Camera
+            onTakePhoto={(dataUri) => { handleTakePhoto(dataUri); }}
+          />
         </Modal>
       </Card>
     </div>

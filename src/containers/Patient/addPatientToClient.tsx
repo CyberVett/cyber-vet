@@ -5,15 +5,14 @@ import { FormErrors, Input, InputGroup, InputValidationTypes, Label, Select } fr
 import { SubSectionHeader } from 'components/SectionHeader/sectionHeader';
 import Card, { CardHeader } from 'components/Card/card';
 import Button, { ButtonTypes } from 'components/Button/button';
-
+import Camera from 'react-html5-camera-photo';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
-import { getAge } from 'lib/utils';
+import { dataURLtoFile, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
-import camera from 'lib/camera';
 
 export interface ISpecies {
   name: string;
@@ -71,6 +70,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
   // const [species, setSpecies] = useState<ISpecies[]>([]);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
@@ -87,14 +87,9 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
   useEffect(() => {
     let age = getAge(patientInput.dob);
     setAge(age);
-  }, [patientInput.dob])
+  }, [patientInput.dob]);
 
-  const handleFileChange = (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    let formData = new FormData();
-    //  @ts-ignore
-    formData.append('image', fileInput?.current?.files[0]);
+  const sendToCloudinary = (formData: FormData) => {
     requestClient.post('images', formData, {
       onUploadProgress: (ProgressEvent) => {
         const { loaded, total } = ProgressEvent;
@@ -109,6 +104,15 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setLoading(false);
         console.log(err);
       });
+  }
+
+  const handleFileChange = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', fileInput?.current?.files[0]);    
+    sendToCloudinary(formData);
   };
 
   const submitPatientForm = (e: any) => {
@@ -150,10 +154,21 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
         setError(error.response.data.message)
       })
   };
-  const useCamera = () => {
-    camera.startCamera();
-   
+
+  const handleTakePhoto = (dataUri: any) => {
+    const randomNumber = Math.floor(Math.random() * Math.floor(1000000));
+    const file = dataURLtoFile(dataUri, `patientImage${randomNumber}.png` )
+    setShowCameraModal(false);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', file);
+    sendToCloudinary(formData);
   }
+
+  const useCamera = () => {
+    setShowCameraModal(true);
+  }
+
   return (
     <div>
       <Card>
@@ -208,7 +223,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   />
                 </InputGroup>
               }
-                <InputGroup horizontal>
+              <InputGroup horizontal>
                 <Label>Breed</Label>
                 {/* <Select
                   onChange={handleInputChange}
@@ -313,7 +328,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
-                <Button onClick={useCamera}>use camera</Button>
+                <Button htmlType="button" onClick={useCamera}>use camera</Button>
               </div>
               {
                 //  @ts-ignore
@@ -487,7 +502,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
           <FormErrors errors={error} />
           <div className={styles.button}>
             <Button
-            type={ButtonTypes.primary}
+              type={ButtonTypes.primary}
               htmlType="sumbit"
               loading={loading}
             >Add New Patient</Button><Button href="/app/client" type={ButtonTypes.grey}>Cancel</Button>
@@ -502,18 +517,21 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
             Router.push('/app/client');
           }}
         >
-          <Button 
-          className={styles.centerButton}
-          onClick={() => {
-            setShowModal(false);
-            Router.push('/app/client');
-          }}>OK, Go back to patient list</Button>
+          <Button
+            className={styles.centerButton}
+            onClick={() => {
+              setShowModal(false);
+              Router.push('/app/client');
+            }}>OK, Go back to patient list</Button>
         </Modal>
-        {/* <Modal
-          visible={showModal}
+        <Modal
+          closeModal={() => setShowCameraModal(false)}
+          visible={showCameraModal}
         >
-
-        </Modal> */}
+          <Camera
+            onTakePhoto={(dataUri) => { handleTakePhoto(dataUri); }}
+          />
+        </Modal>
       </Card>
     </div>
   );

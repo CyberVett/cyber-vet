@@ -5,6 +5,7 @@ import Router from "next/router";
 import { ReactQueryDevtools } from "react-query-devtools";
 import "normalize.css";
 import "react-day-picker/lib/style.css";
+import 'react-html5-camera-photo/build/css/index.css';
 
 import "../styles/globals.scss";
 import "../styles/checkin.scss";
@@ -32,12 +33,12 @@ class Root extends App<{}, IAppState> {
 
     if (storedKey) {
       this.setState({
-        loggedIn: true,
-        user: JSON.parse(storedKey),
         accessToken: JSON.parse(storedKey).accessToken,
         hospital: JSON.parse(storedKey).info.hospital,
+        loggedIn: true,
         role: JSON.parse(storedKey).role,
         staff: JSON.parse(storedKey).info.staff,
+        user: JSON.parse(storedKey),
       });
     } else {
       // If the user is not logged in and is in a dashboard page, redirect the user to login
@@ -115,14 +116,14 @@ class Root extends App<{}, IAppState> {
       <StrictMode>
         <AuthContext.Provider
           value={{
-            loggedIn: this.state.loggedIn,
-            logoutUser: () => this.logoutUser(),
-            updateUser: (userDetails: any) => this.updateUser(userDetails),
-            user: this.state.user,
             accessToken: this.state.accessToken,
             hospital: this.state.hospital,
+            loggedIn: this.state.loggedIn,
+            logoutUser: () => this.logoutUser(),
             role: this.state.role,
             staff: this.state.staff,
+            updateUser: (userDetails: any) => this.updateUser(userDetails),
+            user: this.state.user,
           }}
         >
           <Layout {...layoutProps}>

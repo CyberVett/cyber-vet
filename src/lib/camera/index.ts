@@ -46,13 +46,11 @@ const camera = function () {
       }
     },
 
-
     takeSnapshot: function () {
       // @ts-ignore
       this.context.drawImage(this.video, 0, 0, width, height);
     },
     video: null,
-
   }
 }();
 
