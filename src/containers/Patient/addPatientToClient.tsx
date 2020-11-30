@@ -152,7 +152,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
   };
   const useCamera = () => {
     camera.startCamera();
-    camera.takeSnapshot();
+   
   }
   return (
     <div>
@@ -509,6 +509,11 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
             Router.push('/app/client');
           }}>OK, Go back to patient list</Button>
         </Modal>
+        {/* <Modal
+          visible={showModal}
+        >
+
+        </Modal> */}
       </Card>
     </div>
   );

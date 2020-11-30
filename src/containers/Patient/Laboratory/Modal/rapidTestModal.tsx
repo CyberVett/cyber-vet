@@ -4,6 +4,7 @@ import Modal from "components/Modal/modal";
 import { ReactComponent as Loader } from "../../../../assets/icons/loader.svg";
 import styles from "../laboratory.module.scss";
 import Button, { ButtonTypes } from "components/Button/button";
+import { formatDate } from "lib/utils";
 
 export interface IModalProps {
   visible: boolean;
@@ -13,6 +14,7 @@ export interface IModalProps {
   onComplete: Function;
   onCancel: Function;
   modalLoading: boolean;
+  isReview?: boolean;
 }
 
 export interface IRapidTestData {
@@ -21,6 +23,8 @@ export interface IRapidTestData {
   tentativeDiagnosis: string;
   testsRequired: string;
   result: string;
+  dateCompleted?: string;
+  createdAt?: string;
 }
 
 const RapidTestModal: React.FC<IModalProps> = ({
@@ -31,6 +35,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
   onAdd,
   onCancel,
   onComplete,
+  isReview,
 }) => {
   // @ts-ignore
   const [formValues, setFormValues] = useState<IRapidTestData>({});
@@ -65,11 +70,15 @@ const RapidTestModal: React.FC<IModalProps> = ({
               <h3>Rapid Test Kit</h3>
               <InputGroup horizontal>
                 <Label>Date Requested</Label>
-                <input disabled placeholder={new Date().toLocaleString()} />
+                <input disabled placeholder={
+                  // @ts-ignore
+                  formatDate(data?.createdAt) || new Date().toLocaleString()} />
               </InputGroup>
               <InputGroup horizontal>
                 <Label>Date Completed</Label>
-                <input disabled placeholder={new Date().toLocaleString()} />
+                <input disabled placeholder={
+                  // @ts-ignore
+                  formatDate(data?.dateCompleted) || ''} />
               </InputGroup>
             </div>
             <div className={styles.formDetailsInput}>
@@ -127,7 +136,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
               </InputGroup>
             </div>
             <div className={styles.buttonContainer}>
-              <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>
+            {!isReview && <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>}
               <Button type={ButtonTypes.orange} onClick={() => onComplete(formValues, "complete")}>
                 Complete
             </Button>

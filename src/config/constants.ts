@@ -405,7 +405,7 @@ export const LabCompletedHeaders = [
   },
 ];
 
-export const XRayHeaders = [
+export const XRayCompleteHeaders = [
   {
     id: 1,
     label: 'Patient No',
@@ -425,6 +425,33 @@ export const XRayHeaders = [
   {
     id: 6,
     label: 'Date Completed',
+  },
+  {
+    id: 8,
+    label: 'Actions',
+  },
+];
+
+export const XRayRequestHeaders = [
+  {
+    id: 1,
+    label: 'Patient No',
+  },
+  {
+    id: 2,
+    label: 'Client\'s Name',
+  },
+  {
+    id: 3,
+    label: 'Patient\'s Name',
+  },
+  {
+    id: 4,
+    label: 'Requested By',
+  },
+  {
+    id: 6,
+    label: 'Date Requested',
   },
   {
     id: 8,

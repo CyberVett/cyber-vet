@@ -125,6 +125,7 @@ const MedicalRecordModal = ({
             <MedicalBill
               onCancel={closeModal}
               title={currentModal}
+              // @ts-ignore
               billingServices={billingServices}
               // @ts-ignore
               data={{ medicalBill: results.medicalBill }}

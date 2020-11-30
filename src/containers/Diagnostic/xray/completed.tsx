@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
-import { XRayHeaders } from 'config/constants';
+import { XRayCompleteHeaders } from 'config/constants';
 import Button, { ButtonTypes } from 'components/Button/button';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
@@ -59,14 +59,14 @@ const CompletedXray: React.FunctionComponent = () => {
             data.length > 0 ?
               <Table
                 data={data}
-                headers={XRayHeaders}
+                headers={XRayCompleteHeaders}
                 renderRow={(row) => (
                   <tr key={row.id}>
                     <td>{row?.patientId}</td>
                     <td>{row?.client?.title}. {row?.client?.firstName} {row?.client?.otherName} {row?.client?.lastName}</td>
                     <td>{row?.patient?.name}</td>
                     <td>{row?.requestBy?.title}. {row?.requestBy?.firstName} {row?.requestBy?.otherName} {row?.requestBy?.lastName}</td>
-                    <td>{formatDate(row?.createdAt)}</td>
+                    <td>{formatDate(row?.dateCompleted)}</td>
                     <td><Button type={ButtonTypes.primary} onClick={() => showRadiology(row)}>Open</Button></td>
                   </tr>
                 )} /> : <h2 style={{textAlign: 'center'}}>No completed x-ray Found</h2>

@@ -5,6 +5,7 @@ import Modal from 'components/Modal/modal';
 import styles from './radiology.module.scss';
 import Button, { ButtonTypes } from 'components/Button/button';
 import requestClient from 'lib/requestClient';
+import { formatDate } from 'lib/utils';
 
 export interface IModalProps {
   visible: boolean;
@@ -133,7 +134,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         setLoading(false);
         setError(error.response.data.message)
       })
-  }
+  }  
 
   return (
     <Modal
@@ -147,13 +148,13 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
           <Label>Date Requested</Label>
           <input
             disabled
-            placeholder={new Date().toLocaleString()} />
+            placeholder={formatDate(checkInData?.createdAt) ||  new Date().toLocaleString()} />
         </InputGroup>
         <InputGroup horizontal >
           <Label>Date Completed</Label>
           <input
             disabled
-            placeholder={new Date().toLocaleString()} />
+            placeholder={formatDate(checkInData?.dateCompleted) || ''} />
         </InputGroup>
       </div>
       <div className={styles.formDetailsInput}>
