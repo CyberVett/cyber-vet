@@ -286,6 +286,19 @@
     }
   }
 
+  .medical__bill__report {
+    width: 50%;
+    display: grid;
+    grid-gap: 0.5rem 1rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      display: grid;
+      grid-template-columns: 70% 30%;
+    }
+  }
+
   .medical__report {
     &__template {
       padding: 1rem;
