@@ -19,6 +19,7 @@ const MedicalRecordModal = ({
   results,
   modalLoading,
   billingServices,
+  medicalBillData,
 }: {
   show: boolean;
   modalLoading: boolean;
@@ -27,6 +28,7 @@ const MedicalRecordModal = ({
   closeModal: Function;
   results: IMedicalReport;
   billingServices: object;
+  medicalBillData: object;
 }) => {
   return (
     <Modal
@@ -128,7 +130,8 @@ const MedicalRecordModal = ({
               // @ts-ignore
               billingServices={billingServices}
               // @ts-ignore
-              data={{ medicalBill: results.medicalBill }}
+              data={medicalBillData}
+              date={medicalBillData.createdAt}
               onAdd={(data: {}) => getResult(data, currentModal)}
             />
           )}

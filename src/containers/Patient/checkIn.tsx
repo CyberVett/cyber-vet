@@ -73,6 +73,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   const [checkinDataIndex, setCheckinDataIndex] = useState(0);
 
   const [billingServices, setBillingServices] = useState(null);
+  const [checkInMedicalBill, setCheckInMedicalBill] = useState({});
 
   useEffect(() => {
     requestClient
@@ -87,6 +88,33 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         console.log(error);
       });
   }, []);
+
+  const fetchMedicalBillForCheckin = (checkinId: string) => {
+    setCheckInMedicalBill({});
+    requestClient
+      .get(`billings/medical-bill/${checkinId}`)
+      .then((response) => {
+        // console.log(response.data);
+
+        if (response.status === 200 && response.statusText === "OK") {
+          // console.log(response.data);
+          const data = response.data.data;
+          data.services = data.details;
+          // console.log(data);
+          setCheckInMedicalBill(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleEditMedicalBill = () => {
+    setMedicalContentState("Medical Bill");
+    setShowMedicalModal(true);
+  };
+
+  const handleDeleteMedicalBill = () => {};
 
   const populateCheckInData = (checkinData: any) => {
     if (checkinData) {
@@ -254,9 +282,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
           setCheckinDataIndex(0);
+          // console.log(checkins)
           setCheckIndata(checkins[checkinDataIndex]);
-          const checkinData = checkins.find((checkin: any) => checkin.checkIn);
-          populateCheckInData(checkinData);
+          if (checkins[checkinDataIndex]) {
+            fetchMedicalBillForCheckin(checkins[checkinDataIndex].id);
+          }
+          populateCheckInData(checkins[checkinDataIndex]);
         }
       })
       .catch((error) => {
@@ -557,7 +588,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       delete body.balance;
       // @ts-ignore
       data.medicalBillDate = new Date().toString();
-      console.log(body);
     }
     const __url =
       field === "Medical Bill"
@@ -567,9 +597,18 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient[method](__url, body)
       .then((response: any) => {
         // setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (
+          (response.status === 200 && response.statusText === "OK") ||
+          (response.status === 201 && response.statusText === "Created")
+        ) {
           setModalLoading(false);
-          setMedicalReports({ ...medicalReports, ...data });
+          if (field !== "Medical Bill") {
+            setMedicalReports({ ...medicalReports, ...data });
+            setShowMedicalModal(false);
+          } else {
+            fetchMedicalBillForCheckin(checkInData.id);
+            setShowMedicalModal(false);
+          }
           setShowMedicalModal(false);
         }
       })
@@ -785,175 +824,250 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               showModal={() => setShowModal(true)}
                             />
                           )}
-                        {(// @ts-ignore
-                          checkInData?.clinicalSigns ||
-                          medicalReports.clinicalSigns.length ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.clinicalSignsDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("clinical-sign", {
-                                clinicalSigns: "",
-                              })
-                            }
-                            onEdit={handleEditClinicalSigns}
-                            title="Clinical Signs"
-                          >
-                            <p>{medicalReports.clinicalSigns}</p>
-                          </CheckinItem>
-                        )}
+                        {
+                          // @ts-ignore
+                          (checkInData?.clinicalSigns ||
+                            medicalReports.clinicalSigns.length ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.clinicalSignsDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("clinical-sign", {
+                                  clinicalSigns: "",
+                                })
+                              }
+                              onEdit={handleEditClinicalSigns}
+                              title="Clinical Signs"
+                            >
+                              <p>{medicalReports.clinicalSigns}</p>
+                            </CheckinItem>
+                          )
+                        }
 
                         {/* Tentative medical test */}
-                        {(// @ts-ignore
-                          checkInData?.tentativeDiagnosis ||
-                          medicalReports.tentativeDiagnosis.tentative.length ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.tentativeDiagnosisDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("diagnosis", {
-                                tentativeDiagnosis: {
-                                  differential: "",
-                                  tentative: "",
-                                },
-                              })
-                            }
-                            onEdit={handleEditTentativeTest}
-                            title="Diagnostic Test"
-                          >
-                            <h5>Differential</h5>
-                            <p>
-                              {medicalReports.tentativeDiagnosis.differential}
-                            </p>
-                            <h5>Tentative</h5>
-                            <p>{medicalReports.tentativeDiagnosis.tentative}</p>
-                          </CheckinItem>
-                        )}
-                        {(// @ts-ignore
-                          checkInData?.diagnosticTest ||
-                          medicalReports.diagnosticTest.length ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.diagnosticTestDate}
-                            onDelete={handleDeleteDiagnosticTest}
-                            onEdit={handleEditDiagnosticTest}
-                            title="Diagnostic Test"
-                          >
-                            <p>{medicalReports.diagnosticTest}</p>
-                          </CheckinItem>
-                        )}
+                        {
+                          // @ts-ignore
+                          (checkInData?.tentativeDiagnosis ||
+                            medicalReports.tentativeDiagnosis.tentative
+                              .length ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.tentativeDiagnosisDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("diagnosis", {
+                                  tentativeDiagnosis: {
+                                    differential: "",
+                                    tentative: "",
+                                  },
+                                })
+                              }
+                              onEdit={handleEditTentativeTest}
+                              title="Diagnostic Test"
+                            >
+                              <h5>Differential</h5>
+                              <p>
+                                {medicalReports.tentativeDiagnosis.differential}
+                              </p>
+                              <h5>Tentative</h5>
+                              <p>
+                                {medicalReports.tentativeDiagnosis.tentative}
+                              </p>
+                            </CheckinItem>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          (checkInData?.diagnosticTest ||
+                            medicalReports.diagnosticTest.length ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.diagnosticTestDate}
+                              onDelete={handleDeleteDiagnosticTest}
+                              onEdit={handleEditDiagnosticTest}
+                              title="Diagnostic Test"
+                            >
+                              <p>{medicalReports.diagnosticTest}</p>
+                            </CheckinItem>
+                          )
+                        }
 
-                        {(// @ts-ignore
-                          checkInData?.finalDiagnosis ||
-                          medicalReports.finalDiagnosis.length ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.finalDiagnosisDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("final-diagnosis", {
-                                finalDiagnosis: "",
-                              })
-                            }
-                            onEdit={handleEditFinalDiagnosis}
-                            title="Final Diagnosis"
-                          >
-                            <p>{medicalReports.finalDiagnosis}</p>
-                          </CheckinItem>
-                        )}
-                        {(// @ts-ignore
-                          checkInData?.treatment ||
-                          medicalReports.treatment.length ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.treatmentDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("treatment", {
-                                treatment: "",
-                              })
-                            }
-                            onEdit={handleEditTreatment}
-                            title="Treatment"
-                          >
-                            <p>{medicalReports.treatment}</p>
-                          </CheckinItem>
-                        )}
+                        {
+                          // @ts-ignore
+                          (checkInData?.finalDiagnosis ||
+                            medicalReports.finalDiagnosis.length ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.finalDiagnosisDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("final-diagnosis", {
+                                  finalDiagnosis: "",
+                                })
+                              }
+                              onEdit={handleEditFinalDiagnosis}
+                              title="Final Diagnosis"
+                            >
+                              <p>{medicalReports.finalDiagnosis}</p>
+                            </CheckinItem>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          (checkInData?.treatment ||
+                            medicalReports.treatment.length ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.treatmentDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("treatment", {
+                                  treatment: "",
+                                })
+                              }
+                              onEdit={handleEditTreatment}
+                              title="Treatment"
+                            >
+                              <p>{medicalReports.treatment}</p>
+                            </CheckinItem>
+                          )
+                        }
 
-                        {(// @ts-ignore
-                          checkInData?.vaccination ||
-                          medicalReports.vaccination.name ||
-                          "") && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.vaccinationDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("vaccination", {
-                                vaccination: {
-                                  dosage: "",
-                                  emailReminder: false,
-                                  name: "",
-                                  nextDate: "",
-                                  smsReminder: false,
-                                  type: "",
-                                },
-                              })
-                            }
-                            onEdit={handleEditVaccination}
-                            title="Vaccination"
-                          >
-                            <ul>
-                              <li>
-                                Name:{" "}
-                                {medicalReports?.vaccination?.name ||
-                                  // @ts-ignore
-                                  medicalReports?.vaccination?.nameOfVaccine}
-                              </li>
-                              <li>
-                                Type:{" "}
-                                {medicalReports?.vaccination?.type ||
-                                  // @ts-ignore
-                                  medicalReports?.vaccination?.vaccinationType}
-                              </li>
-                              <li>
-                                Dosage: {medicalReports?.vaccination?.dosage}
-                              </li>
-                              <li>
-                                Date:{" "}
-                                {medicalReports?.vaccination?.nextDate ||
-                                  // @ts-ignore
-                                  medicalReports?.vaccination?.dateOfNextShot}
-                              </li>
-                              <li>
-                                Email Reminder:{" "}
-                                {medicalReports?.vaccination?.emailReminder}
-                              </li>
-                              <li>
-                                SMS Reminder:{" "}
-                                {medicalReports?.vaccination?.smsReminder}
-                              </li>
-                            </ul>
-                          </CheckinItem>
-                        )}
-                        {(// @ts-ignore
-                          checkInData?.notes || medicalReports.note) && (
-                          <CheckinItem
-                            checkedIn={checkedIn}
-                            date={medicalReports.noteDate}
-                            onDelete={() =>
-                              handleDeleteMedicalReport("notes", {
-                                note: "",
-                              })
-                            }
-                            onEdit={handleEditNoteReport}
-                            title="Note"
-                          >
-                            {medicalReports.note}
-                          </CheckinItem>
-                        )}
+                        {
+                          // @ts-ignore
+                          (checkInData?.vaccination ||
+                            medicalReports.vaccination.name ||
+                            "") && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.vaccinationDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("vaccination", {
+                                  vaccination: {
+                                    dosage: "",
+                                    emailReminder: false,
+                                    name: "",
+                                    nextDate: "",
+                                    smsReminder: false,
+                                    type: "",
+                                  },
+                                })
+                              }
+                              onEdit={handleEditVaccination}
+                              title="Vaccination"
+                            >
+                              <ul>
+                                <li>
+                                  Name:{" "}
+                                  {medicalReports?.vaccination?.name ||
+                                    // @ts-ignore
+                                    medicalReports?.vaccination?.nameOfVaccine}
+                                </li>
+                                <li>
+                                  Type:{" "}
+                                  {medicalReports?.vaccination?.type ||
+                                    // @ts-ignore
+                                    medicalReports?.vaccination
+                                      ?.vaccinationType}
+                                </li>
+                                <li>
+                                  Dosage: {medicalReports?.vaccination?.dosage}
+                                </li>
+                                <li>
+                                  Date:{" "}
+                                  {medicalReports?.vaccination?.nextDate ||
+                                    // @ts-ignore
+                                    medicalReports?.vaccination?.dateOfNextShot}
+                                </li>
+                                <li>
+                                  Email Reminder:{" "}
+                                  {medicalReports?.vaccination?.emailReminder}
+                                </li>
+                                <li>
+                                  SMS Reminder:{" "}
+                                  {medicalReports?.vaccination?.smsReminder}
+                                </li>
+                              </ul>
+                            </CheckinItem>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          (checkInData?.notes || medicalReports.note) && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={medicalReports.noteDate}
+                              onDelete={() =>
+                                handleDeleteMedicalReport("notes", {
+                                  note: "",
+                                })
+                              }
+                              onEdit={handleEditNoteReport}
+                              title="Note"
+                            >
+                              {medicalReports.note}
+                            </CheckinItem>
+                          )
+                        }
+                        {
+                          // @ts-ignore
+                          checkInMedicalBill && checkInMedicalBill.id && (
+                            <CheckinItem
+                              checkedIn={checkedIn}
+                              date={checkInMedicalBill.createdAt}
+                              onDelete={() => handleDeleteMedicalBill()}
+                              onEdit={() => {
+                                handleEditMedicalBill();
+                              }}
+                              title="Medical Bill"
+                            >
+                              <ul className="medical__bill__report">
+                                {checkInMedicalBill.services.map((service) => {
+                                  return (
+                                    <li>
+                                      <span>{service.name}</span>
+                                      <span>
+                                        ₦{service.amount || service.charge}
+                                      </span>
+                                    </li>
+                                  );
+                                })}
+                                <li style={{ marginTop: "1rem" }}>
+                                  <span>
+                                    <strong>Paid</strong>
+                                  </span>
+                                  <span style={{ color: "#1E638F" }}>
+                                    <strong>
+                                      ₦{checkInMedicalBill.amountPaid}
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li>
+                                  <span>
+                                    <strong>To Balance</strong>
+                                  </span>
+                                  <span style={{ color: "#F2761D" }}>
+                                    <strong>
+                                      ₦{checkInMedicalBill.amountToBalance}
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li>
+                                  <span>
+                                    <strong>Payment Method</strong>
+                                  </span>
+                                  <span>
+                                    <strong>
+                                      {checkInMedicalBill.paymentMethod}
+                                    </strong>
+                                  </span>
+                                </li>
+                              </ul>
+                            </CheckinItem>
+                          )
+                        }
                       </MedicalRecordsItems>
                     )}
 
@@ -999,6 +1113,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                     checkinDataIndex > 0 ? checkinDataIndex - 1 : 0;
                   setCheckinDataIndex(newIndex);
                   setCheckIndata(patientData.checkins[newIndex]);
+                  fetchMedicalBillForCheckin(patientData.checkins[newIndex].id);
                   populateCheckInData(patientData.checkins[newIndex]);
                 }}
               >
@@ -1026,6 +1141,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                       : patientData.checkins.length - 1;
                   setCheckinDataIndex(newIndex);
                   setCheckIndata(patientData.checkins[newIndex]);
+                  fetchMedicalBillForCheckin(patientData.checkins[newIndex].id);
                   populateCheckInData(patientData.checkins[newIndex]);
                 }}
               >
@@ -1080,6 +1196,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       <MedicalRecordModal
         modalLoading={modalLoading}
         show={showMedicalModal}
+        medicalBillData={checkInMedicalBill}
         // @ts-ignore
         onDeleteItem={handleDeleteItem}
         // @ts-ignore
