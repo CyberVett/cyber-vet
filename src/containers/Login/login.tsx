@@ -15,7 +15,6 @@ import requestClient from 'lib/requestClient';
 
 import styles from './login.module.scss';
 import { userRoles } from 'config/constants';
-
 interface ILogin {
   email: string;
   password: string;
@@ -72,7 +71,6 @@ const Login: React.FunctionComponent = () => {
       })
       .catch(error => {
         setLoading(false);
-        console.log('error', error);
         // TODO: handle resposnse if it is a 400
         setError(['Login Failed!', error.message]);
       })
@@ -114,7 +112,7 @@ const Login: React.FunctionComponent = () => {
                   onClick={() => { setShowPassword(!showPassword) }} />
               </div>
             </InputGroup>
-            <Button type={ButtonTypes.primary} htmlType="submit" loading={loading}>Login</Button>
+            <Button htmlType="submit" loading={loading} type={ButtonTypes.primary}>Login</Button>
             <FormErrors errors={error} />
             <FormMessages messages={response} />
           </form>

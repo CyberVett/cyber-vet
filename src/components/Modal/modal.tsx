@@ -27,12 +27,10 @@ const Modal: React.FC<IModalProps> = ({
 
   return (
     <div className={styles.container}>
-
       <div
         className={styles.overlay}
         onClick={closeModal}
       />
-
       <div className={composeClasses(styles.modal, fullMode && styles.fullMode)}>
         {/* <CancelIcon className={styles.cancelIcon} onClick={closeModal} /> */}
         <div className={styles.header}>
@@ -48,7 +46,6 @@ const Modal: React.FC<IModalProps> = ({
             )
           }
         </div>
-
         <div className={styles.content}>
           {children}
         </div>

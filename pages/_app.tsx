@@ -20,12 +20,12 @@ interface IAppState {
 
 class Root extends App<{}, IAppState> {
   state = {
-    loggedIn: false,
-    user: null,
     accessToken: "",
     hospital: null,
+    loggedIn: false,
     role: "",
     staff: null,
+    user: null,
   };
 
   public componentDidMount() {
@@ -57,12 +57,12 @@ class Root extends App<{}, IAppState> {
 
     this.setState(
       {
-        loggedIn: false,
-        user: null,
         accessToken: "",
         hospital: null,
+        loggedIn: false,
         role: "",
         staff: null,
+        user: null,
       },
       () => this.postLogoutAction()
     );
@@ -84,14 +84,14 @@ class Root extends App<{}, IAppState> {
     const loggedIn = Object.keys(userData).length > 0;
     this.setState(
       {
+        accessToken: userData.accessToken,
+        hospital: userData.info.hospital,
         loggedIn,
+        role: userData.role,
+        staff: userData.info.staff,
         user: {
           ...userData,
         },
-        accessToken: userData.accessToken,
-        hospital: userData.info.hospital,
-        role: userData.role,
-        staff: userData.info.staff,
       },
       () => {
         if (this.state.loggedIn) {

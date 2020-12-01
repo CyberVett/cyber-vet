@@ -22,10 +22,12 @@ import { ReactComponent as RightArrow } from 'assets/icons/rightArrow.svg';
 
 import styles from './layout.module.scss';
 import { AuthContext } from 'contexts/auth';
+import ChangePassword from 'containers/ChangePassword/changePassword';
 
 const TopNav = () => {
   const { hospital, staff, logoutUser } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   return (
     <nav className={styles.nav}>
       <div className={styles.navLeft}>
@@ -43,7 +45,7 @@ const TopNav = () => {
             <ul className={styles.dropdown}>
               <li key={1} onClick={(event) => {
                 event.preventDefault();
-                Router.push('/app/change-password');
+                setShowModal(true);
               }}
               >
                 <AdminIcon />
@@ -69,6 +71,7 @@ const TopNav = () => {
             </ul>}
         </div>
       </div>
+      <ChangePassword closeModal={() => setShowModal(false)} visible={showModal} />
     </nav>
   );
 };
