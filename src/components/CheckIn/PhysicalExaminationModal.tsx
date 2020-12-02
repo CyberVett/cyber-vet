@@ -38,6 +38,7 @@ const PhysicalExaminationModal = (props: {
       title="Physical Examination Result"
       // @ts-ignore
       date={physicalExamination?.updatedAt}
+      canEdit={physicalExamination?.createdAt}
     >
       {props.loading ? (
         <Loader />
@@ -274,7 +275,7 @@ const PhysicalExaminationModal = (props: {
               />
             </div>
             <div className="physical__examination__form--buttons">
-              {props.result.nasalCavity ? (
+              {props.result.createdAt ? (
                 <Button
                   onClick={(e: any) => handleEditResult(e)}
                   type={ButtonTypes.primary}

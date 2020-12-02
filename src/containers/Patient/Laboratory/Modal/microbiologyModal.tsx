@@ -69,109 +69,137 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
       {modalLoading ? (
         <Loader />
       ) : (
-          <>
-            <div className={styles.formMenu}>
-              <h3>Mircobiology Form</h3>
-              <InputGroup horizontal>
-                <Label>Date Requested</Label>
-                <input disabled placeholder={
-                  // @ts-ignore
-                  formatDate(data?.createdAt) || new Date().toLocaleString()} />
-              </InputGroup>
+        <>
+          <div className={styles.formMenu}>
+            <h3>{isReview ? "Edit" : "Add"} Mircobiology Form</h3>
+            <InputGroup horizontal>
+              {isReview ? (
+                <>
+                  <Label>Date Requested</Label>
+                  <input
+                    disabled
+                    placeholder={
+                      // @ts-ignore
+                      formatDate(data?.createdAt) || new Date().toLocaleString()
+                    }
+                  />{" "}
+                </>
+              ) : null}
+            </InputGroup>
+            {data?.dateCompleted ? (
               <InputGroup horizontal>
                 <Label>Date Completed</Label>
-                <input disabled placeholder={
+                <input
+                  disabled
+                  placeholder={
+                    // @ts-ignore
+                    formatDate(data?.dateCompleted) || ""
+                  }
+                />
+              </InputGroup>
+            ) : null}
+          </div>
+          <div className={styles.formDetailsInput}>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Nature of Specimen</Label>
+              <input
+                type="text"
+                className={styles.width500}
+                value={formValues?.natureOfSpecimen}
+                onChange={handleInputChange}
+                name="natureOfSpecimen"
+              />
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Date of Collection</Label>
+              <input
+                className={styles.width500}
+                type="date"
+                value={
                   // @ts-ignore
-                  formatDate(data?.dateCompleted) || ''} />
-              </InputGroup>
-            </div>
-            <div className={styles.formDetailsInput}>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Nature of Specimen</Label>
-                <input
-                  type="text"
-                  className={styles.width500}
-                  value={formValues?.natureOfSpecimen}
-                  onChange={handleInputChange}
-                  name="natureOfSpecimen"
-                />
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Date of Collection</Label>
-                <input
-                  className={styles.width500}
-                  type="date"
-                  value={
-                    // @ts-ignore
-                    formatDateForCalendar(formValues?.dateOfCollection)}
-                  onChange={handleInputChange}
-                  name="dateOfCollection"
-                />
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Date of Submission</Label>
-                <input
-                  className={styles.width500}
-                  type="date"
-                  value={
-                    // @ts-ignore
-                    formatDateForCalendar(formValues?.dateOfSubmission)}
-                  onChange={handleInputChange}
-                  name="dateOfSubmission"
-                />
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Clinical Details</Label>
-                <textarea
-                  className={styles.width500}
-                  style={{ height: "10rem" }}
-                  name={"clinicalDetails"}
-                  onChange={handleInputChange}
-                >
-                  {formValues?.clinicalDetails}
-                </textarea>
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Tentative Diagnosis</Label>
-                <input
-                  className={styles.width500}
-                  type="text"
-                  value={formValues?.tentativeDiagnosis}
-                  onChange={handleInputChange}
-                  name="tentativeDiagnosis"
-                />
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Test(s) Required</Label>
-                <input
-                  className={styles.width500}
-                  type="text"
-                  value={formValues?.testsRequired}
-                  onChange={handleInputChange}
-                  name="testsRequired"
-                />{" "}
-              </InputGroup>
-              <InputGroup className={styles.spaceBetween} horizontal>
-                <Label>Result(s)</Label>
-                <textarea
-                  className={styles.width500}
-                  style={{ height: "10rem" }}
-                  name={"result"}
-                  onChange={handleInputChange}
-                >
-                  {formValues?.result}
-                </textarea>{" "}
-              </InputGroup>
-            </div>
-            <div className={styles.buttonContainer}>
-              {!isReview && <Button type={ButtonTypes.primary} onClick={() => onAdd(formValues, "create")}>Add</Button>}
-              <Button type={ButtonTypes.orange} onClick={() => onComplete(formValues, "complete")}>
-                Complete
+                  formatDateForCalendar(formValues?.dateOfCollection)
+                }
+                onChange={handleInputChange}
+                name="dateOfCollection"
+              />
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Date of Submission</Label>
+              <input
+                className={styles.width500}
+                type="date"
+                value={
+                  // @ts-ignore
+                  formatDateForCalendar(formValues?.dateOfSubmission)
+                }
+                onChange={handleInputChange}
+                name="dateOfSubmission"
+              />
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Clinical Details</Label>
+              <textarea
+                className={styles.width500}
+                style={{ height: "10rem" }}
+                name={"clinicalDetails"}
+                onChange={handleInputChange}
+              >
+                {formValues?.clinicalDetails}
+              </textarea>
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Tentative Diagnosis</Label>
+              <input
+                className={styles.width500}
+                type="text"
+                value={formValues?.tentativeDiagnosis}
+                onChange={handleInputChange}
+                name="tentativeDiagnosis"
+              />
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Test(s) Required</Label>
+              <input
+                className={styles.width500}
+                type="text"
+                value={formValues?.testsRequired}
+                onChange={handleInputChange}
+                name="testsRequired"
+              />{" "}
+            </InputGroup>
+            <InputGroup className={styles.spaceBetween} horizontal>
+              <Label>Result(s)</Label>
+              <textarea
+                className={styles.width500}
+                style={{ height: "10rem" }}
+                name={"result"}
+                onChange={handleInputChange}
+              >
+                {formValues?.result}
+              </textarea>{" "}
+            </InputGroup>
+          </div>
+          <div className={styles.buttonContainer}>
+            {!isReview && (
+              <Button
+                type={ButtonTypes.primary}
+                onClick={() => onAdd(formValues, "create")}
+              >
+                Add
+              </Button>
+            )}
+            <Button
+              type={ButtonTypes.orange}
+              onClick={() => onComplete(formValues, "complete")}
+            >
+              Complete
             </Button>
-              <Button type={ButtonTypes.grey} onClick={() => onCancel()}>Cancel</Button>
-            </div>
-          </>
-        )}
+            <Button type={ButtonTypes.grey} onClick={() => onCancel()}>
+              Cancel
+            </Button>
+          </div>
+        </>
+      )}
     </Modal>
   );
 };

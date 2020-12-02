@@ -34,7 +34,7 @@ const CheckinItem = (props: {
                   type={ButtonTypes.orange}
                   onClick={() => props.onDelete()}
                 >
-                  Delete Results
+                  Delete Result
                 </Button>
               ) : null}
             </>
