@@ -421,7 +421,7 @@ const LaboratoryTab = ({
         }}
         isReview={!!parasitologyData.createdAt}
       ></ParasitologyModal>
-      {(checkInData?.pathologyData || pathologyData.albumin || "") && (
+      {(checkInData?.pathology || pathologyData.albumin || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}

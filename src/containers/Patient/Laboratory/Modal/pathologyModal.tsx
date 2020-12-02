@@ -84,20 +84,27 @@ const AddPathologyModal: React.FC<IModalProps> = ({
   const [formValues, setFormValues] = useState<IPathologyData>({});
   const handleInputChange = (event: {
     persist: () => void;
-    target: { name: any; value: any };
+    target: { name: any; value: any; checked: boolean };
   }) => {
     event.persist();
     // @ts-ignore
-    if (Object.keys(formValues).includes(`${event.target.name}Required`)) {
-      // @ts-ignore
-      formValues[
-        `${event.target.name}Required`
-      ] = !!`${event.target.name}Required`;
+    // if (Object.keys(formValues).includes(`${event.target.name}Required`)) {
+    //   // @ts-ignore
+    //   formValues[
+    //     `${event.target.name}Required`
+    //   ] = !!`${event.target.name}Required`;
+    // }
+    if (event.target.type === "checkbox") {
+      setFormValues((formValues: any) => ({
+        ...formValues,
+        [event.target.name]: event.target.checked,
+      }));
+    } else {
+      setFormValues((formValues: any) => ({
+        ...formValues,
+        [event.target.name]: event.target.value,
+      }));
     }
-    setFormValues((formValues: any) => ({
-      ...formValues,
-      [event.target.name]: event.target.value,
-    }));
   };
 
   useEffect(() => {
@@ -337,6 +344,12 @@ const AddPathologyModal: React.FC<IModalProps> = ({
               <div>
                 <h3>SERUM CHEMISTRY</h3>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.totalProteinRequired}
+                    onChange={handleInputChange}
+                    name="totalProteinRequired"
+                  />
                   <Label>Total Protein (g/dl)</Label>
                   <input
                     className={styles.width250}
@@ -344,9 +357,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.totalProtein}
                     onChange={handleInputChange}
                     name="totalProtein"
+                    disabled={!formValues?.totalProteinRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.totalBilirubinRequired}
+                    onChange={handleInputChange}
+                    name="totalBilirubinRequired"
+                  />
                   <Label>Total bilirubin (&micro;mol/l)</Label>
                   <input
                     className={styles.width250}
@@ -354,9 +374,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.totalBilirubin}
                     onChange={handleInputChange}
                     name="totalBilirubin"
+                    disabled={!formValues?.totalBilirubinRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.conjugatedBilirubinRequired}
+                    onChange={handleInputChange}
+                    name="conjugatedBilirubinRequired"
+                  />
                   <Label>Conjugated bilirubin (μmol/l)</Label>
                   <input
                     className={styles.width250}
@@ -364,9 +391,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.conjugatedBilirubin}
                     onChange={handleInputChange}
                     name="conjugatedBilirubin"
+                    disabled={!formValues?.conjugatedBilirubinRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.sodiumRequired}
+                    onChange={handleInputChange}
+                    name="sodiumRequired"
+                  />
                   <Label>
                     Na<sup>+</sup> (μmol/l)
                   </Label>
@@ -376,9 +410,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.sodium}
                     onChange={handleInputChange}
                     name="sodium"
+                    disabled={!formValues?.sodiumRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.potassiumRequired}
+                    onChange={handleInputChange}
+                    name="potassiumRequired"
+                  />
                   <Label>
                     K<sup>+</sup> (μmol/l)
                   </Label>
@@ -388,9 +429,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.potassium}
                     onChange={handleInputChange}
                     name="potassium"
+                    disabled={!formValues?.potassiumRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.creatinineRequired}
+                    onChange={handleInputChange}
+                    name="creatinineRequired"
+                  />
                   <Label>Creatinine (μmol/l)</Label>
                   <input
                     className={styles.width250}
@@ -398,9 +446,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.creatinine}
                     onChange={handleInputChange}
                     name="creatinine"
+                    disabled={!formValues?.creatinineRequired}
                   />{" "}
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.BUNRequired}
+                    onChange={handleInputChange}
+                    name="BUNRequired"
+                  />
                   <Label>BUN (μmol/l)</Label>
                   <input
                     className={styles.width250}
@@ -408,9 +463,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.BUN}
                     onChange={handleInputChange}
                     name="BUN"
+                    disabled={!formValues?.BUNRequired}
                   />{" "}
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.albuminRequired}
+                    onChange={handleInputChange}
+                    name="albuminRequired"
+                  />
                   <Label>Albumin (g/dl)</Label>
                   <input
                     className={styles.width250}
@@ -418,9 +480,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.albumin}
                     onChange={handleInputChange}
                     name="albumin"
+                    disabled={!formValues?.albuminRequired}
                   />{" "}
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.glucoseRequired}
+                    onChange={handleInputChange}
+                    name="glucoseRequired"
+                  />
                   <Label>Glucose (μmol/l)</Label>
                   <input
                     className={styles.width250}
@@ -428,9 +497,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.glucose}
                     onChange={handleInputChange}
                     name="glucose"
+                    disabled={!formValues?.glucoseRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.SGOTASTRequired}
+                    onChange={handleInputChange}
+                    name="SGOTASTRequired"
+                  />
                   <Label>SGOT/AST (IU/L)</Label>
                   <input
                     className={styles.width250}
@@ -438,9 +514,16 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.SGOTAST}
                     onChange={handleInputChange}
                     name="SGOTAST"
+                    disabled={!formValues?.SGOTASTRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.SGPTALTRequired}
+                    onChange={handleInputChange}
+                    name="SGPTALTRequired"
+                  />
                   <Label>SGPT/ALT (IUL)</Label>
                   <input
                     className={styles.width250}
@@ -448,6 +531,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.SGPTALT}
                     onChange={handleInputChange}
                     name="SGPTALT"
+                    disabled={!formValues?.SGPTALTRequired}
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
@@ -471,6 +555,12 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                  <input
+                    type="checkbox"
+                    defaultChecked={formValues?.otherRequired}
+                    onChange={handleInputChange}
+                    name="otherRequired"
+                  />
                   <Label>Other Specified</Label>
                   <input
                     className={styles.width250}
@@ -478,6 +568,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                     value={formValues?.other}
                     onChange={handleInputChange}
                     name="other"
+                    disabled={!formValues?.otherRequired}
                   />
                 </InputGroup>
               </div>

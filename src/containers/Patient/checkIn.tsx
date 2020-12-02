@@ -547,10 +547,15 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         emailReminder: data.vaccination.emailReminder === "on",
         // @ts-ignore
-        smsReminder: data.vaccination.emailReminder === "on",
+        smsReminder: data.vaccination.smsReminder === "on",
       };
       // @ts-ignore
       data.vaccinationDate = new Date().toString();
+      // @ts-ignore
+      console.log(data.vaccination);
+      // data.vaccination.emailReminder = data.vaccination.emailReminder === "on";
+      // // @ts-ignore
+      // data.vaccination.smsReminder = data.vaccination.smsReminder === "on";
     } else if (field === "Note") {
       // // diagnostic-test
       method = !medicalReports.note ? "post" : "put";
@@ -983,11 +988,15 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 </li>
                                 <li>
                                   Email Reminder:{" "}
-                                  {medicalReports?.vaccination?.emailReminder}
+                                  {medicalReports?.vaccination?.emailReminder
+                                    ? "Yes"
+                                    : "No"}
                                 </li>
                                 <li>
                                   SMS Reminder:{" "}
-                                  {medicalReports?.vaccination?.smsReminder}
+                                  {medicalReports?.vaccination?.smsReminder
+                                    ? "Yes"
+                                    : "No"}
                                 </li>
                               </ul>
                             </CheckinItem>
