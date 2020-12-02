@@ -371,6 +371,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleMicrobiology(false);
         }}
+        isReview={!!microbiologyData.createdAt}
       />
       <RapidTestModal
         closeModal={() => setToggleRapidtest(false)}
@@ -386,6 +387,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleRapidtest(false);
         }}
+        isReview={!!rapidTestData.createdAt}
       />
       <AddPathologyModal
         closeModal={() => setTogglePathology(false)}
@@ -401,6 +403,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setTogglePathology(false);
         }}
+        isReview={!!pathologyData.createdAt}
       />
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
@@ -416,8 +419,9 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleParasitology(false);
         }}
+        isReview={!!parasitologyData.createdAt}
       ></ParasitologyModal>
-      {(checkInData?.pathologyData || pathologyData.albumin || "") && (
+      {(checkInData?.pathology || pathologyData.albumin || "") && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}

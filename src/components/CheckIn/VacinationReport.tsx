@@ -35,10 +35,17 @@ const VacinationReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: IData) => {
-      formValues.vaccination = {
-        ...formValues.vaccination,
-        [event.target.name]: event.target.value,
-      };
+      if (["smsReminder", "emailReminder"].includes(event.target.name)) {
+        formValues.vaccination = {
+          ...formValues.vaccination,
+          [event.target.name]: event.target.checked,
+        };
+      } else {
+        formValues.vaccination = {
+          ...formValues.vaccination,
+          [event.target.name]: event.target.value,
+        };
+      }
       return formValues;
     });
   };
@@ -93,21 +100,21 @@ const VacinationReport = (props: {
           <div className="checkboxes">
             <div className="physical__examination__form--input ">
               <label>Email Reminder</label>
-              <CheckboxInput
+              <input
+                type="checkbox"
                 name="emailReminder"
                 onChange={handleInputChange}
-                defaultValue={
-                  formValues.vaccination.emailReminder ? "on" : "off"
-                }
+                defaultChecked={formValues.vaccination.emailReminder}
               />
             </div>
 
             <div className="physical__examination__form--input ">
               <label>SMS</label>
-              <CheckboxInput
+              <input
+                type="checkbox"
                 name="smsReminder"
                 onChange={handleInputChange}
-                defaultValue={formValues.vaccination.smsReminder ? "on" : "off"}
+                defaultChecked={formValues.vaccination.smsReminder}
               />
             </div>
           </div>
