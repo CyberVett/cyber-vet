@@ -101,13 +101,19 @@ const Appointment: React.FC<IAppointment> = ({
       />
       {/* Create new modal */}
       <AppointmentModal
-        closeModal={() => setToggleModal(false)}
+        closeModal={() => {
+          setToggleModal(false);
+          window.location.reload();
+        }}
         patientNo={patientNo}
         visible={toggleModal}
       />
       {/* Review Modal */}
       <AppointmentModal
-        closeModal={() => setToggleReviewModal(false)}
+        closeModal={() => {
+          setToggleReviewModal(false);
+          window.location.reload();
+        }}
         isReview={true}
         modalData={rowData}
         patientNo={patientNo}

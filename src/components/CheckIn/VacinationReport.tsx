@@ -1,6 +1,7 @@
+import { Input, InputValidationTypes } from "components/Input/input";
+import { formatDateForCalendar } from "lib/utils";
 import React, { useState } from "react";
 import MedicalReportModalContentTemplate from "./MedicalReportModalContentTemplate";
-import { CheckboxInput } from "../Input/input";
 
 interface IData {
   vaccination: {
@@ -38,6 +39,7 @@ const VacinationReport = (props: {
       if (["smsReminder", "emailReminder"].includes(event.target.name)) {
         formValues.vaccination = {
           ...formValues.vaccination,
+          // @ts-ignore
           [event.target.name]: event.target.checked,
         };
       } else {
@@ -62,16 +64,20 @@ const VacinationReport = (props: {
         <div className="medical__report__form--input">
           <div className="physical__examination__form--input">
             <label>Vaccination Type</label>
-            <input
+            <Input
+              type="text"
               name={"type"}
               onChange={handleInputChange}
+              validation={InputValidationTypes.text}
               defaultValue={formValues.vaccination.type}
             />
           </div>
 
           <div className="physical__examination__form--input">
             <label>Vaccination Name</label>
-            <input
+            <Input
+              type="text"
+              validation={InputValidationTypes.text}
               name={"name"}
               onChange={handleInputChange}
               defaultValue={formValues.vaccination.name}
@@ -80,7 +86,9 @@ const VacinationReport = (props: {
 
           <div className="physical__examination__form--input">
             <label>Vaccination Dosage</label>
-            <input
+            <Input
+              type="text"
+              validation={InputValidationTypes.text}
               name={"dosage"}
               onChange={handleInputChange}
               defaultValue={formValues.vaccination.dosage}
@@ -89,8 +97,9 @@ const VacinationReport = (props: {
 
           <div className="physical__examination__form--input">
             <label>Date of next shot</label>
-            <input
+            <Input
               type="date"
+              min={formatDateForCalendar(new Date().toISOString())}
               name={"nextDate"}
               onChange={handleInputChange}
               defaultValue={formValues.vaccination.nextDate}
@@ -100,7 +109,7 @@ const VacinationReport = (props: {
           <div className="checkboxes">
             <div className="physical__examination__form--input ">
               <label>Email Reminder</label>
-              <input
+              <Input
                 type="checkbox"
                 name="emailReminder"
                 onChange={handleInputChange}
@@ -110,7 +119,7 @@ const VacinationReport = (props: {
 
             <div className="physical__examination__form--input ">
               <label>SMS</label>
-              <input
+              <Input
                 type="checkbox"
                 name="smsReminder"
                 onChange={handleInputChange}

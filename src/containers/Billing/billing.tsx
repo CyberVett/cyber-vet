@@ -96,7 +96,7 @@ const BillingList: React.FunctionComponent = () => {
           <BillingModal
             billingId={billingId}
             closeModal={() => setToggleReviewModal(false)}
-            isReview={toggleReviewModal}
+            isReview={true}
             modalData={rowData}
             visible={toggleReviewModal}
           />

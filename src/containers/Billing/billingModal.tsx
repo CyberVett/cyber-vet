@@ -56,9 +56,6 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     setBillingInput(modalData);
   }, [modalData]);
 
-  console.log(modalData);
-
-
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -69,8 +66,6 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
       "name": billingInput.name,
     })
       .then(response => {
-        console.log(response);
-
         setLoading(false);
         if (response.status === 201 && response.statusText === 'Created') {
           setMessage(response.data.message);
@@ -93,7 +88,8 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     setLoading(true);
 
     requestClient.put(`/billings/services/${billingId}`, {
-      "billingDepartmentId": billingInput.department,
+      // @ts-ignore
+      "billingDepartmentId": billingInput.department.id || billingInput.department,
       "charges": billingInput.charges,
       "currency": billingInput.currency,
       "name": billingInput.name,
@@ -136,7 +132,7 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     } else {
       submitForm(e);
     }
-  }
+  }  
 
   return (
     <Modal

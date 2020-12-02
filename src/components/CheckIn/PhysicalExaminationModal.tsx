@@ -3,6 +3,7 @@ import Button, { ButtonTypes } from "../Button/button";
 import CheckInModalContent from "./CheckInModalContent";
 import { ReactComponent as Loader } from "../../assets/icons/loader.svg";
 import { IphysicalExamination } from "./PhysicalCheckResult";
+import { Input, InputValidationTypes } from "components/Input/input";
 
 const PhysicalExaminationModal = (props: {
   onAddResult: Function;
@@ -28,8 +29,8 @@ const PhysicalExaminationModal = (props: {
     target: { name: any; value: any };
   }) => {
     event.persist();
-    setPhysicalExamination((input: any) => ({
-      ...input,
+    setPhysicalExamination((Input: any) => ({
+      ...Input,
       [event.target.name]: event.target.value,
     }));
   };
@@ -38,6 +39,7 @@ const PhysicalExaminationModal = (props: {
       title="Physical Examination Result"
       // @ts-ignore
       date={physicalExamination?.updatedAt}
+      // @ts-ignore
       canEdit={physicalExamination?.createdAt}
     >
       {props.loading ? (
@@ -47,9 +49,10 @@ const PhysicalExaminationModal = (props: {
           <form className="physical__examination__form">
             <div className="physical__examination__form--input">
               <label>Rectal Temperature (°C)</label>
-              <input
+              <Input
                 type="text"
                 name="rectalTemperature"
+                validation={InputValidationTypes.text}
                 value={physicalExamination.rectalTemperature}
                 defaultValue="38.5 °C"
                 onChange={handleInputChange}
@@ -58,18 +61,20 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Respiratory Rate (cycle/min)</label>
-              <input
+              <Input
                 type="text"
                 value={physicalExamination.respiratoryRate}
                 name="respiratoryRate"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
               />
             </div>
 
             <div className="physical__examination__form--input">
               <label>Pulse Rate (Beat/min)</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 value={physicalExamination.pulseRate}
                 onChange={handleInputChange}
                 name="pulseRate"
@@ -78,8 +83,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Ocular Mucous Membrane</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 name="ocularMucousMembrane"
                 value={physicalExamination.ocularMucousMembrane}
@@ -88,8 +94,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Oral Mucous Membrane</label>
-              <input
+              <Input
                 onChange={handleInputChange}
+                validation={InputValidationTypes.text}
                 type="text"
                 name="oralMucousMembrane"
                 value={physicalExamination.oralMucousMembrane}
@@ -98,8 +105,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Nasal Cavity</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 name="nasalCavity"
                 value={physicalExamination.nasalCavity}
@@ -108,8 +116,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Integument Fur</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 value={physicalExamination.integumentFur}
                 name="integumentFur"
@@ -118,8 +127,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Nature of lesion</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 defaultValue="None"
                 value={physicalExamination.natureOfLesion}
@@ -129,8 +139,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Location of lesion</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 defaultValue="None"
                 value={physicalExamination.locationOfLesion}
@@ -140,8 +151,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Ectoparasites</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 defaultValue="Tick, Lice"
                 value={physicalExamination.ectoparasite}
@@ -151,8 +163,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>General Disposation</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 defaultValue="Active"
                 value={physicalExamination.generalDisposation}
@@ -162,8 +175,9 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Conformation</label>
-              <input
+              <Input
                 type="text"
+                validation={InputValidationTypes.text}
                 onChange={handleInputChange}
                 value={physicalExamination.conformation}
                 name="conformation"
@@ -189,9 +203,10 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Nature of Diarrhea</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
+                validation={InputValidationTypes.text}
                 value={physicalExamination.natureOfDiarrhea}
                 name="natureOfDiarrhea"
               />
@@ -199,30 +214,34 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Consistency of feaces</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
                 defaultValue="Normal"
+                validation={InputValidationTypes.text}
                 value={physicalExamination.consistencyOfFaeces}
                 name="consistencyOfFaeces"
+                
               />
             </div>
             <div className="physical__examination__form--input">
               <label>Nature of Breathing</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
                 name="natureOfBreathing"
+                validation={InputValidationTypes.text}
                 value={physicalExamination.natureOfBreathing}
               />
             </div>
             <div className="physical__examination__form--input">
               <label>Lungs Sound</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
                 defaultValue="Normal"
                 name="lungsSound"
+                validation={InputValidationTypes.text}
                 value={physicalExamination.lungsSound}
               />
             </div>
@@ -245,9 +264,10 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Lameness Location</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
+                validation={InputValidationTypes.text}
                 defaultValue="Right fore limb"
                 name="lamenessLocation"
                 value={physicalExamination.lamenessLocation}
@@ -256,9 +276,10 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Rectal Examination</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
+                validation={InputValidationTypes.text}
                 defaultValue="Normal"
                 name="rectalExamination"
                 value={physicalExamination.rectalExamination}
@@ -267,15 +288,18 @@ const PhysicalExaminationModal = (props: {
 
             <div className="physical__examination__form--input">
               <label>Prepuce/Vulva Examination</label>
-              <input
+              <Input
                 type="text"
                 onChange={handleInputChange}
+                validation={InputValidationTypes.text}
                 name="prepuceVulvaExamination"
                 value={physicalExamination.prepuceVulvaExamination}
               />
             </div>
             <div className="physical__examination__form--buttons">
-              {props.result.createdAt ? (
+              {
+                // @ts-ignore
+              props.result.createdAt ? (
                 <Button
                   onClick={(e: any) => handleEditResult(e)}
                   type={ButtonTypes.primary}

@@ -135,7 +135,10 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
       </CheckinItem>
       <RadiologyModal
         checkInID={checkInData.id}
-        closeModal={() => setToggleModal(false)}
+        closeModal={() => {
+          setToggleModal(false);
+          window.location.reload();
+        }}
         patientNo={checkInData.patientId}
         visible={toggleModal}
       />
@@ -143,7 +146,10 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
       <RadiologyModal
         checkInData={radiology}
         checkInID={checkInData.id}
-        closeModal={() => setToggleEditModal(false)}
+        closeModal={() => {
+          setToggleEditModal(false);
+          window.location.reload();
+        }}
         patientNo={checkInData.patientId}
         visible={toggleEditModal}
       />

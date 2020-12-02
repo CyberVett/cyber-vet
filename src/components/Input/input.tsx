@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useState, useEffect } from 'react';
 import omit from 'lodash.omit';
 import * as yup from 'yup'; // for everything
@@ -17,7 +18,8 @@ export enum InputValidationTypes {
   text = 'text', // support only alphabet
   tel = 'tel', // support only telephone
   freeText = 'freeText', // support none empty string
-  phoneOrEmail = 'phoneOrEmail' //custom for text and number field
+  phoneOrEmail = 'phoneOrEmail', //custom for text and number field
+  number = 'number'
 }
 
 export interface IOptions {
@@ -143,6 +145,17 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps>(({ handleIn
       case InputValidationTypes.phoneOrEmail: { // regex for phone or email address
         const schema = yup.string().matches(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})|^([+]?[234][0-9]{8,13}|0?[789][01]\d{8}|[0-9]{8})$/gm,
           { excludeEmptyString: true, message: 'only phone number or emails address allowed.' });
+        const errMsg = await schema.validate(event.target.value)
+          .then(() => '')
+          .catch((err: yup.ValidationError) => {
+            return err.message;
+          });
+        setValidationError(errMsg);
+        break;
+      }
+
+      case InputValidationTypes.number: { // prevent spaces
+        const schema = yup.number().positive('number must be a positive integer' );
         const errMsg = await schema.validate(event.target.value)
           .then(() => '')
           .catch((err: yup.ValidationError) => {

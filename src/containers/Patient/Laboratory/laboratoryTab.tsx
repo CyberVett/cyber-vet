@@ -132,7 +132,6 @@ const LaboratoryTab = ({
   );
 
   useEffect(() => {
-    console.log("parasitology changed");
     setParasitologyData(checkInData?.parasitology || defaultParasitologyFields);
     setPathologyData(checkInData?.pathology || defaultPathologyFields);
     setMicrobiologyData(checkInData?.microbiology || defaultMicrobiologyFields);
@@ -282,8 +281,6 @@ const LaboratoryTab = ({
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        console.log(response.status, response.statusText);
-
         if (
           [201, 200].includes(response.status) &&
           ["Created", "OK"].includes(response.statusText)
@@ -298,8 +295,6 @@ const LaboratoryTab = ({
         setModalError(error.message);
       });
   };
-
-  console.log("checkin", checkInData);
 
   return (
     <section>

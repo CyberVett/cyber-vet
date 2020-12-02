@@ -77,7 +77,7 @@ const CompletedXray: React.FunctionComponent = () => {
         checkInData={checkInData}
         // @ts-ignore
         checkInID={checkInData.id}
-        closeModal={() => setToggleEditModal(false)}
+        closeModal={() => {setToggleEditModal(false); window.location.reload();}}
         disabled={true}
         // @ts-ignore
         patientNo={checkInData.patientId}

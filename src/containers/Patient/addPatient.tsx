@@ -10,7 +10,7 @@ import Button, { ButtonTypes } from 'components/Button/button';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
-import { dataURLtoFile, getAge } from 'lib/utils';
+import { dataURLtoFile, formatDateForCalendar, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
@@ -280,6 +280,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   autoComplete="true"
                   onChange={handleInputChange}
                   name="dob"
+                  max={formatDateForCalendar(new Date().toISOString())}
                   required
                   type="date"
                   value={patientInput.dob}
@@ -373,7 +374,7 @@ const AddPatient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   name="flockHerdSize"
                   required
                   type="number"
-                  validation={InputValidationTypes.alphanumeric}
+                  validation={InputValidationTypes.number}
                   value={patientInput.flockHerdSize}
                 />
               </InputGroup>

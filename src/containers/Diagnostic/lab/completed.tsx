@@ -250,7 +250,10 @@ const CompletedLab: React.FunctionComponent = () => {
         </Card>
       </div>
       <MicrobiologyModal
-        closeModal={() => setToggleMicrobiology(false)}
+        closeModal={() => {
+          setToggleMicrobiology(false);
+          window.location.reload();
+        }}
         visible={toggleMicrobiology}
         // @ts-ignore
         data={microbiologyData}
@@ -267,7 +270,10 @@ const CompletedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <RapidTestModal
-        closeModal={() => setToggleRapidtest(false)}
+        closeModal={() => {
+          setToggleRapidtest(false);
+          window.location.reload();
+        }}
         visible={toggleRapidtest}
         // @ts-ignore
         data={rapidTestData}
@@ -284,7 +290,10 @@ const CompletedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <AddPathologyModal
-        closeModal={() => setTogglePathology(false)}
+        closeModal={() => {
+          setTogglePathology(false);
+          window.location.reload();
+        }}
         visible={togglePathology}
         // @ts-ignore
         data={pathologyData}
@@ -301,7 +310,10 @@ const CompletedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <ParasitologyModal
-        closeModal={() => setToggleParasitology(false)}
+        closeModal={() => {
+          setToggleParasitology(false);
+          window.location.reload();
+        }}
         visible={toggleParasitology}
         // @ts-ignore
         data={parasitologyData}

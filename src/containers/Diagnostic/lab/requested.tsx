@@ -56,11 +56,10 @@ const RequestedLab: React.FunctionComponent = () => {
   }, []);
 
   const showModal = (row: any) => {
-    console.log(row);
-    if(row.type === 'MICROBIOLOGY'){
+    if (row.type === 'MICROBIOLOGY') {
       setMicrobiologyData(row);
       setToggleMicrobiology(true);
-    } else if(row.type === 'RTK') {
+    } else if (row.type === 'RTK') {
       setRapidTestData(row);
       setToggleRapidtest(true);
     } else if (row.type === 'PATHOLOGY') {
@@ -77,10 +76,10 @@ const RequestedLab: React.FunctionComponent = () => {
   const savePathology = (data: IPathologyData, method = "create") => {
     setModalLoading(true);
     let _data = {
-       // @ts-ignore
-       checkinId: data.checkinId,
-       // @ts-ignore
-       patientId: data.patientId,
+      // @ts-ignore
+      checkinId: data.checkinId,
+      // @ts-ignore
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -95,9 +94,8 @@ const RequestedLab: React.FunctionComponent = () => {
       // @ts-ignore
       delete _data.nameOfTechnologist;
     }
-    const url = `/laboratory/pathology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    const url = `/laboratory/pathology/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     requestClient[requestMethod](url, _data)
       .then((response) => {
@@ -118,8 +116,8 @@ const RequestedLab: React.FunctionComponent = () => {
     let _data = {
       // @ts-ignore
       checkinId: data.checkinId,
-     // @ts-ignore
-     patientId: data.patientId,
+      // @ts-ignore
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -131,9 +129,8 @@ const RequestedLab: React.FunctionComponent = () => {
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/parasitology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    const url = `/laboratory/parasitology/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     requestClient[requestMethod](url, _data)
       .then((response) => {
@@ -149,7 +146,7 @@ const RequestedLab: React.FunctionComponent = () => {
   };
 
   const saveMicrobiology = (data: IMicrobiologyData, method = "create") => {
-    setModalLoading(true);    
+    setModalLoading(true);
     let _data = {
       // @ts-ignore
       checkinId: data.checkinId,
@@ -167,9 +164,8 @@ const RequestedLab: React.FunctionComponent = () => {
       _data = { ..._data, ...data };
     }
     console.log("hhh", _data);
-    const url = `/laboratory/microbiology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    const url = `/laboratory/microbiology/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     requestClient[requestMethod](url, _data)
       .then((response) => {
@@ -190,8 +186,8 @@ const RequestedLab: React.FunctionComponent = () => {
     let _data = {
       // @ts-ignore
       checkinId: data.checkinId,
-     // @ts-ignore
-     patientId: data.patientId,
+      // @ts-ignore
+      patientId: data.patientId,
     };
     if (method !== "create") {
       // @ts-ignore
@@ -203,9 +199,8 @@ const RequestedLab: React.FunctionComponent = () => {
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/rapid-test-kit/${
-      method === "create" ? "add" : "complete"
-    }`;
+    const url = `/laboratory/rapid-test-kit/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     requestClient[requestMethod](url, _data)
       .then((response) => {
@@ -254,7 +249,7 @@ const RequestedLab: React.FunctionComponent = () => {
         </Card>
       </div>
       <MicrobiologyModal
-        closeModal={() => setToggleMicrobiology(false)}
+        closeModal={() => { setToggleMicrobiology(false); window.location.reload(); }}
         visible={toggleMicrobiology}
         // @ts-ignore
         data={microbiologyData}
@@ -271,7 +266,7 @@ const RequestedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <RapidTestModal
-        closeModal={() => setToggleRapidtest(false)}
+        closeModal={() => { setToggleRapidtest(false); window.location.reload(); }}
         visible={toggleRapidtest}
         // @ts-ignore
         data={rapidTestData}
@@ -288,7 +283,7 @@ const RequestedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <AddPathologyModal
-        closeModal={() => setTogglePathology(false)}
+        closeModal={() => { setTogglePathology(false); window.location.reload(); }}
         visible={togglePathology}
         // @ts-ignore
         data={pathologyData}
@@ -305,7 +300,7 @@ const RequestedLab: React.FunctionComponent = () => {
         isReview={true}
       />
       <ParasitologyModal
-        closeModal={() => setToggleParasitology(false)}
+        closeModal={() => { setToggleParasitology(false); window.location.reload(); }}
         visible={toggleParasitology}
         // @ts-ignore
         data={parasitologyData}

@@ -9,7 +9,7 @@ import Camera from 'react-html5-camera-photo';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
-import { dataURLtoFile, getAge } from 'lib/utils';
+import { dataURLtoFile, formatDateForCalendar, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import Router from 'next/router';
@@ -276,8 +276,9 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 <Label>Date of Birth</Label>
                 <Input
                   autoComplete="true"
-                  onChange={handleInputChange}
+                  max={formatDateForCalendar(new Date().toISOString())}
                   name="dob"
+                  onChange={handleInputChange}
                   required
                   type="date"
                   value={patientInput.dob}
@@ -373,7 +374,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                   name="flockHerdSize"
                   required
                   type="number"
-                  validation={InputValidationTypes.alphanumeric}
+                  validation={InputValidationTypes.number}
                   value={patientInput.flockHerdSize}
                 />
               </InputGroup>

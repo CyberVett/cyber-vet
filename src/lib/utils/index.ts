@@ -39,7 +39,7 @@ export const formatDate = (datetime: Date | number): string => {
   return datetime ? format(new Date(datetime), "MMM d, yyyy hh:mma") : "";
 }
 
-export const formatDateForCalendar = (datetime: Date | number): string =>
+export const formatDateForCalendar = (datetime: Date | number | string): string =>
   datetime ? format(new Date(datetime), "yyyy-MM-dd") : "";
 
 export const convertURIToImageData = (URI: any) => {

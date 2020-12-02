@@ -43,11 +43,16 @@ const PatientDetails = (patientData: any) => {
       </div>
 
       <div className="patient__details--img">
-        <img
-          src={patientData?.patientData?.imageUrl || require('../../assets/images/figure.png') }
-          alt={`${patientData?.patientData?.name}'s Photo`}
-        />
+        {
+          patientData?.patientData?.imageUrl ? <img
+            alt={`${patientData?.patientData?.name}'s Photo`}
+            src={patientData?.patientData?.imageUrl}
+          /> : <img
+              alt={`${patientData?.patientData?.name}'s Photo`}
+              src={require('../../assets/images/paw.png')}
+            />
 
+        }
         <div>
           Status:{" "}
           <span className="status">{patientData?.patientData?.status}</span>

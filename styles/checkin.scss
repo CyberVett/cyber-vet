@@ -231,7 +231,9 @@
     &--input {
       display: grid;
       row-gap: 1rem;
+      margin-bottom: 24px;
       input {
+        border-radius: 0;
         padding: 1rem;
       }
     }

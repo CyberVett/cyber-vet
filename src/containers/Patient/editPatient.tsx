@@ -8,10 +8,11 @@ import Button from 'components/Button/button';
 
 import styles from './patient.module.scss';
 import requestClient from 'lib/requestClient';
-import { formatDateForCalendar, getAge } from 'lib/utils';
+import { dataURLtoFile, formatDateForCalendar, getAge } from 'lib/utils';
 import Modal from 'components/Modal/modal';
 import ProgressBar from 'components/ProgressBar/progressBar';
 import  Router  from 'next/router';
+import Camera from 'react-html5-camera-photo';
 
 interface IEditPatient {
   clientId: string;
@@ -67,6 +68,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [error, setError] = useState('');
   const fileInput = useRef();
@@ -112,28 +114,6 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
   //     })
   // }, [])
 
-  const handleFileChange = (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-    let formData = new FormData();
-   //  @ts-ignore
-    formData.append('image', fileInput?.current?.files[0]);
-    requestClient.post('images', formData, {
-      onUploadProgress: (ProgressEvent) => {
-        const { loaded, total } = ProgressEvent;
-        setPercentage(Math.floor((loaded * 100) / total));
-      }
-    })
-      .then(res => {
-        setLoading(false);
-        patientInput.imageUrl = res.data.imageUrl;        
-      })
-      .catch(err => {
-        setLoading(false);
-        console.log(err);
-      });
-  };
-
   const submitPatientForm = (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -178,7 +158,48 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
   useEffect(() => {
     let age = getAge(patientInput.dob);
     setAge(age);
-  }, [patientInput.dob])
+  }, [patientInput.dob]);
+
+  const sendToCloudinary = (formData: FormData) => {
+    requestClient.post('images', formData, {
+      onUploadProgress: (ProgressEvent) => {
+        const { loaded, total } = ProgressEvent;
+        setPercentage(Math.floor((loaded * 100) / total));
+      }
+    })
+      .then(res => {
+        setLoading(false);
+        patientInput.imageUrl = res.data.imageUrl;
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err);
+      });
+  }
+
+  const handleFileChange = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', fileInput?.current?.files[0]);
+    sendToCloudinary(formData);
+  };
+
+
+  const handleTakePhoto = (dataUri: string) => {
+    const randomNumber = Math.floor(Math.random() * Math.floor(1000000));
+    const file = dataURLtoFile(dataUri, `patientImage${randomNumber}.png`)
+    setShowCameraModal(false);
+    let formData = new FormData();
+    //  @ts-ignore
+    formData.append('image', file);
+    sendToCloudinary(formData);
+  }
+
+  const useCamera = () => {
+    setShowCameraModal(true);
+  }
 
   return (
     <div>
@@ -287,8 +308,9 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                 <Label>Date of Birth</Label>
                 <Input
                   autoComplete="true"
-                  onChange={handleInputChange}
+                  max={formatDateForCalendar(new Date().toISOString())}
                   name="dob"
+                  onChange={handleInputChange}
                   type="date"
                   // @ts-ignore
                   value={formatDateForCalendar(patientInput.dob)}
@@ -339,6 +361,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                   //  @ts-ignore
                   fileInput?.current?.click();
                 }}>Browse</Button>
+              <Button htmlType="button" onClick={useCamera}>use camera</Button>
               </div>
               {
                 //  @ts-ignore
@@ -383,7 +406,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                   name="flockHerdSize"
                   required
                   type="number"
-                  validation={InputValidationTypes.alphanumeric}
+                  validation={InputValidationTypes.number}
                   value={patientInput.flockHerdSize}
                 />
               </InputGroup>
@@ -526,6 +549,14 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
             Router.push('/app/patient')
            }}
         />
+        <Modal
+          closeModal={() => setShowCameraModal(false)}
+          visible={showCameraModal}
+        >
+          <Camera
+            onTakePhoto={(dataUri) => { handleTakePhoto(dataUri); }}
+          />
+        </Modal>
       </Card>
     </div>
   );

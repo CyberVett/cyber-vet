@@ -98,7 +98,10 @@ const AppointmentList: React.FunctionComponent = () => {
                 )} /> : <h2>No appointments Found</h2>
           }
           <AppointmentModal
-            closeModal={() => setToggleReviewModal(false)}
+            closeModal={() => {
+              setToggleReviewModal(false);
+              window.location.reload();
+            }}
             isReview={true}
             modalData={rowData}
             patientNo={patientNo}

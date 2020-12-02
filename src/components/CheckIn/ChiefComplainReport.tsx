@@ -26,7 +26,7 @@ const ChiefComplainReport = (props: {
       ...formValues,
       [event.target.name]: event.target.value,
     }));
-  };
+  };  
 
   return (
     <MedicalReportModalContentTemplate

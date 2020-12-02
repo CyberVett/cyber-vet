@@ -77,7 +77,6 @@ const AddPathologyModal: React.FC<IModalProps> = ({
   onAdd,
   onCancel,
   onComplete,
-  canEdit,
   isReview,
 }) => {
   // @ts-ignore
@@ -186,6 +185,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 className={styles.width500}
                 style={{ height: "10rem" }}
                 name={"testsRequired"}
+                // @ts-ignore
                 onChange={handleInputChange}
               >
                 {formValues?.testsRequired}

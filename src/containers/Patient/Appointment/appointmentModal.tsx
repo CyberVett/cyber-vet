@@ -141,6 +141,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
                 className={styles.width500}
                 autoComplete="true"
                 name="appointmentDate"
+                min={formatDateForCalendar(new Date().toISOString())}
                 onChange={handleInputChange}
                 required
                 type="date"
