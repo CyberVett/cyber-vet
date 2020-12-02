@@ -19,10 +19,19 @@ const MedicalReportModalContentTemplate = (props: {
           </h3>
         </span>
         <span className="template__head--date">
-          <span>Date Recorded</span>
-          <input defaultValue={
-            // @ts-ignore
-            formatDate(props?.date)} disabled type="text" />
+          {props.canEdit ? (
+            <>
+              <span>Date Recorded</span>
+              <input
+                defaultValue={
+                  // @ts-ignore
+                  formatDate(props?.date)
+                }
+                disabled
+                type="text"
+              />{" "}
+            </>
+          ) : null}
         </span>
       </div>
 
@@ -30,7 +39,7 @@ const MedicalReportModalContentTemplate = (props: {
 
       <div className="medical__report__template--footer">
         <Button onClick={(e) => props.onAdd(e)} type={ButtonTypes.primary}>
-          Add
+          {props.canEdit ? "Edit" : "Add"}
         </Button>
         <Button onClick={() => props.onCancel()}>Cancel</Button>
       </div>
