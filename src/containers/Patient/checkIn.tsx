@@ -471,13 +471,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // @ts-ignore
       checkinId: checkInData?.id,
     };
-    if (field === "Chief Complain" && !medicalReports.chiefComplain) {
+    if (field === "Chief Complain") {
       // Adding new chief complain
       // @ts-ignore
       body.chiefComplain = data.chiefComplain;
       // @ts-ignore
       data.chiefComplainDate = new Date().toString();
-      method = "post";
+      method = !medicalReports.chiefComplain ? "post" : "put";
     } else if (field === "Clinical Signs") {
       method = !medicalReports.clinicalSigns ? "post" : "put";
       endpoint = "clinical-sign";
