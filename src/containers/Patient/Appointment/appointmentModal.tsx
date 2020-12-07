@@ -35,6 +35,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [messages, setMessage] = useState('');
+  const [otherReason, setOtherReason] = useState('');
 
   const handleInputChange = (event: { persist: () => void; target: { name: any; value: any; type: any; checked?: boolean; } }) => {
     event.persist();
@@ -53,13 +54,14 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log(appointment);
     requestClient.post(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay || false,
       // @ts-ignore
       "appointmentDate": appointment.appointmentDate,
       "emailReminder": appointment.emailReminder,
       "notes": appointment.notes,
-      "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
+      "reason": appointment.reason  === "Others" ? otherReason : appointment.reason,
       "smsReminder": appointment.smsReminder || false,
       "status": appointment.status || false,
     })
@@ -86,12 +88,12 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     setLoading(true);    
     
     requestClient.put(`patients/${patientNo}/appointment/${appointment.id}`, {
-      "allDay": appointment.allDay,
+      "allDay": appointment.allDay || false,
       // @ts-ignore
       "appointmentDate": appointment.appointmentDate,
       "emailReminder": appointment.emailReminder || false,
       "notes": appointment.notes,
-      "reason": appointment.reason  === "Others" ? appointment.otherReason : appointment.reason,
+      "reason": appointment.reason === "Others" ? otherReason : appointment.reason,
       "smsReminder": appointment.smsReminder || false,
       "status": appointment.status,
     })
@@ -120,6 +122,9 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
       submitForm(e);
     }
   }
+
+  console.log(otherReason);
+  
 
   return (
     <Modal
@@ -165,7 +170,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
             <Input
             className={styles.width500}
               disabled
-              name="reason"
+              name="nameOfTechnologist"
               onChange={handleInputChange}
               required
               type="text"
@@ -198,12 +203,12 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
             <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Enter Other Reasons</Label>
               <Input
-              className={styles.width500}
-                handleInputChange={handleInputChange}
-                name="otherSpecie"
+                className={styles.width500}
+                onChange={(e) => setOtherReason(e.target.value)}
+                name="otherReason"
                 required
                 type="text"
-                value={appointment.otherReason}
+                value={otherReason}
               />
             </InputGroup>}
           <InputGroup className={styles.spaceBetween} horizontal>

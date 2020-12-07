@@ -133,7 +133,7 @@ const Dashboard: React.FunctionComponent = () => {
           <Card>
             <CardHeader>Appointment</CardHeader>
             {loading && <Loader />}
-            {patientData.length > 0 && !loading ? (
+            {appointmentData.length > 0 && !loading ? (
               <>
                 <Table
                   data={appointmentData}
@@ -164,18 +164,24 @@ const Dashboard: React.FunctionComponent = () => {
           <Card className={styles.contactCard}>
             <div className={styles.contactCardPhoto}>
               <div>
-                <img
-                  alt="admin photo"
-                  src={require("../../assets/images/figure.png")}
-                />
+                {
+                  (staff?.imageUrl === null || staff?.imageUrl === "") ?
+                    <img
+                      alt="admin photo"
+                      src={require("../../assets/images/figure.png")}
+                    /> : <img
+                      alt="admin photo"
+                      src={staff?.imageUrl}
+                    />
+                }
               </div>
               <h3>
                 {staff?.title} {staff?.firstName} {staff?.lastName}
               </h3>
               <p>{role}</p>
             </div>
-            <h4>0</h4>
-            <p>Patient(s)</p>
+            {/* <h4>0</h4>
+            <p>Patient(s)</p> */}
           </Card>
         </div>
         {/* <div>

@@ -28,6 +28,7 @@ import { PatientSection } from "./patientSection";
 import { VaccinationSection } from "./VaccinationSection";
 import { ReactComponent as CalculatorIcon } from "../../assets/icons/calculator.svg";
 import { CalculatorModal } from "./calculatorModal";
+import { formatDate } from "lib/utils";
 
 const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
   // TODO: refactor and set approproaite data type
@@ -389,12 +390,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       ectoparasite: data.ectoparasite,
       generalDisposition: data.generalDisposation,
       conformation: data.conformation,
-      anyDiarrhea: data.anyDiarrhea,
+      anyDiarrhea: data.anyDiarrhea === "true" ? true : false,
       natureOfDiarrhea: data.natureOfDiarrhea,
       consistencyOfFaeces: data.consistencyOfFaeces,
       natureOfBreathing: data.natureOfBreathing,
       lungsSound: data.lungsSound,
-      anyLameness: data.anyLameness,
+      anyLameness: data.anyLameness === "true" ? true : false,
       lamenessLocation: data.lamenessLocation,
       rectalExamination: data.rectalExamination,
       prepuceVulvaExamination: data.prepuceVulvaExamination,
@@ -815,7 +816,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         )}
 
                         {physicalExaminationResult &&
-                          physicalExaminationResult.respiratoryRate && (
+                          physicalExaminationResult.createdAt && (
                             <PhysicalCheckResult
                               checkedIn={checkedIn}
                               onAddNew={() => setShowModal(true)}
@@ -940,7 +941,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                             </CheckinItem>
                           )
                         }
-
                         {
                           // @ts-ignore
                           (checkInData?.vaccination ||
@@ -965,14 +965,20 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               title="Vaccination"
                             >
                               <ul>
+                              <li>
+                                  Date Administered:{" "}
+                                  {
+                                    // @ts-ignore
+                                  formatDate(medicalReports?.vaccinationDate)}
+                                </li>
                                 <li>
-                                  Name:{" "}
+                                  Vaccine Name:{" "}
                                   {medicalReports?.vaccination?.name ||
                                     // @ts-ignore
                                     medicalReports?.vaccination?.nameOfVaccine}
                                 </li>
                                 <li>
-                                  Type:{" "}
+                                  Vaccination Type:{" "}
                                   {medicalReports?.vaccination?.type ||
                                     // @ts-ignore
                                     medicalReports?.vaccination
@@ -983,10 +989,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   Dosage: {medicalReports?.vaccination?.dosage}
                                 </li>
                                 <li>
-                                  Date:{" "}
-                                  {medicalReports?.vaccination?.nextDate ||
+                                  Date of Next Shot:{" "}
+                                  {formatDate(medicalReports?.vaccination?.nextDate) ||
                                     // @ts-ignore
-                                    medicalReports?.vaccination?.dateOfNextShot}
+                                    formatDate(medicalReports?.vaccination?.dateOfNextShot)}
                                 </li>
                                 <li>
                                   Email Reminder:{" "}

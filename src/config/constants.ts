@@ -273,7 +273,7 @@ export const AppointmentHeaders = [
   },
   {
     id: 2,
-    label: 'Patient\'s Name',
+    label: 'Patient\'s No',
   },
   {
     id: 3,

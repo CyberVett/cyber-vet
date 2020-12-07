@@ -130,11 +130,11 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
       "ageWhenAcquired": patientInput.ageWhenAcquired,
       "source": patientInput.source,
       "flockHerdSize": patientInput.flockHerdSize,
-      "purposeOfKepping": patientInput.purposeOfKepping === '5' ? patientInput.otherPurposeOfKepping : patientInput.purposeOfKepping,
+      "purposeOfKepping": patientInput.purposeOfKepping === 'Others' ? patientInput.otherPurposeOfKepping : patientInput.purposeOfKepping,
       "typeOfFood": patientInput.typeOfFood,
       "waterSource": patientInput.waterSource,
       "managementSystem": patientInput.managementSystem,
-      "vaccination": patientInput.vaccination === '4' ? patientInput.otherVaccination : patientInput.vaccination,
+      "vaccination": patientInput.vaccination === 'Others' ? patientInput.otherVaccination : patientInput.vaccination,
       "vaccineUsed": patientInput.vaccineUsed,
       "treatmentWarnings": patientInput.treatmentWarnings,
       "imageUrl": patientInput.imageUrl,
@@ -399,7 +399,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
                 />
               </InputGroup>
               <InputGroup horizontal>
-                <Label>Flock/Heard Size</Label>
+                <Label>Flock/Herd Size</Label>
                 <Input
                   autoComplete="true"
                   handleInputChange={handleInputChange}

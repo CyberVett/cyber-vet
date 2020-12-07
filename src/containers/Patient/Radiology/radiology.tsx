@@ -57,7 +57,7 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
         title="Radiology Test"
       >
         {
-          radiology === null ? <h4>No Radiology  Record Found</h4> :
+          radiology === null ? <h4>Add New Radiology Record</h4> :
             <div className={styles.formDetailsGrid}>
               <div>
                 <table>
@@ -98,8 +98,8 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
               <div>
                 <table>
                   <tr>
-                    <td>Provisional Diagnostic</td>
-                    <td>{radiology?.examinationRequired}</td>
+                    <td>Provisional Diagnosis</td>
+                    <td>{radiology?.provisionalDiagnosis}</td>
                   </tr>
                   <tr>
                     <td>Reaction</td>

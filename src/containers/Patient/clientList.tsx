@@ -34,7 +34,7 @@ const ClientList: React.FunctionComponent = () => {
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>Client List</h2>
+        <h2>{`Client List(${data.length})`}</h2>
         <div className={dashboardStyles.searchBar}>
         <SearchIcon />
           <Input 
@@ -53,7 +53,7 @@ const ClientList: React.FunctionComponent = () => {
               <tr key={row.id}>
                 <td>{row.id}</td>
                 <td>{row.title}. {row.firstName} {row.lastName}</td>
-                <td>{row.address}</td>
+                <td className={styles.address}>{row.address}</td>
                 <td>{row.phoneNumber}</td>
                 <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
               </tr>

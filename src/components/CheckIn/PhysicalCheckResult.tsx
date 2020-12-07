@@ -24,6 +24,7 @@ export interface IphysicalExamination {
   rectalExamination: string;
   prepuceVulvaExamination: string;
   updatedAt?: string;
+  createdAt?: string;
 }
 
 const PhysicalCheckResult = (props: {
@@ -52,7 +53,7 @@ const PhysicalCheckResult = (props: {
       title="Physical Examination"
     >
       <div className="patient__checkin__exam__result">
-        {physicalExaminationResult.respiratoryRate && (
+        {physicalExaminationResult.createdAt && (
           <ul className="exam__result__list">
             {[
               {
@@ -113,7 +114,7 @@ const PhysicalCheckResult = (props: {
               },
               {
                 label: "Any Diarrhea",
-                value: physicalExaminationResult.anyDiarrhea,
+                value: physicalExaminationResult.anyDiarrhea ? 'yes' : 'no',
               },
               {
                 label: "Nature of Diarrhea",
@@ -125,7 +126,7 @@ const PhysicalCheckResult = (props: {
               },
               {
                 label: "Any Lameness",
-                value: physicalExaminationResult.anyLameness,
+                value: physicalExaminationResult.anyLameness ? 'yes' : 'no',
               },
               {
                 label: "Lameness Location",

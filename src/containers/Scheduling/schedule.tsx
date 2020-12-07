@@ -95,7 +95,7 @@ const AppointmentList: React.FunctionComponent = () => {
                     <td><Button type={ButtonTypes.grey} onClick={() => handleReview(row)}>Review</Button></td>
                     <td><Button type={ButtonTypes.orange} onClick={() => deleteAppointment(row.id, row.patientId)}>Delete</Button></td>
                   </tr>
-                )} /> : <h2>No appointments Found</h2>
+                )} /> : <h2 style={{textAlign: 'center'}}>No appointments Found</h2>
           }
           <AppointmentModal
             closeModal={() => {

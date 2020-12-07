@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { formatDate } from 'lib/utils'
 import { InputGroup, Label } from 'components/Input/input'
 
@@ -8,8 +8,13 @@ export const VaccinationSection = ({
   // @ts-ignore
   data, checkInData }) => {
 
+    useEffect(() => {
+      checkInData = checkInData;
+      data = data;
+    }, [data, checkInData]);
+    
   return (
-    data === null ? <h2 style={{ textAlign: 'center' }}>No Vaccination Recorded</h2> :
+    data === null ? <h2 style={{ textAlign: 'center' }}>Add New Vaccination Record</h2> :
       <>
         <div className={styles.formDetails}>
           <div className={styles.formDetailsInfo}>
@@ -36,13 +41,17 @@ export const VaccinationSection = ({
         </div>
         <div>
           <h4>
-            Name:{" "}
+            Date Administered:{" "}
+            {formatDate(data?.createdAt)}
+          </h4>
+          <h4>
+            Vaccine Name:{" "}
             {data?.name ||
               // @ts-ignore
               data?.nameOfVaccine}
           </h4>
           <h4>
-            Type:{" "}
+            Vaccination Type:{" "}
             {data?.type ||
               // @ts-ignore
               data?.vaccinationType}
@@ -58,11 +67,11 @@ export const VaccinationSection = ({
           </h4>
           <h4>
             Email Reminder:{" "}
-            {data?.emailReminder?.toString()}
+            {data?.emailReminder ? 'yes' : 'no'}
           </h4>
           <h4>
             SMS Reminder:{" "}
-            <span>{data?.smsReminder?.toString()}</span>
+            <span>{data?.smsReminder ? 'yes' : 'no'}</span>
           </h4>
         </div>
       </>

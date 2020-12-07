@@ -140,7 +140,8 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
       "lastName": staffInput.lastName,
       "otherName": staffInput.otherName,
       "gender": staffInput.gender,
-      "phoneNumber": staffInput.phoneNumber
+      "phoneNumber": staffInput.phoneNumber,
+      "imageUrl": staffInput.imageUrl
     })
       .then(response => {
         setLoading(false);
@@ -285,8 +286,8 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
                         value={staffInput.gender}
                       >
                         <option value="">Select a gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                       </Select>
                     </InputGroup>
                     <InputGroup horizontal>
@@ -333,10 +334,9 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
                     <div className={patientStyles.PhotoBox}>
                       <div>
                         {
-                          staffInput.imageUrl !== '' ?
+                          (staffInput.imageUrl !== '' || staffInput.imageUrl !== null) ?
                             <img src={staffInput.imageUrl} alt="patient photo" /> :
                             <img src={require('../../assets/images/figure.png')} alt="patient photo" />
-
                         }
                       </div>
                       <Input

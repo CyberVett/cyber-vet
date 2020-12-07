@@ -74,7 +74,7 @@ const VacinationReport = (props: {
           </div>
 
           <div className="physical__examination__form--input">
-            <label>Vaccination Name</label>
+            <label>Vaccine Name</label>
             <Input
               type="text"
               validation={InputValidationTypes.text}

@@ -40,12 +40,13 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
       <Card>
         <SectionHeader title="Drug Dosage Calculator" />
         <div style={{padding: '0 16px'}}>
-          <InputGroup className={styles.spaceBetween} horizontal>
+          <InputGroup className={styles.gridSpace} horizontal>
             <Label>Weight of Animal</Label>
             <Input
               className={styles.width500}
               name="weight"
               onChange={(e) => setWeight(parseFloat(e.target.value))}
+              step="0.01"
               type="text"
               value={weight}
             />
@@ -56,12 +57,13 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
               value="KG"
             />
           </InputGroup>
-          <InputGroup className={styles.spaceBetween} horizontal>
+          <InputGroup className={styles.gridSpace} horizontal>
             <Label>Dosage of Drug</Label>
             <Input
               className={styles.width500}
               name="dosage"
               onChange={(e) => setDose(parseFloat(e.target.value))}
+              step=".01"
               type="text"
               value={dose}
             />
@@ -72,12 +74,13 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
               value="MG/KG"
             />
           </InputGroup>
-          <InputGroup className={styles.spaceBetween} horizontal>
+          <InputGroup className={styles.gridSpace} horizontal>
             <Label>Concentration of Drug</Label>
             <Input
               className={styles.width500}
               name="concentration"
               onChange={(e) => setConcentration(parseFloat(e.target.value))}
+              step=".01"
               type="text"
               value={concentration}
             />
@@ -90,11 +93,12 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
           </InputGroup>
           <br />
           <br />
-          <InputGroup className={styles.spaceBetween} horizontal>
+          <InputGroup className={styles.gridSpace} horizontal>
             <Label>The Volume of Drug is:</Label>
             <Input
               className={styles.width500}
               name="volume"
+              step=".01"
               type="text"
               value={volume}
             />

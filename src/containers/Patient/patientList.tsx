@@ -51,7 +51,7 @@ const PatientList: React.FunctionComponent = () => {
   return (
     <div>
       <div className={styles.topHeader}>
-        <h2>Patient List</h2>
+      <h2>{`Patient List(${data.length})`}</h2>
         <div className={dashboardStyles.searchBar}>
           <SearchIcon />
           <Input

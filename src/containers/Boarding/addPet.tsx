@@ -69,7 +69,7 @@ const AddPatient: React.FunctionComponent = () => {
                   <Input />
                 </InputGroup>
                 <InputGroup horizontal>
-                  <Label>Flock/Heard Size</Label>
+                  <Label>Flock/Herd Size</Label>
                   <Input />
                 </InputGroup>
                 <InputGroup horizontal>

@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 import { FormErrors, FormMessages, Input, InputGroup, InputValidationTypes, Label, Select } from 'components/Input/input';
 import Card, { CardHeader } from 'components/Card/card';
-import Button from 'components/Button/button';
+import Button, { ButtonTypes } from 'components/Button/button';
 
 import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
@@ -191,7 +191,7 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
                 <FormErrors errors={error} />
                 <FormMessages messages={response} />
                 <div className={styles.button}>
-                  <Button htmlType="submit" loading={loading}>Continue</Button> <Button href="/app/dashboard">Cancel</Button>
+                  <Button htmlType="submit" loading={loading} type={ButtonTypes.primary}>Continue</Button> <Button href="/app/dashboard" type={ButtonTypes.red}>Cancel</Button>
                 </div>
               </form>
             </div>

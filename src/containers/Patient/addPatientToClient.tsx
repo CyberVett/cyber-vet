@@ -367,7 +367,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
                 />
               </InputGroup>
               <InputGroup horizontal>
-                <Label>Flock/Heard Size</Label>
+                <Label>Flock/Herd Size</Label>
                 <Input
                   autoComplete="true"
                   handleInputChange={handleInputChange}

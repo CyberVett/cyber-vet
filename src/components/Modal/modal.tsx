@@ -4,7 +4,7 @@ import styles from './modal.module.scss';
 import { composeClasses } from 'lib/utils';
 
 interface IModalProps {
-  closeModal: () => void;
+  closeModal?: () => void;
   fullMode?: boolean;
   Icon?: ReactType;
   subtitle?: string;
@@ -21,7 +21,7 @@ const Modal: React.FC<IModalProps> = ({
   subtitle,
   title,
   visible,
-  noTitle
+  noTitle,
 }) => {
   if (!visible) return null;
 

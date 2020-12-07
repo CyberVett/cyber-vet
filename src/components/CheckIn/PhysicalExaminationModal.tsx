@@ -188,10 +188,11 @@ const PhysicalExaminationModal = (props: {
               <label>Any Diarrhea</label>
               <select
                 onChange={handleInputChange}
-                defaultValue="true"
+                // defaultValue="true"
                 value={physicalExamination.anyDiarrhea}
                 name="anyDiarrhea"
               >
+                <option value="">Select an option</option>
                 <option label="Yes" value="true">
                   Yes
                 </option>
@@ -249,10 +250,11 @@ const PhysicalExaminationModal = (props: {
               <label>Any Lameness</label>
               <select
                 onChange={handleInputChange}
-                defaultValue="true"
+                // defaultValue="true"
                 value={physicalExamination.anyLameness}
                 name="anyLameness"
               >
+                <option value="">Select an option</option>
                 <option label="Yes" value="true">
                   Yes
                 </option>

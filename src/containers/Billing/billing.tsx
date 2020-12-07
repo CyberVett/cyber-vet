@@ -90,7 +90,7 @@ const BillingList: React.FunctionComponent = () => {
                       <td><Button type={ButtonTypes.grey} onClick={() => handleReview(row)}>Edit</Button></td>
                       <td><Button type={ButtonTypes.orange} onClick={() => deleteBilling(row.id)}>Remove</Button></td>
                     </tr>
-                  )} /> </> : <h2>No billings Found</h2>
+                  )} /> </> : <h2 style={{textAlign: 'center'}}>No billings Found</h2>
           }
           {/* Review Modal */}
           <BillingModal
@@ -110,8 +110,8 @@ const BillingList: React.FunctionComponent = () => {
               toggleResponseModal(false);
               window.location.reload();
             }}
-            subtitle="Patient's appointment has been deleted successfully"
-            title="Appointment Deleted"
+            subtitle="Billing has been deleted successfully"
+            title="Billing Deleted"
             visible={responseModal}
           />
         </Card>

@@ -55,3 +55,10 @@
 .spaceBetween {
   justify-content: space-between;
 }
+
+.gridSpace {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  column-gap: 20px;
+}
