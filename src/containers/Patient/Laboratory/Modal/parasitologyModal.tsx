@@ -13,6 +13,7 @@ export interface IModalProps {
   data: IParasitologyData;
   onAdd: Function;
   onComplete: Function;
+  onEdit: Function;
   onCancel: Function;
   modalLoading: boolean;
   isReview?: boolean;
@@ -46,6 +47,7 @@ const ParasitologyModal: React.FC<IModalProps> = ({
   onAdd,
   onCancel,
   onComplete,
+  onEdit,
   isReview,
 }) => {
   // @ts-ignore
@@ -312,20 +314,34 @@ const ParasitologyModal: React.FC<IModalProps> = ({
             </InputGroup>
           </div>
           <div className={styles.buttonContainer}>
-            {!isReview && (
+            {!data.complete && (
+              <>
+                {!isReview ? (
+                  <Button
+                    type={ButtonTypes.primary}
+                    onClick={() => onAdd(formValues, "create")}
+                  >
+                    Add
+                  </Button>
+                ) : (
+                  <Button
+                    type={ButtonTypes.basic}
+                    onClick={() => onEdit(formValues, "edit")}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </>
+            )}
+            {isReview && (
               <Button
-                type={ButtonTypes.primary}
-                onClick={() => onAdd(formValues, "create")}
+                type={ButtonTypes.orange}
+                onClick={() => onComplete(formValues, "complete")}
               >
-                Add
+                Complete
               </Button>
             )}
-            <Button
-              type={ButtonTypes.orange}
-              onClick={() => onComplete(formValues, "complete")}
-            >
-              Complete
-            </Button>
+
             <Button type={ButtonTypes.grey} onClick={() => onCancel()}>
               Cancel
             </Button>

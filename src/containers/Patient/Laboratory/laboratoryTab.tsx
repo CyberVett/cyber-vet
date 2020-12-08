@@ -4,6 +4,7 @@ import { InputGroup, Label } from "components/Input/input";
 import requestClient from "lib/requestClient";
 import { formatDate } from "lib/utils";
 import React, { useEffect, useState } from "react";
+import { date } from "yup";
 
 import styles from "./laboratory.module.scss";
 import MicrobiologyModal, {
@@ -157,10 +158,13 @@ const LaboratoryTab = ({
       // @ts-ignore
       delete _data.nameOfTechnologist;
     }
-    const url = `/laboratory/pathology/${
+    let url = `/laboratory/pathology/${
       method === "create" ? "add" : "complete"
     }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/pathology/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -169,6 +173,12 @@ const LaboratoryTab = ({
           ["Created", "OK"].includes(response.statusText)
         ) {
           setTogglePathology(false);
+
+          _data.createdAt = Date.now();
+          if (method === "complete") {
+            _data.complete = true;
+            _data.dateCompleted = Date.now();
+          }
           // @ts-ignore
           setPathologyData(_data);
         }
@@ -196,10 +206,13 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/parasitology/${
+    let url = `/laboratory/parasitology/${
       method === "create" ? "add" : "complete"
     }`;
-    const requestMethod = method === "create" ? "post" : "put";
+    let requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/parasitology/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -208,6 +221,13 @@ const LaboratoryTab = ({
           ["Created", "OK"].includes(response.statusText)
         ) {
           setToggleParasitology(false);
+          // @ts-ignore
+
+          _data.createdAt = Date.now();
+          if (method == "complete") {
+            _data.complete = true;
+            _data.dateCompleted = Date.now();
+          }
           // @ts-ignore
           setParasitologyData(_data);
         }
@@ -235,10 +255,13 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/microbiology/${
+    let url = `/laboratory/microbiology/${
       method === "create" ? "add" : "complete"
     }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/microbiology/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -247,6 +270,12 @@ const LaboratoryTab = ({
           ["Created", "OK"].includes(response.statusText)
         ) {
           setToggleMicrobiology(false);
+
+          _data.createdAt = Date.now();
+          if (method === "complete") {
+            _data.complete = true;
+            _data.dateCompleted = Date.now();
+          }
           // @ts-ignore
           setMicrobiologyData(_data);
         }
@@ -274,10 +303,13 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/rapid-test-kit/${
+    let url = `/laboratory/rapid-test-kit/${
       method === "create" ? "add" : "complete"
     }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/rapid-test-kit/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -285,6 +317,11 @@ const LaboratoryTab = ({
           [201, 200].includes(response.status) &&
           ["Created", "OK"].includes(response.statusText)
         ) {
+          _data.createdAt = Date.now();
+          if (method === "complete") {
+            _data.complete = true;
+            _data.dateCompleted = Date.now();
+          }
           // @ts-ignore
           setRapidTestData(_data);
           setToggleRapidtest(false);
@@ -359,6 +396,9 @@ const LaboratoryTab = ({
         onAdd={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "create");
         }}
+        onEdit={(data: IMicrobiologyData) => {
+          saveMicrobiology(data, "edit");
+        }}
         onComplete={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "complete");
         }}
@@ -366,7 +406,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleMicrobiology(false);
         }}
-        isReview={!!microbiologyData.createdAt}
+        isReview={microbiologyData.createdAt}
       />
       <RapidTestModal
         closeModal={() => setToggleRapidtest(false)}
@@ -375,6 +415,9 @@ const LaboratoryTab = ({
         onAdd={(data: IRapidTestData) => {
           saveRapidTest(data, "create");
         }}
+        onEdit={(data: IRapidTestData) => {
+          saveRapidTest(data, "edit");
+        }}
         onComplete={(data: IRapidTestData) => {
           saveRapidTest(data, "complete");
         }}
@@ -382,7 +425,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleRapidtest(false);
         }}
-        isReview={!!rapidTestData.createdAt}
+        isReview={rapidTestData.createdAt}
       />
       <AddPathologyModal
         closeModal={() => setTogglePathology(false)}
@@ -391,6 +434,9 @@ const LaboratoryTab = ({
         onAdd={(data: IPathologyData) => {
           savePathology(data, "create");
         }}
+        onEdit={(data: IPathologyData) => {
+          savePathology(data, "edit");
+        }}
         onComplete={(data: IPathologyData) => {
           savePathology(data, "complete");
         }}
@@ -398,7 +444,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setTogglePathology(false);
         }}
-        isReview={!!pathologyData.createdAt}
+        isReview={pathologyData.createdAt}
       />
       <ParasitologyModal
         closeModal={() => setToggleParasitology(false)}
@@ -407,6 +453,9 @@ const LaboratoryTab = ({
         onAdd={(data: IParasitologyData) => {
           saveParasitology(data, "create");
         }}
+        onEdit={(data: IMicrobiologyData) => {
+          saveParasitology(data, "edit");
+        }}
         onComplete={(data: IParasitologyData) => {
           saveParasitology(data, "complete");
         }}
@@ -414,7 +463,7 @@ const LaboratoryTab = ({
         onCancel={() => {
           setToggleParasitology(false);
         }}
-        isReview={!!parasitologyData.createdAt}
+        isReview={parasitologyData.createdAt}
       ></ParasitologyModal>
       {(checkInData?.pathology || pathologyData.albumin || "") && (
         <CheckinItem
