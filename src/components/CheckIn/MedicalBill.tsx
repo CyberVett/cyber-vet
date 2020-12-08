@@ -90,12 +90,22 @@ const VacinationReport = (props: {
 
     const index = event.target.name;
     const service = serviceList[index];
-    service.name = event.target.value;
+    const name = event.target.value;
+    service.name = name;
+    const bService = props.billingServices.find((s) => s.name === name) || {
+      charges: 0,
+    };
+    service.price = parseInt(bService.charges);
+    console.log(service);
 
     serviceList.splice(parseInt(index), 1, service);
+    setServiceList([...serviceList]);
+
+    const valInput = document.querySelector(`input[name='${index}']`);
+    valInput.value = service.price;
 
     const total = serviceList.reduce((acc: number, val) => {
-      return parseInt(val || 0, 10) + acc;
+      return parseInt(val.price || 0, 10) + acc;
     }, 0);
 
     const balance = total - paidAmount;
@@ -124,7 +134,6 @@ const VacinationReport = (props: {
     };
     // @ts-ignore
     setFormValues(_formValues);
-    setServiceList([...serviceList]);
 
     return _formValues;
   };
@@ -200,19 +209,18 @@ const VacinationReport = (props: {
     });
   };
 
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   const totalPrice = formValues.services.reduce((acc, val) => {
-  //     return acc + parseInt(val.price);
-  //   }, 0);
-  //   // @ts-ignore
-  //   const balance: number = totalPrice - formValues.paid;
-  //   // @ts-ignore
-  //   if (balance !== formValues.balance) {
-  //     // @ts-ignore
-  //     setFormValues({ ...formValues, balance: balance });
-  //   }
-  // }, [formValues]);
+  useEffect(() => {
+    const total = props.data.services.reduce((acc: number, val) => {
+      return parseInt(val.charges || 0, 10) + acc;
+    }, 0);
+    setTotalPrice(total);
+    setTotalBalance(props.data.amountToBalance);
+    setPaidAmount(props.data.amountPaid);
+    formValues.method = props.data.paymentMethod;
+    formValues.paid = props.data.amountPaid;
+    formValues.balance = props.data.amountToBalance;
+    formValues.services = props.data.services;
+  }, [props.data]);
 
   return (
     <MedicalReportModalContentTemplate
@@ -246,7 +254,7 @@ const VacinationReport = (props: {
                   onChange={handleSelectedBillItemChange}
                 >
                   <option value="">Select One</option>
-                  {[...availableBillingValues].map((serviceName, index) => {
+                  {[...props.billingServices].map((serviceName, index) => {
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
