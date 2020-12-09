@@ -35,21 +35,29 @@ const VacinationReport = (props: {
   const [totalPrice, setTotalPrice] = useState(0);
   const [paidAmount, setPaidAmount] = useState(0);
 
+  const [serviceList, setServiceList] = useState([]);
+
   const [cummulativeValues, setCummulativeValues] = useState([]);
 
   // const [selectedBillingValues, setSelectedBillinServices] = useState([]);
   const [actualBillingValues, setActualBillinServices] = useState([]);
   const [availableBillingValues, setAvailableBillinServices] = useState([]);
 
+  const handleAddServiceList = (e: Event) => {
+    e.preventDefault();
+    const service = { name: "", price: 0 };
+    serviceList.push(service);
+    setServiceList([...serviceList]);
+  };
+
   useEffect(() => {
     // @ts-ignore
-    const services = props.billingServices.filter((b) => b.name);
-    setActualBillinServices(services);
-    setAvailableBillinServices(services);
-
-    const _cumm = Array.from({ length: services.length }).fill("");
-    //  @ts-ignore
-    setCummulativeValues(_cumm);
+    // const services = props.billingServices.filter((b) => b.name);
+    // setActualBillinServices(services);
+    // setAvailableBillinServices(services);
+    // const _cumm = Array.from({ length: services.length }).fill("");
+    // //  @ts-ignore
+    // setCummulativeValues(_cumm);
   }, []);
 
   useEffect(() => {
@@ -58,18 +66,18 @@ const VacinationReport = (props: {
 
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
-         // @ts-ignore
+          // @ts-ignore
           const price = service.price || 0;
           return parseInt(price || 0, 10) + acc;
         }, 0)
       : 0;
 
     setTotalPrice(total);
-     // @ts-ignore
+    // @ts-ignore
     setPaidAmount(props.data.amountPaid || 0);
     setFormValues({
       ...formValues,
-       // @ts-ignore
+      // @ts-ignore
       paymentMethod: props.data.paymentMethod || "Card",
     });
   }, [props.data]);
@@ -81,34 +89,36 @@ const VacinationReport = (props: {
     event.persist();
 
     const index = event.target.name;
-    // @ts-ignore
-    const charge = actualBillingValues[index].charges;
-    if (event.target.value) {
-      // @ts-ignore
-      cummulativeValues.splice(index, 1, charge);
-    } else {
-      // @ts-ignore
-      cummulativeValues.splice(index, 1, 0);
-    }
-    setCummulativeValues([...cummulativeValues]);
+    const service = serviceList[index];
+    const name = event.target.value;
+    service.name = name;
+    const bService = props.billingServices.find((s) => s.name === name) || {
+      charges: 0,
+    };
+    service.price = parseInt(bService.charges);
+    console.log(service);
 
-    const total = cummulativeValues.reduce((acc: number, val) => {
-      return parseInt(val || 0, 10) + acc;
+    serviceList.splice(parseInt(index), 1, service);
+    setServiceList([...serviceList]);
+
+    const valInput = document.querySelector(`input[name='${index}']`);
+    valInput.value = service.price;
+
+    const total = serviceList.reduce((acc: number, val) => {
+      return parseInt(val.price || 0, 10) + acc;
     }, 0);
 
     const balance = total - paidAmount;
-    console.log(balance, total, paidAmount);
     setTotalBalance(balance);
 
     setTotalPrice(total);
-    // @ts-ignore
+    // // @ts-ignore
     const services = [];
-    cummulativeValues.map((val) => {
-      if (val) {
-        const service = actualBillingValues[index];
+    serviceList.map((service) => {
+      if (service.price) {
         services.push({
           // @ts-ignore
-          charges: service.charges,
+          charges: service.price,
           // @ts-ignore
           name: service.name,
         });
@@ -128,13 +138,51 @@ const VacinationReport = (props: {
     return _formValues;
   };
 
-  // const handleBillValueChange = (event: {
-  //   persist: () => void;
-  //   target: { name: any; value: any };
-  // }) => {
-  //   event.persist();
-  //   return formValues;
-  // };
+  const handleBillValueChange = (event: {
+    persist: () => void;
+    target: { name: any; value: any };
+  }) => {
+    event.persist();
+
+    const index = event.target.name;
+    const service = serviceList[index];
+    service.price = event.target.value;
+
+    serviceList.splice(parseInt(index), 1, service);
+
+    const total = serviceList.reduce((acc: number, val) => {
+      return parseInt(val.price || 0, 10) + acc;
+    }, 0);
+
+    const balance = total - paidAmount;
+    setTotalBalance(balance);
+
+    setTotalPrice(total);
+    // // @ts-ignore
+    const services = [];
+    serviceList.map((service) => {
+      if (service.price) {
+        services.push({
+          // @ts-ignore
+          charges: service.price,
+          // @ts-ignore
+          name: service.name,
+        });
+      }
+    });
+
+    const _formValues = {
+      paid: paidAmount,
+      balance: balance,
+      method: formValues.method,
+      // @ts-ignore
+      services: [...services],
+    };
+    // @ts-ignore
+    setFormValues(_formValues);
+    setServiceList([...serviceList]);
+    return _formValues;
+  };
 
   // const [totalValue, setTotalValues] = useState<Number>(0);
 
@@ -161,53 +209,52 @@ const VacinationReport = (props: {
     });
   };
 
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   const totalPrice = formValues.services.reduce((acc, val) => {
-  //     return acc + parseInt(val.price);
-  //   }, 0);
-  //   // @ts-ignore
-  //   const balance: number = totalPrice - formValues.paid;
-  //   // @ts-ignore
-  //   if (balance !== formValues.balance) {
-  //     // @ts-ignore
-  //     setFormValues({ ...formValues, balance: balance });
-  //   }
-  // }, [formValues]);
+  useEffect(() => {
+    const total = props.data.services.reduce((acc: number, val) => {
+      return parseInt(val.charges || 0, 10) + acc;
+    }, 0);
+    setTotalPrice(total);
+    setTotalBalance(props.data.amountToBalance);
+    setPaidAmount(props.data.amountPaid);
+    formValues.method = props.data.paymentMethod;
+    formValues.paid = props.data.amountPaid;
+    formValues.balance = props.data.amountToBalance;
+    formValues.services = props.data.services;
+  }, [props.data]);
 
   return (
     <MedicalReportModalContentTemplate
       onAdd={handleGetReport}
       onCancel={props.onCancel}
       title={props.title}
-       // @ts-ignore
+      // @ts-ignore
       date={props.date}
       // @ts-ignore
       canEdit={!!props.date}
     >
       <form className="medical__report__form medical--bill">
-        {[...availableBillingValues].map((service, index) => {
+        {[...serviceList].map((service, index) => {
           //  @ts-ignore
           const savedService =
             props.data.services && props.data.services[index]
               ? props.data.services[index]
               : {};
           const price = savedService
-           // @ts-ignore
-            ? savedService.price
+            ? // @ts-ignore
+              savedService.price
             : cummulativeValues[index];
-             // @ts-ignore
-          return service.name ? (
+          // @ts-ignore
+          return (
             <>
               <div className="physical__examination__form--input">
                 <select
-                  onChange={handleSelectedBillItemChange}
+                  // @ts-ignore
+                  defaultValue={service.name || ""}
                   name={`${index}`}
-                   // @ts-ignore
-                  defaultValue={savedService.name || ""}
+                  onChange={handleSelectedBillItemChange}
                 >
                   <option value="">Select One</option>
-                  {[...availableBillingValues].map((serviceName, index) => {
+                  {[...props.billingServices].map((serviceName, index) => {
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
@@ -224,13 +271,20 @@ const VacinationReport = (props: {
               <div className="physical__examination__form--input">
                 <input
                   type="number"
-                  defaultValue={`${price}`}
+                  defaultValue={`${service.price}`}
+                  name={`${index}`}
                   // defaultValue={service.charges}
+                  onChange={handleBillValueChange}
                 />
               </div>
             </>
-          ) : null;
+          );
         })}
+
+        <div>
+          <button onClick={handleAddServiceList}>+ Add item</button>
+        </div>
+        <div></div>
 
         {/* <div style={{ display: "grid" }}> */}
         <div className="physical__examination__form--input">

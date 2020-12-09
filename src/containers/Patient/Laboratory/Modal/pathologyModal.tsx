@@ -12,6 +12,7 @@ export interface IModalProps {
   data: IPathologyData;
   onAdd: Function;
   onComplete: Function;
+  onEdit: Function;
   onCancel: Function;
   modalLoading: boolean;
   isReview?: boolean;
@@ -77,6 +78,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
   onAdd,
   onCancel,
   onComplete,
+  onEdit,
   isReview,
 }) => {
   // @ts-ignore
@@ -575,20 +577,34 @@ const AddPathologyModal: React.FC<IModalProps> = ({
             </div>
           </div>
           <div className={styles.buttonContainer}>
-            {!isReview && (
+            {!data.dateCompleted && (
+              <>
+                {!isReview ? (
+                  <Button
+                    type={ButtonTypes.primary}
+                    onClick={() => onAdd(formValues, "create")}
+                  >
+                    Add
+                  </Button>
+                ) : (
+                  <Button
+                    type={ButtonTypes.basic}
+                    onClick={() => onEdit(formValues, "edit")}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </>
+            )}
+            {isReview && (
               <Button
-                type={ButtonTypes.primary}
-                onClick={() => onAdd(formValues, "create")}
+                type={ButtonTypes.orange}
+                onClick={() => onComplete(formValues, "complete")}
               >
-                Add
+                Complete
               </Button>
             )}
-            <Button
-              type={ButtonTypes.orange}
-              onClick={() => onComplete(formValues, "complete")}
-            >
-              Complete
-            </Button>
+
             <Button type={ButtonTypes.grey} onClick={() => onCancel()}>
               Cancel
             </Button>

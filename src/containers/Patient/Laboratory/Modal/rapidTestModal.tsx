@@ -12,6 +12,7 @@ export interface IModalProps {
   data: IRapidTestData;
   onAdd: Function;
   onComplete: Function;
+  onEdit: Function;
   onCancel: Function;
   modalLoading: boolean;
   isReview?: boolean;
@@ -33,6 +34,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
   modalLoading,
   data,
   onAdd,
+  onEdit,
   onCancel,
   onComplete,
   isReview,
@@ -150,20 +152,34 @@ const RapidTestModal: React.FC<IModalProps> = ({
             </InputGroup>
           </div>
           <div className={styles.buttonContainer}>
-            {!isReview && (
+            {!data.dateCompleted && (
+              <>
+                {!isReview ? (
+                  <Button
+                    type={ButtonTypes.primary}
+                    onClick={() => onAdd(formValues, "create")}
+                  >
+                    Add
+                  </Button>
+                ) : (
+                  <Button
+                    type={ButtonTypes.basic}
+                    onClick={() => onEdit(formValues, "edit")}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </>
+            )}
+            {isReview && (
               <Button
-                type={ButtonTypes.primary}
-                onClick={() => onAdd(formValues, "create")}
+                type={ButtonTypes.orange}
+                onClick={() => onComplete(formValues, "complete")}
               >
-                Add
+                Complete
               </Button>
             )}
-            <Button
-              type={ButtonTypes.orange}
-              onClick={() => onComplete(formValues, "complete")}
-            >
-              Complete
-            </Button>
+
             <Button type={ButtonTypes.grey} onClick={() => onCancel()}>
               Cancel
             </Button>
