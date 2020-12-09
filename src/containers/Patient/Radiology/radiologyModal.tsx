@@ -136,6 +136,48 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
       })
   }  
 
+  const editRadiology = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    requestClient.put(`/laboratory/radiology/update`, {
+      "checkinId": checkInID,
+      "patientId": patientNo,
+      "provisionalDiagnosis": radiologyInput.provisionalDiagnosis,
+      "clinicalNotes": radiologyInput.clinicalNotes,
+      "examinationRequired": radiologyInput.examinationRequired,
+      "XRayRoomNo": radiologyInput.XRayRoomNo,
+      "KV": radiologyInput.KV,
+      "MA": radiologyInput.MA,
+      "secs": radiologyInput.secs,
+      "shortRemarks": radiologyInput.shortRemarks,
+      "MAS": radiologyInput.MAS,
+      "MCHC": radiologyInput.MCHC,
+      "contrastInjectedType": radiologyInput.contrastInjectedType,
+      "contrastInjectedVolume": radiologyInput.contrastInjectedVolume,
+      "contrastInjectedRate": radiologyInput.contrastInjectedRate,
+      "reaction": radiologyInput.reaction,
+      "remarks": radiologyInput.remarks,
+      "report": radiologyInput.report
+    })
+      .then(response => {
+        setLoading(false);
+        if (response.status === 200 && response.statusText === 'OK') {
+          setMessage(response.data.message);
+        } else {
+          setLoading(false);
+          setError(response.data.message);
+        }
+        setTimeout(() => {
+          closeModal();
+          window.location.reload();
+        }, 3000);
+      })
+      .catch(error => {
+        setLoading(false);
+        setError(error.response.data.message)
+      })
+  }
+
   return (
     <Modal
       closeModal={closeModal}
@@ -397,7 +439,9 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
         <FormMessages messages={messages} />
       </div>
       <div className={styles.buttonContainer}>
-        {!checkInData && <Button type={ButtonTypes.primary} loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>}
+        {!checkInData ? <Button type={ButtonTypes.primary} loading={loading} onClick={(e) => addRadiology(e)}>Add</Button>
+        : <Button type={ButtonTypes.primary} loading={loading} onClick={(e) => editRadiology(e)}>Edit</Button>
+        }
         <Button type={ButtonTypes.orange} loading={loading} onClick={(e) => completeRadiology(e)}>Complete</Button>
         <Button type={ButtonTypes.grey} onClick={closeModal}>Cancel</Button>
       </div>

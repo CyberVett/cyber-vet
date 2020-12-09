@@ -152,7 +152,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
             </InputGroup>
           </div>
           <div className={styles.buttonContainer}>
-            {!data.dateCompleted && (
+            {!data?.dateCompleted && (
               <>
                 {!isReview ? (
                   <Button
@@ -163,7 +163,7 @@ const RapidTestModal: React.FC<IModalProps> = ({
                   </Button>
                 ) : (
                   <Button
-                    type={ButtonTypes.basic}
+                    type={ButtonTypes.primary}
                     onClick={() => onEdit(formValues, "edit")}
                   >
                     Edit

@@ -21,6 +21,7 @@ export interface IModalProps {
 
 export interface IMicrobiologyData {
   natureOfSpecimen: string;
+  complete: boolean;
   clinicalDetails: string;
   tentativeDiagnosis: string;
   testsRequired: string;
@@ -182,7 +183,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
             </InputGroup>
           </div>
           <div className={styles.buttonContainer}>
-            {!data.dateCompleted && (
+            {!data?.dateCompleted && (
               <>
                 {!isReview ? (
                   <Button
@@ -193,7 +194,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
                   </Button>
                 ) : (
                   <Button
-                    type={ButtonTypes.basic}
+                    type={ButtonTypes.primary}
                     onClick={() => onEdit(formValues, "edit")}
                   >
                     Edit

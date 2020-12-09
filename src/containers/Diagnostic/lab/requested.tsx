@@ -94,9 +94,12 @@ const RequestedLab: React.FunctionComponent = () => {
       // @ts-ignore
       delete _data.nameOfTechnologist;
     }
-    const url = `/laboratory/pathology/${method === "create" ? "add" : "complete"
+    let url = `/laboratory/pathology/${method === "create" ? "add" : "complete"
       }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/pathology/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -129,17 +132,21 @@ const RequestedLab: React.FunctionComponent = () => {
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/parasitology/${method === "create" ? "add" : "complete"
+    let url = `/laboratory/parasitology/${method === "create" ? "add" : "complete"
       }`;
-    const requestMethod = method === "create" ? "post" : "put";
+    let requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/parasitology/update`;
+    }
+    // @ts-ignore
     requestClient[requestMethod](url, _data)
-      .then((response) => {
+      .then((response: any) => {
         setModalLoading(false);
         if (response.status === 200 && response.statusText === "OK") {
           setToggleParasitology(false);
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setModalLoading(false);
         setModalError(error.message);
       });
@@ -163,10 +170,12 @@ const RequestedLab: React.FunctionComponent = () => {
     } else {
       _data = { ..._data, ...data };
     }
-    console.log("hhh", _data);
-    const url = `/laboratory/microbiology/${method === "create" ? "add" : "complete"
+    let url = `/laboratory/microbiology/${method === "create" ? "add" : "complete"
       }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/microbiology/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -199,9 +208,12 @@ const RequestedLab: React.FunctionComponent = () => {
     } else {
       _data = { ..._data, ...data };
     }
-    const url = `/laboratory/rapid-test-kit/${method === "create" ? "add" : "complete"
+    let url = `/laboratory/rapid-test-kit/${method === "create" ? "add" : "complete"
       }`;
     const requestMethod = method === "create" ? "post" : "put";
+    if (method === "edit") {
+      url = `/laboratory/rapid-test-kit/update`;
+    }
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
@@ -259,6 +271,11 @@ const RequestedLab: React.FunctionComponent = () => {
         onComplete={(data: IMicrobiologyData) => {
           saveMicrobiology(data, "complete");
         }}
+        onEdit={
+          (data: IMicrobiologyData) => {
+            saveMicrobiology(data, "edit");
+          }
+        }
         modalLoading={modalLoading}
         onCancel={() => {
           setToggleMicrobiology(false);
@@ -275,6 +292,9 @@ const RequestedLab: React.FunctionComponent = () => {
         }}
         onComplete={(data: IRapidTestData) => {
           saveRapidTest(data, "complete");
+        }}
+        onEdit={(data: IRapidTestData) => {
+          saveRapidTest(data, "edit");
         }}
         modalLoading={modalLoading}
         onCancel={() => {
@@ -293,6 +313,9 @@ const RequestedLab: React.FunctionComponent = () => {
         onComplete={(data: IPathologyData) => {
           savePathology(data, "complete");
         }}
+        onEdit={(data: IPathologyData) => {
+          savePathology(data, "edit");
+        }}
         modalLoading={modalLoading}
         onCancel={() => {
           setTogglePathology(false);
@@ -309,6 +332,9 @@ const RequestedLab: React.FunctionComponent = () => {
         }}
         onComplete={(data: IParasitologyData) => {
           saveParasitology(data, "complete");
+        }}
+        onEdit={(data: IParasitologyData) => {
+          saveParasitology(data, "edit");
         }}
         modalLoading={modalLoading}
         onCancel={() => {

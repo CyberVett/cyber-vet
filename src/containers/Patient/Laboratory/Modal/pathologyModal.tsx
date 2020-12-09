@@ -577,7 +577,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
             </div>
           </div>
           <div className={styles.buttonContainer}>
-            {!data.dateCompleted && (
+            {!data?.dateCompleted && (
               <>
                 {!isReview ? (
                   <Button
@@ -588,7 +588,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   </Button>
                 ) : (
                   <Button
-                    type={ButtonTypes.basic}
+                    type={ButtonTypes.primary}
                     onClick={() => onEdit(formValues, "edit")}
                   >
                     Edit
