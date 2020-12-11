@@ -229,7 +229,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
           <InputGroup className={styles.spaceBetween} horizontal>
             <Label>Notes</Label>
             <TextArea
-            className={styles.width500}
+              className={styles.width500}
               name="notes"
               onChange={handleInputChange}
               required

@@ -206,9 +206,9 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
             className={styles.width500}
             disabled={disabled}
             name="clinicalNotes"
-            onChange={handleInputChange}>
-            {radiologyInput?.clinicalNotes}
-          </TextArea>
+            value={radiologyInput?.clinicalNotes}
+            onChange={handleInputChange}
+          />
         </InputGroup>
         <InputGroup className={styles.spaceBetween} horizontal>
           <Label>Provisional Diagnosis</Label>

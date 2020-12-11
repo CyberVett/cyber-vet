@@ -74,7 +74,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
       ) : (
         <>
           <div className={styles.formMenu}>
-            <h3>{isReview ? "Edit" : "Add"} Mircobiology Form</h3>
+            <h3>{isReview ? "Edit" : "Add"} Microbiology Form</h3>
             <InputGroup horizontal>
               {isReview ? (
                 <>
@@ -146,9 +146,7 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
                 style={{ height: "10rem" }}
                 name={"clinicalDetails"}
                 onChange={handleInputChange}
-              >
-                {formValues?.clinicalDetails}
-              </textarea>
+                value={formValues?.clinicalDetails}/>
             </InputGroup>
             <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Tentative Diagnosis</Label>
@@ -177,9 +175,8 @@ const MicrobiologyModal: React.FC<IModalProps> = ({
                 style={{ height: "10rem" }}
                 name={"result"}
                 onChange={handleInputChange}
-              >
-                {formValues?.result}
-              </textarea>{" "}
+                value={formValues?.result}
+              />
             </InputGroup>
           </div>
           <div className={styles.buttonContainer}>

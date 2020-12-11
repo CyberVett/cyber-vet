@@ -43,9 +43,8 @@ const ClinicalSignsReport = (props: {
             style={{ height: "10rem" }}
             name={"clinicalSign"}
             onChange={handleInputChange}
-          >
-            {formValues.clinicalSigns}
-          </textarea>
+            value={formValues.clinicalSigns}
+          />
         </div>
       </form>
     </MedicalReportModalContentTemplate>

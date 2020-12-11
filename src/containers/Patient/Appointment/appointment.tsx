@@ -72,7 +72,7 @@ const Appointment: React.FC<IAppointment> = ({
                       renderRow={(row) => (
                         <tr key={row.id}>
                           <td>{formatDate(row.createdAt)}</td>
-                          <td>{row.patientId}</td>
+                          <td>{row.patientName}</td>
                           <td>{row?.scheduler?.title} {row?.scheduler?.firstName} {row?.scheduler?.otherName} {row?.scheduler?.lastName}</td>
                           <td>{row.reason}</td>
                           <td>{row.status}</td>

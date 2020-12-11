@@ -36,12 +36,12 @@ const VacinationReport = (props: {
   }) => {
     event.persist();
     setFormValues((formValues: IData) => {
-      if (["smsReminder", "emailReminder"].includes(event.target.name)) {
+      if (["smsReminder", "emailReminder"].includes(event.target.name)) {        
         formValues.vaccination = {
           ...formValues.vaccination,
           // @ts-ignore
           [event.target.name]: event.target.checked,
-        };
+        };        
       } else {
         formValues.vaccination = {
           ...formValues.vaccination,
@@ -102,7 +102,7 @@ const VacinationReport = (props: {
               min={formatDateForCalendar(new Date().toISOString())}
               name={"nextDate"}
               onChange={handleInputChange}
-              defaultValue={formValues.vaccination.nextDate}
+              defaultValue={formatDateForCalendar(formValues.vaccination.nextDate)}
             />
           </div>
 

@@ -95,14 +95,20 @@ const BillingList: React.FunctionComponent = () => {
           {/* Review Modal */}
           <BillingModal
             billingId={billingId}
-            closeModal={() => setToggleReviewModal(false)}
+            closeModal={() => {
+              setToggleReviewModal(false);
+              window.location.reload();
+            }}
             isReview={true}
             modalData={rowData}
             visible={toggleReviewModal}
           />
           {/* Create new modal */}
           <BillingModal
-            closeModal={() => setToggleModal(false)}
+            closeModal={() => {
+              setToggleModal(false);
+              window.location.reload();
+            }}
             visible={toggleModal}
           />
           <Modal

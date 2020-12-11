@@ -532,7 +532,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // @ts-ignore
       data.treatmentDate = new Date().toString();
     } else if (field === "Vaccination") {
-      // // diagnostic-test
+      // diagnostic-test
       method = !medicalReports.vaccination.name ? "post" : "put";
       endpoint = "vaccination";
       body = {
@@ -546,14 +546,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         dateOfNextShot: data.vaccination.nextDate,
         // @ts-ignore
-        emailReminder: data.vaccination.emailReminder === "on",
+        emailReminder: data.vaccination.emailReminder,
         // @ts-ignore
-        smsReminder: data.vaccination.smsReminder === "on",
+        smsReminder: data.vaccination.smsReminder,
       };
       // @ts-ignore
       data.vaccinationDate = new Date().toString();
       // @ts-ignore
-      console.log(data.vaccination);
       // data.vaccination.emailReminder = data.vaccination.emailReminder === "on";
       // // @ts-ignore
       // data.vaccination.smsReminder = data.vaccination.smsReminder === "on";
@@ -599,6 +598,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       field === "Medical Bill"
         ? endpoint
         : `/patients/${patientId}/${endpoint}`;
+        console.log('body', body);
+        
     // @ts-ignore
     requestClient[method](__url, body)
       .then((response: any) => {

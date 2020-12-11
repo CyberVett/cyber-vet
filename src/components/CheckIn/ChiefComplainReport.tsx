@@ -42,11 +42,10 @@ const ChiefComplainReport = (props: {
             style={{ height: "10rem" }}
             name={"chiefComplain"}
             onChange={handleInputChange}
+            value={formValues.chiefComplain}
             // rows={10}
             // cols={10}
-          >
-            {formValues.chiefComplain}
-          </textarea>
+          />
         </div>
       </form>
     </MedicalReportModalContentTemplate>

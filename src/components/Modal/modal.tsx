@@ -1,4 +1,4 @@
-import React, { ReactType } from 'react';
+import React, { ElementType } from 'react';
 
 import styles from './modal.module.scss';
 import { composeClasses } from 'lib/utils';
@@ -6,7 +6,7 @@ import { composeClasses } from 'lib/utils';
 interface IModalProps {
   closeModal?: () => void;
   fullMode?: boolean;
-  Icon?: ReactType;
+  Icon?: ElementType;
   subtitle?: string;
   title?: string;
   visible: boolean;
@@ -29,6 +29,7 @@ const Modal: React.FC<IModalProps> = ({
     <div className={styles.container}>
       <div
         className={styles.overlay}
+        // @ts-ignore
         onClick={closeModal}
       />
       <div className={composeClasses(styles.modal, fullMode && styles.fullMode)}>

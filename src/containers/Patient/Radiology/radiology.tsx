@@ -131,6 +131,9 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
                   </tr>
                 </table>
               </div>
+              {
+              // @ts-ignore
+              radiology?.completed ? `Name of Technologist: ${radiology?.completeBy?.firstName} ${radiology?.completeBy?.otherName} ${radiology?.completeBy?.lastName}` : ''}
             </div>}
       </CheckinItem>
       <RadiologyModal

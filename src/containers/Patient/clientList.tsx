@@ -20,7 +20,7 @@ const ClientList: React.FunctionComponent = () => {
 
   useEffect(() => {
     requestClient.get('clients')
-      .then(response => {        
+      .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           setData(response.data.data);
@@ -30,34 +30,40 @@ const ClientList: React.FunctionComponent = () => {
         setLoading(false);
         console.log(error);
       })
-  },[]);
+  }, []);  
   return (
     <div>
       <div className={styles.topHeader}>
         <h2>{`Client List(${data.length})`}</h2>
         <div className={dashboardStyles.searchBar}>
-        <SearchIcon />
-          <Input 
+          <SearchIcon />
+          <Input
             placeholder="Search for clients"
           />
-          </div>
+        </div>
         <Button type={ButtonTypes.primary} href="/app/patient/add/client">Add new clients</Button>
       </div>
       <div>
         <Card>
-        {loading ? <Loader /> :
-          <Table
-            data={data}
-            headers={ClientHeaders}
-            renderRow={(row) => (
-              <tr key={row.id}>
-                <td>{row.id}</td>
-                <td>{row.title}. {row.firstName} {row.lastName}</td>
-                <td className={styles.address}>{row.address}</td>
-                <td>{row.phoneNumber}</td>
-                <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
-              </tr>
-            )} />
+          {loading ? <Loader /> :
+            <>
+              { 
+                data.length > 0 ?
+                  <Table
+                    data={data}
+                    headers={ClientHeaders}
+                    renderRow={(row) => (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td>{row.title}. {row.firstName} {row.lastName}</td>
+                        <td className={styles.address}>{row.address}</td>
+                        <td>{row.phoneNumber}</td>
+                        <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
+                      </tr>
+                    )} />
+                  : <h2 style={{ textAlign: 'center' }}>No clients found</h2>
+              }
+            </>
           }
         </Card>
       </div>

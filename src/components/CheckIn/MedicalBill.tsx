@@ -226,7 +226,7 @@ const VacinationReport = (props: {
   };
 
   useEffect(() => {
-    const total = props.data.services.reduce((acc: number, val) => {
+    const total = props?.data?.services?.reduce((acc: number, val) => {
       // @ts-ignore
       return parseInt(val.charges || 0, 10) + acc;
     }, 0);
@@ -272,14 +272,14 @@ const VacinationReport = (props: {
                   onChange={handleSelectedBillItemChange}
                 >
                   <option value="">Select One</option>
-                  {[...props.billingServices].map((serviceName, index) => {
+                  {[...props.billingServices].map((serviceName, index) => {   
+                    console.log(serviceName);                  
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
-                        {
-                          //  @ts-ignore
-                          serviceName.name
-                        }
+                        { //  @ts-ignore
+                          `${serviceName?.department?.name}--${serviceName.name}`
+                          }
                       </option>
                     );
                   })}

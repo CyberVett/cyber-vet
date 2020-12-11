@@ -14,9 +14,8 @@ import requestClient from 'lib/requestClient';
 import styles from './patient.module.scss';
 import dashboardStyles from '../Dashboard/dashboard.module.scss';
 import { NextPage, NextPageContext } from 'next';
-import Router from 'next/router';
 
-const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
+const ClientPatientList: NextPage<{ clientId: string }> = ({ clientId }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,50 +32,60 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
         setLoading(false);
         console.log(error);
       })
-  },[]);
+  }, []);
 
-  const checkIn = (id: string) => {
-    setLoading(true);
-    requestClient.put(`/patients/${id}/check-in`)
-      .then((response) => {
-        setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
-          Router.push(`/app/patient/checkin/${id}`);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      })
-  }
+  // const checkIn = (id: string) => {
+  //   setLoading(true);
+  //   requestClient.put(`/patients/${id}/check-in`)
+  //     .then((response) => {
+  //       setLoading(false);
+  //       if (response.status === 200 && response.statusText === 'OK') {
+  //         Router.push(`/app/patient/checkin/${id}`);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       setLoading(false);
+  //       console.log(error);
+  //     })
+  // }
 
   return (
     <div>
       <div className={styles.topHeader}>
         <h2>{`Client No: ${clientId}`}</h2>
         <div className={dashboardStyles.searchBar}>
-        <SearchIcon />
-          <Input 
+          <SearchIcon />
+          <Input
             placeholder="Search for clients or Patients"
           />
-          </div>
+        </div>
         <Button type={ButtonTypes.primary} href={`/app/client/add/patient?id=${clientId}`}>Add new patient</Button>
       </div>
       <div>
         <Card>
-        {loading ? <Loader /> :
-          <Table
-            data={data}
-            headers={ClientPatientHeaders}
-            renderRow={(row) => (
-              <tr key={row.id}>
-                <td>{row.id}</td>
-                <td>{row.name}</td>
-                <td>{row.specie}</td>
-                <td>{row.breed}</td>
-                <td><Button onClick={() => checkIn(row.id)}>Check In</Button></td>
-              </tr>
-            )} />
+          {loading ? <Loader /> :
+            <>
+              {
+                data.length > 0 ?
+                  <Table
+                    data={data}
+                    headers={ClientPatientHeaders}
+                    renderRow={(row) => (
+                      <tr key={row.id}>
+                        <td>{row.id}</td>
+                        <td>{row.name}</td>
+                        <td>{row.specie}</td>
+                        <td>{row.breed}</td>
+                        <td>{
+                          row.checkedIn ?
+                            <Button href={`/app/patient/checkin/${row.id}`} type={ButtonTypes.orange}>Checked In</Button>
+                            : <Button type={ButtonTypes.primary} href={`/app/patient/checkin/${row.id}`}>Check In</Button>
+                        }</td>
+                      </tr>
+                    )} />
+                  : <h2 style={{ textAlign: 'center' }}>No patient available for this client</h2>
+              }
+            </>
           }
         </Card>
       </div>
@@ -84,25 +93,25 @@ const ClientPatientList: NextPage<{clientId: string}> = ({clientId}) => {
   )
 };
 
-export const actionButton = (status: string, id: string) => {
-  if (status === 'returned') {
-    return (
-      <div style={{display: 'flex'}}>
-        <Button href={`/app/patient/edit/${id}`}>Edit</Button>
-        <Button>Check In</Button>
-      </div>
-    )
-  } else {
-    return (
-      <div style={{display: 'flex'}}>
-        <Button href={`/app/patient/edit/${id}`}>Edit</Button>
-        <Button>Check Out</Button>
-      </div>
-    )
-  }
-};
+// export const actionButton = (status: string, id: string) => {
+//   if (status === 'returned') {
+//     return (
+//       <div style={{ display: 'flex' }}>
+//         <Button href={`/app/patient/edit/${id}`}>Edit</Button>
+//         <Button>Check In</Button>
+//       </div>
+//     )
+//   } else {
+//     return (
+//       <div style={{ display: 'flex' }}>
+//         <Button href={`/app/patient/edit/${id}`}>Edit</Button>
+//         <Button>Check Out</Button>
+//       </div>
+//     )
+//   }
+// };
 ClientPatientList.getInitialProps = async ({ query }: NextPageContext) => {
-  const clientId = (query && query.clientId) as string;  
+  const clientId = (query && query.clientId) as string;
   return {
     clientId
   }

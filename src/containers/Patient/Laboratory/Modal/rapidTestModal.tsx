@@ -115,9 +115,8 @@ const RapidTestModal: React.FC<IModalProps> = ({
                 style={{ height: "10rem" }}
                 name={"clinicalDetails"}
                 onChange={handleInputChange}
-              >
-                {formValues?.clinicalDetails}
-              </textarea>{" "}
+                value={formValues?.clinicalDetails}
+              />
             </InputGroup>
             <InputGroup className={styles.spaceBetween} horizontal>
               <Label>Tentative Diagnosis</Label>
@@ -146,10 +145,9 @@ const RapidTestModal: React.FC<IModalProps> = ({
                 style={{ height: "10rem" }}
                 name={"result"}
                 onChange={handleInputChange}
-              >
-                {formValues?.result}
-              </textarea>{" "}
-            </InputGroup>
+                value={formValues?.result}
+              />
+          </InputGroup>
           </div>
           <div className={styles.buttonContainer}>
             {!data?.dateCompleted && (

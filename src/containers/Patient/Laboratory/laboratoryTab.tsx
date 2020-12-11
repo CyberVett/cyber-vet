@@ -159,9 +159,8 @@ const LaboratoryTab = ({
       // @ts-ignore
       delete _data.nameOfTechnologist;
     }
-    let url = `/laboratory/pathology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    let url = `/laboratory/pathology/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     if (method === "edit") {
       url = `/laboratory/pathology/update`;
@@ -210,9 +209,8 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    let url = `/laboratory/parasitology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    let url = `/laboratory/parasitology/${method === "create" ? "add" : "complete"
+      }`;
     let requestMethod = method === "create" ? "post" : "put";
     if (method === "edit") {
       url = `/laboratory/parasitology/update`;
@@ -262,9 +260,8 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    let url = `/laboratory/microbiology/${
-      method === "create" ? "add" : "complete"
-    }`;
+    let url = `/laboratory/microbiology/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     if (method === "edit") {
       url = `/laboratory/microbiology/update`;
@@ -312,9 +309,8 @@ const LaboratoryTab = ({
     } else {
       _data = { ..._data, ...data };
     }
-    let url = `/laboratory/rapid-test-kit/${
-      method === "create" ? "add" : "complete"
-    }`;
+    let url = `/laboratory/rapid-test-kit/${method === "create" ? "add" : "complete"
+      }`;
     const requestMethod = method === "create" ? "post" : "put";
     if (method === "edit") {
       url = `/laboratory/rapid-test-kit/update`;
@@ -712,6 +708,9 @@ const LaboratoryTab = ({
                 </tr>
               </table>
             </div>
+            {
+              // @ts-ignore
+              pathologyData?.completed ? `Name of Technologist: ${pathologyData?.completeBy?.firstName} ${pathologyData?.completeBy?.otherName} ${pathologyData?.completeBy?.lastName}` : ''}
           </div>
         </CheckinItem>
       )}
@@ -815,6 +814,9 @@ const LaboratoryTab = ({
                 </tr>
               </table>
             </div>
+            {
+              // @ts-ignore
+              parasitologyData?.completed ? `Name of Technologist: ${parasitologyData?.completeBy?.firstName} ${parasitologyData?.completeBy?.otherName} ${parasitologyData?.completeBy?.lastName}` : ''}
           </div>
         </CheckinItem>
       )}
@@ -822,58 +824,64 @@ const LaboratoryTab = ({
       {(checkInData?.microbiology ||
         microbiologyData.clinicalDetails ||
         "") && (
-        <CheckinItem
-          checkedIn={true}
-          date={new Date().toString()}
-          onDelete={() => setMicrobiologyData(defaultMicrobiologyFields)}
-          onEdit={() => {
-            setToggleMicrobiology(true);
-          }}
-          disableDelete
-          title="Microbiology Test"
-        >
-          <table className={styles.overviewTable}>
-            <tr>
-              <td>Nature of specimen</td>
-              <td>{microbiologyData?.natureOfSpecimen}</td>
-            </tr>
-            <tr>
-              <td>Date of collection</td>
-              <td>
-                {
-                  // @ts-ignore
-                  formatDate(microbiologyData?.dateOfCollection)
-                }
-              </td>
-            </tr>
-            <tr>
-              <td>Date of Submission</td>
-              <td>
-                {
-                  // @ts-ignore
-                  formatDate(microbiologyData?.dateOfSubmission)
-                }
-              </td>
-            </tr>
-            <tr>
-              <td>Clinical Details</td>
-              <td>{microbiologyData?.clinicalDetails}</td>
-            </tr>
-            <tr>
-              <td>Tentative Diagnosis</td>
-              <td>{microbiologyData?.tentativeDiagnosis}</td>
-            </tr>
-            <tr>
-              <td>Tests Required</td>
-              <td>{microbiologyData?.testsRequired}</td>
-            </tr>
-            <tr>
-              <td>Result</td>
-              <td>{microbiologyData?.result}</td>
-            </tr>
-          </table>
-        </CheckinItem>
-      )}
+          <CheckinItem
+            checkedIn={true}
+            date={new Date().toString()}
+            onDelete={() => setMicrobiologyData(defaultMicrobiologyFields)}
+            onEdit={() => {
+              setToggleMicrobiology(true);
+            }}
+            disableDelete
+            title="Microbiology Test"
+          >
+            <div>
+
+              <table className={styles.overviewTable}>
+                <tr>
+                  <td>Nature of specimen</td>
+                  <td>{microbiologyData?.natureOfSpecimen}</td>
+                </tr>
+                <tr>
+                  <td>Date of collection</td>
+                  <td>
+                    {
+                      // @ts-ignore
+                      formatDate(microbiologyData?.dateOfCollection)
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>Date of Submission</td>
+                  <td>
+                    {
+                      // @ts-ignore
+                      formatDate(microbiologyData?.dateOfSubmission)
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>Clinical Details</td>
+                  <td>{microbiologyData?.clinicalDetails}</td>
+                </tr>
+                <tr>
+                  <td>Tentative Diagnosis</td>
+                  <td>{microbiologyData?.tentativeDiagnosis}</td>
+                </tr>
+                <tr>
+                  <td>Tests Required</td>
+                  <td>{microbiologyData?.testsRequired}</td>
+                </tr>
+                <tr>
+                  <td>Result</td>
+                  <td>{microbiologyData?.result}</td>
+                </tr>
+              </table>
+              {
+                // @ts-ignore
+                microbiologyData?.completed ? `Name of Technologist: ${microbiologyData?.completeBy?.firstName} ${microbiologyData?.completeBy?.otherName} ${microbiologyData?.completeBy?.lastName}` : ''}
+            </div>
+          </CheckinItem>
+        )}
 
       {(checkInData?.rapidTest || rapidTestData?.clinicalDetails || "") && (
         <CheckinItem
@@ -886,28 +894,33 @@ const LaboratoryTab = ({
           disableDelete
           title="Rapid Test"
         >
-          <table className={styles.overviewTable}>
-            <tr>
-              <td>Type of specimen</td>
-              <td>{rapidTestData?.typeOfSpecimen}</td>
-            </tr>
-            <tr>
-              <td>Clinical Details</td>
-              <td>{rapidTestData?.clinicalDetails}</td>
-            </tr>
-            <tr>
-              <td>Tentative Diagnosis</td>
-              <td>{rapidTestData?.tentativeDiagnosis}</td>
-            </tr>
-            <tr>
-              <td>Tests Required</td>
-              <td>{rapidTestData?.testsRequired}</td>
-            </tr>
-            <tr>
-              <td>Result</td>
-              <td>{rapidTestData?.result}</td>
-            </tr>
-          </table>
+          <div>
+            <table className={styles.overviewTable}>
+              <tr>
+                <td>Type of specimen</td>
+                <td>{rapidTestData?.typeOfSpecimen}</td>
+              </tr>
+              <tr>
+                <td>Clinical Details</td>
+                <td>{rapidTestData?.clinicalDetails}</td>
+              </tr>
+              <tr>
+                <td>Tentative Diagnosis</td>
+                <td>{rapidTestData?.tentativeDiagnosis}</td>
+              </tr>
+              <tr>
+                <td>Tests Required</td>
+                <td>{rapidTestData?.testsRequired}</td>
+              </tr>
+              <tr>
+                <td>Result</td>
+                <td>{rapidTestData?.result}</td>
+              </tr>
+            </table>
+            {
+              // @ts-ignore
+              rapidTestData?.completed ? `Name of Technologist: ${rapidTestData?.completeBy?.firstName} ${rapidTestData?.completeBy?.otherName} ${rapidTestData?.completeBy?.lastName}` : ''}
+          </div>
         </CheckinItem>
       )}
     </section>

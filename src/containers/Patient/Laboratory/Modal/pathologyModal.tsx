@@ -189,9 +189,8 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 name={"testsRequired"}
                 // @ts-ignore
                 onChange={handleInputChange}
-              >
-                {formValues?.testsRequired}
-              </textarea>
+                value={formValues?.testsRequired}
+             />
             </InputGroup>
             <div className={styles.formDetailsGrid}>
               <div>
