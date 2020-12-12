@@ -34,7 +34,8 @@ const VacinationReport = (props: {
   const [formValues, setFormValues] = useState<IData>({
     paid: "0",
     balance: "0",
-    method: PaymentMethod.card,
+    // @ts-ignore
+    method: '',
     services: [],
     amountPaid: '',
     amountToBalance: '',
@@ -78,10 +79,10 @@ const VacinationReport = (props: {
 
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
-          // @ts-ignore
-          const price = service.price || 0;
-          return parseInt(price || 0, 10) + acc;
-        }, 0)
+        // @ts-ignore
+        const price = service.price || 0;
+        return parseInt(price || 0, 10) + acc;
+      }, 0)
       : 0;
 
     setTotalPrice(total);
@@ -101,7 +102,7 @@ const VacinationReport = (props: {
     event.persist();
 
     const index = event.target.name;
-    const service:IService = serviceList[index];
+    const service: IService = serviceList[index];
     const name = event.target.value;
     service.name = name;
     const bService = props.billingServices.find((s: IService) => s.name === name) || {
@@ -109,7 +110,6 @@ const VacinationReport = (props: {
     };
     // @ts-ignore
     service.price = parseInt(bService.charges);
-    console.log(service);
 
     serviceList.splice(parseInt(index), 1, service);
     setServiceList([...serviceList]);
@@ -124,7 +124,7 @@ const VacinationReport = (props: {
     }, 0);
 
     const balance = total - paidAmount;
-    setTotalBalance(balance);
+    setTotalBalance(balance || 0);
 
     setTotalPrice(total);
     // @ts-ignore
@@ -171,7 +171,7 @@ const VacinationReport = (props: {
     }, 0);
 
     const balance = total - paidAmount;
-    setTotalBalance(balance);
+    setTotalBalance(balance || 0);
 
     setTotalPrice(total);
     // @ts-ignore
@@ -216,7 +216,7 @@ const VacinationReport = (props: {
       if (event.target.name === "paid") {
         setPaidAmount(event.target.value);
         const balance = totalPrice - event.target.value;
-        setTotalBalance(balance);
+        setTotalBalance(balance || 0);
         // @ts-ignore
         _formValues.balance = balance;
       }
@@ -231,7 +231,7 @@ const VacinationReport = (props: {
       return parseInt(val.charges || 0, 10) + acc;
     }, 0);
     setTotalPrice(total);
-    setTotalBalance(parseInt(props.data.amountToBalance));
+    setTotalBalance(parseInt(props.data.amountToBalance) || 0);
     setPaidAmount(parseInt(props.data.amountPaid));
     formValues.method = props.data.paymentMethod;
     formValues.paid = props.data.amountPaid;
@@ -256,10 +256,10 @@ const VacinationReport = (props: {
             props.data.services && props.data.services[index]
               ? props.data.services[index]
               : {};
-              // @ts-ignore
+          // @ts-ignore
           const price = savedService
             ? // @ts-ignore
-              savedService.price
+            savedService.price
             : cummulativeValues[index];
           // @ts-ignore
           return (
@@ -272,14 +272,13 @@ const VacinationReport = (props: {
                   onChange={handleSelectedBillItemChange}
                 >
                   <option value="">Select One</option>
-                  {[...props.billingServices].map((serviceName, index) => {   
-                    console.log(serviceName);                  
+                  {[...props.billingServices].map((serviceName, index) => {
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
                         { //  @ts-ignore
                           `${serviceName?.department?.name}--${serviceName.name}`
-                          }
+                        }
                       </option>
                     );
                   })}
@@ -310,8 +309,8 @@ const VacinationReport = (props: {
             name={`total`}
             disabled
             defaultValue="Total"
-            // onChange={handleBillValueChange}
-            // defaultValue={service.price}
+          // onChange={handleBillValueChange}
+          // defaultValue={service.price}
           />
         </div>
         <div className="physical__examination__form--input">
@@ -340,8 +339,11 @@ const VacinationReport = (props: {
           <select
             onChange={handleInputChange}
             name="method"
-            defaultValue={formValues.method}
+            value={formValues.method}
           >
+            <option value="">
+              Select a payment option
+                </option>
             {["Cash", "Card"].map((method, index) => {
               return (
                 <option key={index} value={method}>

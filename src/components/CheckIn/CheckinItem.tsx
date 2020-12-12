@@ -11,6 +11,7 @@ const CheckinItem = (props: {
   checkedIn?: Boolean;
   children: any;
   disableDelete?: Boolean;
+  disableEdit?: Boolean;
 }) => {
   return (
     <div className="checkin__item">
@@ -26,9 +27,11 @@ const CheckinItem = (props: {
                 }
                 disabled
               />
-              <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>
-                Edit Result
-              </Button>
+              {!props.disableEdit ? (
+                <Button type={ButtonTypes.primary} onClick={() => props.onEdit()}>
+                  Edit Result
+                </Button>
+              ) : null}
               {!props.disableDelete ? (
                 <Button
                   type={ButtonTypes.orange}
@@ -39,14 +42,14 @@ const CheckinItem = (props: {
               ) : null}
             </>
           ) : (
-            <>
-              <Button
-                onClick={() => (props.onAddNew ? props.onAddNew() : undefined)}
-              >
-                Add New Result
+              <>
+                <Button
+                  onClick={() => (props.onAddNew ? props.onAddNew() : undefined)}
+                >
+                  Add New Result
               </Button>
-            </>
-          )}
+              </>
+            )}
         </div>
       </div>
 

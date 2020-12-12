@@ -21,7 +21,7 @@ export interface IModalProps {
 
 export interface IMicrobiologyData {
   natureOfSpecimen: string;
-  complete: boolean;
+  complete?: boolean;
   clinicalDetails: string;
   tentativeDiagnosis: string;
   testsRequired: string;

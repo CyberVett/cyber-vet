@@ -37,7 +37,7 @@ export interface IParasitologyData {
   urineAnalysisResult: string;
   dateCompleted?: string;
   createdAt?: string;
-  complete: boolean;
+  complete?: boolean;
 }
 
 const ParasitologyModal: React.FC<IModalProps> = ({

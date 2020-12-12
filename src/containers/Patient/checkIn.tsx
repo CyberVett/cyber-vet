@@ -598,7 +598,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       field === "Medical Bill"
         ? endpoint
         : `/patients/${patientId}/${endpoint}`;
-        console.log('body', body);
         
     // @ts-ignore
     requestClient[method](__url, body)
@@ -1041,6 +1040,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 handleEditMedicalBill();
                               }}
                               title="Medical Bill"
+                              disableDelete
+                              disableEdit
                             >
                               <ul className="medical__bill__report">
                                 { // @ts-ignore

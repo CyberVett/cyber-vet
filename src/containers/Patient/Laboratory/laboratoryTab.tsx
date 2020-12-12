@@ -81,7 +81,6 @@ export const defaultParasitologyFields: IParasitologyData = {
   skinScrappingResult: "",
   facialAnalysisResult: "",
   urineAnalysisResult: "",
-  complete: false,
 };
 
 export const defaultMicrobiologyFields: IMicrobiologyData = {
@@ -92,7 +91,6 @@ export const defaultMicrobiologyFields: IMicrobiologyData = {
   result: "",
   dateOfCollection: "",
   dateOfSubmission: "",
-  complete: false
 };
 
 export const defaultRapidTestFields: IRapidTestData = {
@@ -883,7 +881,7 @@ const LaboratoryTab = ({
           </CheckinItem>
         )}
 
-      {(checkInData?.rapidTest || rapidTestData?.clinicalDetails || "") && (
+      {(checkInData?.rapidTest || rapidTestData?.clinicalDetails|| rapidTestData?.createdAt) && (
         <CheckinItem
           checkedIn={true}
           date={new Date().toString()}
