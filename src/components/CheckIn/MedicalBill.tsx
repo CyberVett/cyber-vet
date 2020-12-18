@@ -29,17 +29,64 @@ const VacinationReport = (props: {
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
-    props.onAdd(formValues);
+
+    const mappedService = [];
+    props.data.services.map((oldService) => {
+      const anUpdate = formValues.services.find(
+        (updatedService) => updatedService.name === oldService.name
+      );
+
+      if (anUpdate) {
+        mappedService.push({
+          name: anUpdate.name,
+          charges: anUpdate.price,
+          state: "UPDATE",
+        });
+      } else {
+        mappedService.push({
+          name: oldService.name,
+          charges: oldService.amount,
+          state: "REMOVED",
+        });
+      }
+      return oldService;
+    });
+
+    formValues.services.map((service) => {
+      const oldService = mappedService.find(
+        (oldService) => service.name === oldService.name
+      );
+      if (!oldService) {
+        mappedService.push({
+          name: service.name,
+          charges: service.charges,
+          state: "ADDED",
+        });
+      }
+      return service;
+    });
+
+    const data = {
+      services: props.data.totalAmountInCheckin
+        ? mappedService
+        : formValues.services,
+      payment: {
+        paymentMethod: formValues.paymentMethod || "Card",
+        amountPaid: paidAmount,
+      },
+    };
+
+    props.onAdd(data);
   };
   const [formValues, setFormValues] = useState<IData>({
     paid: "0",
     balance: "0",
     // @ts-ignore
-    method: '',
+    method: "",
     services: [],
-    amountPaid: '',
-    amountToBalance: '',
-    paymentMethod: PaymentMethod.cash
+    amountPaid: "",
+    amountToBalance: "",
+    paymentMethod: PaymentMethod.cash,
     // services: props.data,
   });
 
@@ -52,10 +99,6 @@ const VacinationReport = (props: {
   // @ts-ignore
   const [cummulativeValues, setCummulativeValues] = useState([]);
 
-  // const [selectedBillingValues, setSelectedBillinServices] = useState([]);
-  // const [actualBillingValues, setActualBillinServices] = useState([]);
-  // const [availableBillingValues, setAvailableBillinServices] = useState([]);
-
   const handleAddServiceList = (e: any) => {
     e.preventDefault();
     const service: IService = { name: "", price: 0 };
@@ -65,29 +108,19 @@ const VacinationReport = (props: {
 
   useEffect(() => {
     // @ts-ignore
-    // const services = props.billingServices.filter((b) => b.name);
-    // setActualBillinServices(services);
-    // setAvailableBillinServices(services);
-    // const _cumm = Array.from({ length: services.length }).fill("");
-    // //  @ts-ignore
-    // setCummulativeValues(_cumm);
-  }, []);
-
-  useEffect(() => {
-    // @ts-ignore
-    setTotalBalance(props.data.amountToBalance);
+    setTotalBalance(props.data.amountToBalanceInCheckin);
 
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
-        // @ts-ignore
-        const price = service.price || 0;
-        return parseInt(price || 0, 10) + acc;
-      }, 0)
+          // @ts-ignore
+          const price = service.price || 0;
+          return parseInt(price || 0, 10) + acc;
+        }, 0)
       : 0;
 
-    setTotalPrice(total);
+    setTotalPrice(props.data.totalAmountInCheckin);
     // @ts-ignore
-    setPaidAmount(props.data.amountPaid || 0);
+    setPaidAmount(props.data.totalAmountPaidInCheckin || 0);
     setFormValues({
       ...formValues,
       // @ts-ignore
@@ -105,7 +138,9 @@ const VacinationReport = (props: {
     const service: IService = serviceList[index];
     const name = event.target.value;
     service.name = name;
-    const bService = props.billingServices.find((s: IService) => s.name === name) || {
+    const bService = props.billingServices.find(
+      (s: IService) => s.name === name
+    ) || {
       charges: 0,
     };
     // @ts-ignore
@@ -200,8 +235,6 @@ const VacinationReport = (props: {
     return _formValues;
   };
 
-  // const [totalValue, setTotalValues] = useState<Number>(0);
-
   const handleInputChange = (event: {
     persist: () => void;
     target: { name: any; value: any };
@@ -230,13 +263,26 @@ const VacinationReport = (props: {
       // @ts-ignore
       return parseInt(val.charges || 0, 10) + acc;
     }, 0);
-    setTotalPrice(total);
-    setTotalBalance(parseInt(props.data.amountToBalance) || 0);
-    setPaidAmount(parseInt(props.data.amountPaid));
-    formValues.method = props.data.paymentMethod;
-    formValues.paid = props.data.amountPaid;
-    formValues.balance = props.data.amountToBalance;
-    formValues.services = props.data.services;
+    // @ts-ignore
+    setTotalPrice(parseInt(props.data.totalAmountInCheckin));
+    // @ts-ignore
+    setTotalBalance(parseInt(props.data.amountToBalanceInCheckin) || 0);
+    // @ts-ignore
+    setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
+    const services = props.data.services.map((service) => {
+      console.log(service.amount);
+      return {
+        name: service.name,
+        price: service.amount,
+      };
+    });
+    setServiceList(services);
+    setFormValues({
+      method: props.data.paymentMethod,
+      paid: props.data.amountPaid,
+      balance: props.data.amountToBalance,
+      services: services,
+    });
   }, [props.data]);
 
   return (
@@ -247,7 +293,7 @@ const VacinationReport = (props: {
       // @ts-ignore
       date={props.date}
       // @ts-ignore
-      canEdit={false}
+      canEdit={props.data.totalAmountInCheckin}
     >
       <form className="medical__report__form medical--bill">
         {[...serviceList].map((service, index) => {
@@ -259,7 +305,7 @@ const VacinationReport = (props: {
           // @ts-ignore
           const price = savedService
             ? // @ts-ignore
-            savedService.price
+              savedService.price
             : cummulativeValues[index];
           // @ts-ignore
           return (
@@ -276,7 +322,8 @@ const VacinationReport = (props: {
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
-                        { //  @ts-ignore
+                        {
+                          //  @ts-ignore
                           `${serviceName?.department?.name}--${serviceName.name}`
                         }
                       </option>
@@ -309,8 +356,8 @@ const VacinationReport = (props: {
             name={`total`}
             disabled
             defaultValue="Total"
-          // onChange={handleBillValueChange}
-          // defaultValue={service.price}
+            // onChange={handleBillValueChange}
+            // defaultValue={service.price}
           />
         </div>
         <div className="physical__examination__form--input">
@@ -341,9 +388,7 @@ const VacinationReport = (props: {
             name="method"
             value={formValues.method}
           >
-            <option value="">
-              Select a payment option
-                </option>
+            <option value="">Select a payment option</option>
             {["Cash", "Card"].map((method, index) => {
               return (
                 <option key={index} value={method}>
