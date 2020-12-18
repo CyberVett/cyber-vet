@@ -239,8 +239,11 @@ const VacinationReport = (props: {
       // @ts-ignore
       return parseInt(val.charges || 0, 10) + acc;
     }, 0);
+    // @ts-ignore
     setTotalPrice(parseInt(props.data.totalAmountInCheckin));
+    // @ts-ignore
     setTotalBalance(parseInt(props.data.amountToBalanceInCheckin) || 0);
+    // @ts-ignore
     setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
     formValues.method = props.data.paymentMethod;
     formValues.paid = props.data.amountPaid;
