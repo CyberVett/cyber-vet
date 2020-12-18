@@ -29,17 +29,24 @@ const VacinationReport = (props: {
 }) => {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
-    props.onAdd(formValues);
+    const data = {
+      services: formValues.services,
+      payment: {
+        paymentMethod: formValues.paymentMethod || "Card",
+        amountPaid: formValues.paid,
+      },
+    };
+    props.onAdd(data);
   };
   const [formValues, setFormValues] = useState<IData>({
     paid: "0",
     balance: "0",
     // @ts-ignore
-    method: '',
+    method: "",
     services: [],
-    amountPaid: '',
-    amountToBalance: '',
-    paymentMethod: PaymentMethod.cash
+    amountPaid: "",
+    amountToBalance: "",
+    paymentMethod: PaymentMethod.cash,
     // services: props.data,
   });
 
@@ -75,19 +82,19 @@ const VacinationReport = (props: {
 
   useEffect(() => {
     // @ts-ignore
-    setTotalBalance(props.data.amountToBalance);
+    setTotalBalance(props.data.amountToBalanceInCheckin);
 
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
-        // @ts-ignore
-        const price = service.price || 0;
-        return parseInt(price || 0, 10) + acc;
-      }, 0)
+          // @ts-ignore
+          const price = service.price || 0;
+          return parseInt(price || 0, 10) + acc;
+        }, 0)
       : 0;
 
-    setTotalPrice(total);
+    setTotalPrice(props.data.totalAmountInCheckin);
     // @ts-ignore
-    setPaidAmount(props.data.amountPaid || 0);
+    setPaidAmount(props.data.totalAmountPaidInCheckin || 0);
     setFormValues({
       ...formValues,
       // @ts-ignore
@@ -105,7 +112,9 @@ const VacinationReport = (props: {
     const service: IService = serviceList[index];
     const name = event.target.value;
     service.name = name;
-    const bService = props.billingServices.find((s: IService) => s.name === name) || {
+    const bService = props.billingServices.find(
+      (s: IService) => s.name === name
+    ) || {
       charges: 0,
     };
     // @ts-ignore
@@ -230,9 +239,9 @@ const VacinationReport = (props: {
       // @ts-ignore
       return parseInt(val.charges || 0, 10) + acc;
     }, 0);
-    setTotalPrice(total);
-    setTotalBalance(parseInt(props.data.amountToBalance) || 0);
-    setPaidAmount(parseInt(props.data.amountPaid));
+    setTotalPrice(parseInt(props.data.totalAmountInCheckin));
+    setTotalBalance(parseInt(props.data.amountToBalanceInCheckin) || 0);
+    setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
     formValues.method = props.data.paymentMethod;
     formValues.paid = props.data.amountPaid;
     formValues.balance = props.data.amountToBalance;
@@ -259,7 +268,7 @@ const VacinationReport = (props: {
           // @ts-ignore
           const price = savedService
             ? // @ts-ignore
-            savedService.price
+              savedService.price
             : cummulativeValues[index];
           // @ts-ignore
           return (
@@ -276,7 +285,8 @@ const VacinationReport = (props: {
                     return (
                       //  @ts-ignore
                       <option key={index} value={serviceName.name || ""}>
-                        { //  @ts-ignore
+                        {
+                          //  @ts-ignore
                           `${serviceName?.department?.name}--${serviceName.name}`
                         }
                       </option>
@@ -309,8 +319,8 @@ const VacinationReport = (props: {
             name={`total`}
             disabled
             defaultValue="Total"
-          // onChange={handleBillValueChange}
-          // defaultValue={service.price}
+            // onChange={handleBillValueChange}
+            // defaultValue={service.price}
           />
         </div>
         <div className="physical__examination__form--input">
@@ -341,9 +351,7 @@ const VacinationReport = (props: {
             name="method"
             value={formValues.method}
           >
-            <option value="">
-              Select a payment option
-                </option>
+            <option value="">Select a payment option</option>
             {["Cash", "Card"].map((method, index) => {
               return (
                 <option key={index} value={method}>
