@@ -18,7 +18,6 @@ export interface IModalProps {
   modalLoading: boolean;
   isReview?: boolean;
 }
-
 export interface IMicrobiologyData {
   natureOfSpecimen: string;
   complete?: boolean;

@@ -597,17 +597,6 @@ const LaboratoryTab = ({
                   <td>
                     <input
                       type="checkbox"
-                      // @ts-ignore
-                      defaultChecked={pathologyData.totalBilirubin}
-                    />
-                    MCH (pg)
-                  </td>
-                  <td>{pathologyData.MCH}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <input
-                      type="checkbox"
                       defaultChecked={pathologyData.sodiumRequired}
                     />
                     Na+ (μmol/l)
@@ -683,6 +672,17 @@ const LaboratoryTab = ({
                     SGPT/ALT (IUL)
                   </td>
                   <td>{pathologyData.SGPTALT}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      // @ts-ignore
+                      defaultChecked={pathologyData.ALTRequired}
+                    />
+                    ALP (IU/L)
+                  </td>
+                  <td>{pathologyData.ALT}</td>
                 </tr>
                 <tr>
                   <td>

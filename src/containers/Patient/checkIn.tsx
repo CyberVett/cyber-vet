@@ -95,13 +95,10 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     requestClient
       .get(`billings/medical-bill/${checkinId}`)
       .then((response) => {
-        // console.log(response.data);
 
         if (response.status === 200 && response.statusText === "OK") {
           // console.log(response.data);
-          const data = response.data.data;
-          // data.services = data.details;
-          // console.log(data);
+          const data = response.data.data;          
           setCheckInMedicalBill(data);
         }
       })
@@ -557,7 +554,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // // @ts-ignore
       // data.vaccination.smsReminder = data.vaccination.smsReminder === "on";
     } else if (field === "Note") {
-      // // diagnostic-test
       method = !medicalReports.note ? "post" : "put";
       endpoint = "notes";
       body = {
@@ -568,7 +564,6 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       // @ts-ignore
       data.noteDate = new Date().toString();
     } else if (field === "Medical Bill") {
-      // // diagnostic-test
       // @ts-ignore
       method = !checkInMedicalBill.totalAmountInCheckin ? "post" : "put";
       endpoint = "/billings/medical-bill";
@@ -585,6 +580,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         // @ts-ignore
         amountToBalance: data.balance,
       };
+      console.log('body', body);
+      
       // @ts-ignore
       delete body.paid;
       // @ts-ignore
@@ -637,7 +634,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
     let url = `patients/${patientId}/${endpoint}`;
 
     // Else, update the request to get the user token from the localstorage
-    // @ts-ignore
+    // @ts-ignore 
     const user = JSON.parse(localStorage?.getItem(config.storageKeys.auth));
     // @ts-ignore
     const accessToken = `Bearer ${user.accessToken}`;
@@ -983,8 +980,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                   {medicalReports?.vaccination?.type ||
                                     // @ts-ignore
                                     // @ts-ignore
-                                    medicalReports?.vaccination
-                                      ?.vaccinationType}
+                                    medicalReports?.vaccination?.vaccinationType}
                                 </li>
                                 <li>
                                   Dosage: {medicalReports?.vaccination?.dosage}
@@ -995,10 +991,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                     medicalReports?.vaccination?.nextDate
                                   ) ||
                                     // @ts-ignore
-                                    formatDate(
-                                      medicalReports?.vaccination
-                                        ?.dateOfNextShot
-                                    )}
+                                    formatDate(medicalReports?.vaccination?.dateOfNextShot)}
                                 </li>
                                 <li>
                                   Email Reminder:{" "}
@@ -1036,7 +1029,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         }
                         {
                           // @ts-ignore
-                          checkInMedicalBill && checkInMedicalBill.id && (
+                          checkInMedicalBill && checkInMedicalBill.totalAmountInCheckin && (
                             <CheckinItem
                               checkedIn={checkedIn}
                               // @ts-ignore
@@ -1047,12 +1040,13 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                               }}
                               title="Medical Bill"
                               disableDelete
-                              disableEdit
+                              // disableEdit
                             >
                               <ul className="medical__bill__report">
                                 {
                                   // @ts-ignore
                                   checkInMedicalBill.services.map(
+                                    // @ts-ignore
                                     (service, index) => {
                                       return (
                                         <li key={index}>
@@ -1074,7 +1068,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                       ₦
                                       {
                                         // @ts-ignore
-                                        checkInMedicalBill.amountPaid
+                                        checkInMedicalBill.totalAmountPaidInCheckin
                                       }
                                     </strong>
                                   </span>
@@ -1088,12 +1082,12 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                       ₦
                                       {
                                         // @ts-ignore
-                                        checkInMedicalBill.amountToBalance
+                                        checkInMedicalBill.amountToBalanceInCheckin
                                       }
                                     </strong>
                                   </span>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <span>
                                     <strong>Payment Method</strong>
                                   </span>
@@ -1105,7 +1099,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                       }
                                     </strong>
                                   </span>
-                                </li>
+                                </li> */}
                               </ul>
                             </CheckinItem>
                           )

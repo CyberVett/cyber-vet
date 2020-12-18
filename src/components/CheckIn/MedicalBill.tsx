@@ -30,21 +30,27 @@ const VacinationReport = (props: {
   const handleGetReport = (e: Event) => {
     e.preventDefault();
 
+    // @ts-ignore
     const mappedService = [];
     props.data.services.map((oldService) => {
       const anUpdate = formValues.services.find(
+        // @ts-ignore
         (updatedService) => updatedService.name === oldService.name
       );
 
-      if (anUpdate) {
+      if (anUpdate) {        
         mappedService.push({
+          // @ts-ignore
           name: anUpdate.name,
-          charges: anUpdate.price,
+          // @ts-ignore
+          charges: anUpdate.price || anUpdate.charges,
           state: "UPDATE",
         });
       } else {
         mappedService.push({
+          // @ts-ignore
           name: oldService.name,
+          // @ts-ignore
           charges: oldService.amount,
           state: "REMOVED",
         });
@@ -53,12 +59,16 @@ const VacinationReport = (props: {
     });
 
     formValues.services.map((service) => {
+      // @ts-ignore
       const oldService = mappedService.find(
+        // @ts-ignore
         (oldService) => service.name === oldService.name
       );
       if (!oldService) {
         mappedService.push({
+          // @ts-ignore
           name: service.name,
+          // @ts-ignore
           charges: service.charges,
           state: "ADDED",
         });
@@ -67,11 +77,16 @@ const VacinationReport = (props: {
     });
 
     const data = {
+      // @ts-ignore
       services: props.data.totalAmountInCheckin
+      // @ts-ignore
         ? mappedService
         : formValues.services,
+        // @ts-ignore
       payment: {
+        // @ts-ignore
         paymentMethod: formValues.paymentMethod || "Card",
+        // @ts-ignore
         amountPaid: paidAmount,
       },
     };
@@ -110,6 +125,7 @@ const VacinationReport = (props: {
     // @ts-ignore
     setTotalBalance(props.data.amountToBalanceInCheckin);
 
+    // @ts-ignore
     const total = props.data.services
       ? props.data.services.reduce((acc: number, service) => {
           // @ts-ignore
@@ -118,6 +134,7 @@ const VacinationReport = (props: {
         }, 0)
       : 0;
 
+      // @ts-ignore
     setTotalPrice(props.data.totalAmountInCheckin);
     // @ts-ignore
     setPaidAmount(props.data.totalAmountPaidInCheckin || 0);
@@ -259,6 +276,7 @@ const VacinationReport = (props: {
   };
 
   useEffect(() => {
+    // @ts-ignore
     const total = props?.data?.services?.reduce((acc: number, val) => {
       // @ts-ignore
       return parseInt(val.charges || 0, 10) + acc;
@@ -269,10 +287,11 @@ const VacinationReport = (props: {
     setTotalBalance(parseInt(props.data.amountToBalanceInCheckin) || 0);
     // @ts-ignore
     setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
-    const services = props.data.services.map((service) => {
-      console.log(service.amount);
+    const services = props?.data?.services?.map((service) => {
       return {
+        // @ts-ignore
         name: service.name,
+        // @ts-ignore
         price: service.amount,
       };
     });
@@ -280,7 +299,9 @@ const VacinationReport = (props: {
     setFormValues({
       method: props.data.paymentMethod,
       paid: props.data.amountPaid,
+      // @ts-ignore
       balance: props.data.amountToBalance,
+      // @ts-ignore
       services: services,
     });
   }, [props.data]);
@@ -385,6 +406,7 @@ const VacinationReport = (props: {
           <label>Payment Method</label>
           <select
             onChange={handleInputChange}
+            required
             name="method"
             value={formValues.method}
           >

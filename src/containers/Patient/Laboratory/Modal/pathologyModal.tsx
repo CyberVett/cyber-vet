@@ -536,6 +536,12 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                <input
+                    type="checkbox"
+                    defaultChecked={formValues?.ALTRequired}
+                    onChange={handleInputChange}
+                    name="ALTRequired"
+                  />
                   <Label>ALP (IU/L)</Label>
                   <input
                     className={styles.width250}
@@ -546,6 +552,12 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                   />
                 </InputGroup>
                 <InputGroup className={styles.spaceBetween} horizontal>
+                <input
+                    type="checkbox"
+                    defaultChecked={formValues?.liquidProfileRequired}
+                    onChange={handleInputChange}
+                    name="liquidProfileRequired"
+                  />
                   <Label>Liquid Profile (μmol/l)</Label>
                   <input
                     className={styles.width250}

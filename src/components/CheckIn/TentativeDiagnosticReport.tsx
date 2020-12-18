@@ -37,7 +37,7 @@ const DiagnosticTestReport = (props: {
         formValues.tentativeDiagnosis.differential = event.target.value;
       }
       return formValues;
-    });
+    });    
   };
 
   return (
@@ -56,8 +56,9 @@ const DiagnosticTestReport = (props: {
             name={"differential"}
             onChange={handleInputChange}
             rows={5}
-            value={formValues.tentativeDiagnosis.differential}
-          />
+            >
+            {formValues?.tentativeDiagnosis?.differential}
+          </textarea>
         </div>
         <h5>Tentative</h5>
         <div className="physical__examination__form--input">
@@ -66,8 +67,9 @@ const DiagnosticTestReport = (props: {
             name={"tentative"}
             onChange={handleInputChange}
             rows={5}
-            value={formValues.tentativeDiagnosis.tentative}
-          />
+            >
+            {formValues?.tentativeDiagnosis?.tentative}
+          </textarea>
         </div>
       </form>
     </MedicalReportModalContentTemplate>
