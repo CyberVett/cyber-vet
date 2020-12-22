@@ -347,7 +347,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.totalProteinRequired}
+                    checked={formValues?.totalProteinRequired}
                     onChange={handleInputChange}
                     name="totalProteinRequired"
                   />
@@ -364,7 +364,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.totalBilirubinRequired}
+                    checked={formValues?.totalBilirubinRequired}
                     onChange={handleInputChange}
                     name="totalBilirubinRequired"
                   />
@@ -381,7 +381,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.conjugatedBilirubinRequired}
+                    checked={formValues?.conjugatedBilirubinRequired}
                     onChange={handleInputChange}
                     name="conjugatedBilirubinRequired"
                   />
@@ -398,7 +398,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.sodiumRequired}
+                    checked={formValues?.sodiumRequired}
                     onChange={handleInputChange}
                     name="sodiumRequired"
                   />
@@ -417,7 +417,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.potassiumRequired}
+                    checked={formValues?.potassiumRequired}
                     onChange={handleInputChange}
                     name="potassiumRequired"
                   />
@@ -436,7 +436,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.creatinineRequired}
+                    checked={formValues?.creatinineRequired}
                     onChange={handleInputChange}
                     name="creatinineRequired"
                   />
@@ -453,7 +453,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.BUNRequired}
+                    checked={formValues?.BUNRequired}
                     onChange={handleInputChange}
                     name="BUNRequired"
                   />
@@ -470,7 +470,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.albuminRequired}
+                    checked={formValues?.albuminRequired}
                     onChange={handleInputChange}
                     name="albuminRequired"
                   />
@@ -487,7 +487,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.glucoseRequired}
+                    checked={formValues?.glucoseRequired}
                     onChange={handleInputChange}
                     name="glucoseRequired"
                   />
@@ -504,7 +504,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.SGOTASTRequired}
+                    checked={formValues?.SGOTASTRequired}
                     onChange={handleInputChange}
                     name="SGOTASTRequired"
                   />
@@ -521,7 +521,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.SGPTALTRequired}
+                    checked={formValues?.SGPTALTRequired}
                     onChange={handleInputChange}
                     name="SGPTALTRequired"
                   />
@@ -538,7 +538,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                 <input
                     type="checkbox"
-                    defaultChecked={formValues?.ALTRequired}
+                    checked={formValues?.ALTRequired}
                     onChange={handleInputChange}
                     name="ALTRequired"
                   />
@@ -554,11 +554,11 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                 <input
                     type="checkbox"
-                    defaultChecked={formValues?.liquidProfileRequired}
+                    checked={formValues?.liquidProfileRequired}
                     onChange={handleInputChange}
                     name="liquidProfileRequired"
                   />
-                  <Label>Liquid Profile (μmol/l)</Label>
+                  <Label>Lipid Profile (μmol/l)</Label>
                   <input
                     className={styles.width250}
                     type="text"
@@ -570,7 +570,7 @@ const AddPathologyModal: React.FC<IModalProps> = ({
                 <InputGroup className={styles.spaceBetween} horizontal>
                   <input
                     type="checkbox"
-                    defaultChecked={formValues?.otherRequired}
+                    checked={formValues?.otherRequired}
                     onChange={handleInputChange}
                     name="otherRequired"
                   />

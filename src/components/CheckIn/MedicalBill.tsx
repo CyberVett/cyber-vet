@@ -331,6 +331,7 @@ const VacinationReport = (props: {
           // @ts-ignore
           return (
             <>
+            {/* FIXME: payment sent on edit  */}
               <div className="physical__examination__form--input">
                 <select
                   // @ts-ignore
@@ -402,7 +403,7 @@ const VacinationReport = (props: {
           </div>
         </div>
 
-        <div className="physical__examination__form--input payment--method">
+        {/* <div className="physical__examination__form--input payment--method">
           <label>Payment Method</label>
           <select
             onChange={handleInputChange}
@@ -419,7 +420,7 @@ const VacinationReport = (props: {
               );
             })}
           </select>
-        </div>
+        </div> */}
       </form>
     </MedicalReportModalContentTemplate>
   );

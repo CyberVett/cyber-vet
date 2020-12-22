@@ -133,7 +133,7 @@ const Radiology: React.FC<{ checkInData: any }> = ({ checkInData }) => {
               </div>
               {
               // @ts-ignore
-              radiology?.completed ? `Name of Technologist: ${radiology?.completeBy?.firstName} ${radiology?.completeBy?.otherName} ${radiology?.completeBy?.lastName}` : ''}
+              radiology?.completed ? `Completed By: ${radiology?.completeBy?.firstName} ${radiology?.completeBy?.otherName} ${radiology?.completeBy?.lastName}` : ''}
             </div>}
       </CheckinItem>
       <RadiologyModal

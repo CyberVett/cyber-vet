@@ -23,8 +23,6 @@ import { defaultMicrobiologyFields, defaultParasitologyFields, defaultPathologyF
 const RequestedLab: React.FunctionComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  // @ts-ignore
-  const [checkInData, setCheckInData] = useState({});
   const [togglePathology, setTogglePathology] = useState(false);
   const [toggleParasitology, setToggleParasitology] = useState(false);
   const [toggleMicrobiology, setToggleMicrobiology] = useState(false);

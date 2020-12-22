@@ -690,7 +690,7 @@ const LaboratoryTab = ({
                       type="checkbox"
                       defaultChecked={pathologyData.liquidProfileRequired}
                     />
-                    Liquid Profile (μmol/l)
+                    Lipid Profile (μmol/l)
                   </td>
                   <td>{pathologyData.liquidProfileRequired}</td>
                 </tr>
@@ -708,7 +708,7 @@ const LaboratoryTab = ({
             </div>
             {
               // @ts-ignore
-              pathologyData?.completed ? `Name of Technologist: ${pathologyData?.completeBy?.firstName} ${pathologyData?.completeBy?.otherName} ${pathologyData?.completeBy?.lastName}` : ''}
+              pathologyData?.completed ? `Completed By: ${pathologyData?.completeBy?.firstName} ${pathologyData?.completeBy?.otherName} ${pathologyData?.completeBy?.lastName}` : ''}
           </div>
         </CheckinItem>
       )}
@@ -814,7 +814,7 @@ const LaboratoryTab = ({
             </div>
             {
               // @ts-ignore
-              parasitologyData?.completed ? `Name of Technologist: ${parasitologyData?.completeBy?.firstName} ${parasitologyData?.completeBy?.otherName} ${parasitologyData?.completeBy?.lastName}` : ''}
+              parasitologyData?.completed ? `Completed By: ${parasitologyData?.completeBy?.firstName} ${parasitologyData?.completeBy?.otherName} ${parasitologyData?.completeBy?.lastName}` : ''}
           </div>
         </CheckinItem>
       )}
@@ -876,7 +876,7 @@ const LaboratoryTab = ({
               </table>
               {
                 // @ts-ignore
-                microbiologyData?.completed ? `Name of Technologist: ${microbiologyData?.completeBy?.firstName} ${microbiologyData?.completeBy?.otherName} ${microbiologyData?.completeBy?.lastName}` : ''}
+                microbiologyData?.completed ? `Completed By: ${microbiologyData?.completeBy?.firstName} ${microbiologyData?.completeBy?.otherName} ${microbiologyData?.completeBy?.lastName}` : ''}
             </div>
           </CheckinItem>
         )}
@@ -917,7 +917,7 @@ const LaboratoryTab = ({
             </table>
             {
               // @ts-ignore
-              rapidTestData?.completed ? `Name of Technologist: ${rapidTestData?.completeBy?.firstName} ${rapidTestData?.completeBy?.otherName} ${rapidTestData?.completeBy?.lastName}` : ''}
+              rapidTestData?.completed ? `Completed By: ${rapidTestData?.completeBy?.firstName} ${rapidTestData?.completeBy?.otherName} ${rapidTestData?.completeBy?.lastName}` : ''}
           </div>
         </CheckinItem>
       )}

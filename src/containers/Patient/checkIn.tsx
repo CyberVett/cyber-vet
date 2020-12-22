@@ -1029,7 +1029,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                         }
                         {
                           // @ts-ignore
-                          checkInMedicalBill && checkInMedicalBill.totalAmountInCheckin && (
+                          checkInMedicalBill && checkInMedicalBill.createdAt && checkInMedicalBill.services.length > 0 && (
                             <CheckinItem
                               checkedIn={checkedIn}
                               // @ts-ignore
@@ -1061,7 +1061,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 }
                                 <li style={{ marginTop: "1rem" }}>
                                   <span>
-                                    <strong>Paid</strong>
+                                    <strong>Paid in Checkin</strong>
                                   </span>
                                   <span style={{ color: "#1E638F" }}>
                                     <strong>
@@ -1075,7 +1075,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 </li>
                                 <li>
                                   <span>
-                                    <strong>To Balance</strong>
+                                    <strong>To Balance in Checkin</strong>
                                   </span>
                                   <span style={{ color: "#F2761D" }}>
                                     <strong>
@@ -1083,6 +1083,34 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                       {
                                         // @ts-ignore
                                         checkInMedicalBill.amountToBalanceInCheckin
+                                      }
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li style={{ marginTop: "1rem" }}>
+                                  <span>
+                                    <strong>Lifetime Paid</strong>
+                                  </span>
+                                  <span style={{ color: "#1E638F" }}>
+                                    <strong>
+                                      ₦
+                                      {
+                                        // @ts-ignore
+                                        checkInMedicalBill.totalAmountPaidTillDate
+                                      }
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li>
+                                  <span>
+                                    <strong>Lifetime To Balance</strong>
+                                  </span>
+                                  <span style={{ color: "#F2761D" }}>
+                                    <strong>
+                                      ₦
+                                      {
+                                        // @ts-ignore
+                                        checkInMedicalBill.amountToBalanceTillDate
                                       }
                                     </strong>
                                   </span>
