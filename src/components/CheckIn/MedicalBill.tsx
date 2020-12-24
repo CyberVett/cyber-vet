@@ -87,7 +87,7 @@ const VacinationReport = (props: {
         // @ts-ignore
         paymentMethod: formValues.paymentMethod || "Card",
         // @ts-ignore
-        amountPaid: paidAmount,
+        amountPaid: parseInt(paidAmount),
       },
     };
 
@@ -99,7 +99,7 @@ const VacinationReport = (props: {
     // @ts-ignore
     method: "",
     services: [],
-    amountPaid: "",
+    amountPaid: 0,
     amountToBalance: "",
     paymentMethod: PaymentMethod.cash,
     // services: props.data,
@@ -107,7 +107,7 @@ const VacinationReport = (props: {
 
   const [totalBalance, setTotalBalance] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [paidAmount, setPaidAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState<number>(0);
 
   const [serviceList, setServiceList] = useState<IService[]>([]);
 
@@ -137,7 +137,7 @@ const VacinationReport = (props: {
       // @ts-ignore
     setTotalPrice(props.data.totalAmountInCheckin);
     // @ts-ignore
-    setPaidAmount(props.data.totalAmountPaidInCheckin || 0);
+    // setPaidAmount(props.data.totalAmountPaidInCheckin || 0);
     setFormValues({
       ...formValues,
       // @ts-ignore
@@ -286,7 +286,8 @@ const VacinationReport = (props: {
     // @ts-ignore
     setTotalBalance(parseInt(props.data.amountToBalanceInCheckin) || 0);
     // @ts-ignore
-    setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
+    // setPaidAmount(parseInt(props.data.totalAmountPaidInCheckin || 0));
+    
     const services = props?.data?.services?.map((service) => {
       return {
         // @ts-ignore

@@ -579,9 +579,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
         amountPaid: data.paid,
         // @ts-ignore
         amountToBalance: data.balance,
-      };
-      console.log('body', body);
-      
+      };      
       // @ts-ignore
       delete body.paid;
       // @ts-ignore
