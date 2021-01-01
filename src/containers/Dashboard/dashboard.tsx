@@ -111,7 +111,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <td>{row.id}</td>
                       <td>
                         {row.client.title}. {row.client.firstName}{" "}
-                        {row.client.firstName}
+                        {row.client.lastName}
                       </td>
                       <td>{row.name}</td>
                       <td>{row.specie}</td>

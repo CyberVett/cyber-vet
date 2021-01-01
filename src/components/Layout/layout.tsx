@@ -35,8 +35,6 @@ const TopNav = () => {
       </div>
       <div className={styles.navRight}>
         <Button type={ButtonTypes.outline}>{hospital?.name}</Button>
-        <NotificationIcon />
-        <HelpIcon />
         <AvatarIcon />
         <div className={styles.userSection} onClick={() => setShowDropdown(!showDropdown)}>
           <span>{staff?.firstName} {staff?.lastName}</span>
@@ -145,24 +143,24 @@ const navLinks = [
     id: 4,
     name: 'Scheduling',
   },
-  {
-    href: '/app/boarding',
-    icon: HomeIcon,
-    id: 5,
-    name: 'Boarding',
-  },
-  {
-    href: '/app/financial',
-    icon: WalletIcon,
-    id: 6,
-    name: 'Financials',
-  },
-  {
-    href: '/app/metrics',
-    icon: BarChart,
-    id: 7,
-    name: 'Metrics & Report',
-  },
+  // {
+  //   href: '/app/boarding',
+  //   icon: HomeIcon,
+  //   id: 5,
+  //   name: 'Boarding',
+  // },
+  // {
+  //   href: '/app/financial',
+  //   icon: WalletIcon,
+  //   id: 6,
+  //   name: 'Financials',
+  // },
+  // {
+  //   href: '/app/metrics',
+  //   icon: BarChart,
+  //   id: 7,
+  //   name: 'Metrics & Report',
+  // },
   {
     href: '/app/admin',
     icon: AdminIcon,
