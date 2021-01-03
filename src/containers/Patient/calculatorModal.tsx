@@ -4,7 +4,6 @@ import { Input, InputGroup, Label } from 'components/Input/input';
 import Modal from 'components/Modal/modal';
 import SectionHeader from 'components/SectionHeader/sectionHeader';
 import React, { useEffect, useState } from 'react';
-//import { number } from 'yup';
 import styles from '../Patient/Radiology/radiology.module.scss';
 
 interface ICalculator {
