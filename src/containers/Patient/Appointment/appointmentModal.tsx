@@ -67,7 +67,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setMessage(response.data.message);
         } else {
           setLoading(false);
@@ -99,7 +99,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setMessage(response.data.message);
         } else {
           setLoading(false);

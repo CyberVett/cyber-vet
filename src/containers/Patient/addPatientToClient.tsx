@@ -142,7 +142,7 @@ const AddPatientToClient: NextPage<{ clientId: string }> = ({ clientId }) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 201) {
           setShowModal(true);
         } else {
           setLoading(false);

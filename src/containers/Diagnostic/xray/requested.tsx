@@ -26,7 +26,7 @@ const RequestedXray: React.FunctionComponent = () => {
     requestClient.get('laboratory/x-ray/requested')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setData(response.data.data);
         }
       })

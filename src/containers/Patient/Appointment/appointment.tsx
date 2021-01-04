@@ -37,7 +37,7 @@ const Appointment: React.FC<IAppointment> = ({
     requestClient.delete(`appointments/${id}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           toggleResponseModal(true);
         } else {
           setError(response.data.message);

@@ -37,7 +37,7 @@ const ResetPassword: NextPage<{ token: string }> = ({ token }) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse(response.data.message);
           setTimeout(() => {
             Router.push('/auth/login');

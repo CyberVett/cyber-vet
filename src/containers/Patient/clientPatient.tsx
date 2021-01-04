@@ -23,7 +23,7 @@ const ClientPatientList: NextPage<{ clientId: string }> = ({ clientId }) => {
     requestClient.get(`patients/client/${clientId}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
 
           setData(response.data.data);
         }
@@ -39,7 +39,7 @@ const ClientPatientList: NextPage<{ clientId: string }> = ({ clientId }) => {
   //   requestClient.put(`/patients/${id}/check-in`)
   //     .then((response) => {
   //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
+  //       if (response.status === 200 ) {
   //         Router.push(`/app/patient/checkin/${id}`);
   //       }
   //     })

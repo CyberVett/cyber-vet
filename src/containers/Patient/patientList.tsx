@@ -23,7 +23,7 @@ const PatientList: React.FunctionComponent = () => {
     requestClient.get('patients')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setData(response.data.data);
         }
       })
@@ -38,7 +38,7 @@ const PatientList: React.FunctionComponent = () => {
     requestClient.put(`/patients/${id}/check-in`)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           Router.push(`/app/patient/checkin/${id}`);
         }
       })

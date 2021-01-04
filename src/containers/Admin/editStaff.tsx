@@ -104,7 +104,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     requestClient.get(`staff/${staffId}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setStaffInput(response.data.data);
         }
       })
@@ -120,7 +120,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     requestClient.get('roles')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setRole(response.data.data);
         }
       })
@@ -145,7 +145,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse('Staff has been successfully updated');
           setShowModal(true);
           setTimeout(() => {
@@ -169,7 +169,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     requestClient.delete(`staff/${staffId}`)
       .then(response => {        
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse('Staff has been successfully removed');
           setShowModal(true);
           setTimeout(() => {
@@ -190,7 +190,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     requestClient.put(`staff/revoke-access/${staffId}`)
       .then(response => {        
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse('Staff has been successfully revoked');
           setShowModal(true);
           setTimeout(() => {
@@ -211,7 +211,7 @@ const EditStaff: NextPage<{ staffId: string }> = ({ staffId }) => {
     requestClient.put(`staff/grant-access/${staffId}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse('Staff has been successfully restored');
           setShowModal(true);
           setTimeout(() => {

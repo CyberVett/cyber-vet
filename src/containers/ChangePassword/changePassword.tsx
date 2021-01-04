@@ -41,7 +41,7 @@ const ChangePassword: React.FunctionComponent<{ closeModal: () => void; visible:
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse(response.data.message);
         } else {
           setLoading(false);

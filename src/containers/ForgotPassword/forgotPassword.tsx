@@ -26,7 +26,7 @@ const ForgotPassword: React.FunctionComponent = () => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse(response.data.message);
         } else {
           setLoading(false);

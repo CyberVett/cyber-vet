@@ -28,7 +28,7 @@ const AppointmentList: React.FunctionComponent = () => {
     requestClient.get('appointments')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setData(response.data.data);
         }
       })
@@ -43,7 +43,7 @@ const AppointmentList: React.FunctionComponent = () => {
     requestClient.delete(`patients/${patientNo}/appointment/${id}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           // toggleResponseModal(true);
         } else {
           // setError(response.data.message);

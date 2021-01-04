@@ -22,7 +22,7 @@ const ClientList: React.FunctionComponent = () => {
     requestClient.get('clients')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setData(response.data.data);
         }
       })
