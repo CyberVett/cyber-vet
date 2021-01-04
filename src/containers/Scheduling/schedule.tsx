@@ -43,7 +43,7 @@ const AppointmentList: React.FunctionComponent = () => {
     requestClient.delete(`patients/${patientNo}/appointment/${id}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200) {
          setData(() => {
             return data.filter((singleData: IAppointmentArray) => singleData.id !== id);
          })
