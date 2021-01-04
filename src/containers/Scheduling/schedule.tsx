@@ -45,7 +45,7 @@ const AppointmentList: React.FunctionComponent = () => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
          setData(() => {
-            return data.filter((singleData) => singleData.id !== id);
+            return data.filter((singleData: IAppointmentArray) => singleData.id !== id);
          })
         } else {
           // setError(response.data.message);
