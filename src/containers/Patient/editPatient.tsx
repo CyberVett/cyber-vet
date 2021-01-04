@@ -88,7 +88,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
 
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setPatientInput(response.data.data);
         }
       })
@@ -104,7 +104,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
   //   requestClient.get('settings/species')
   //     .then(response => {
   //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
+  //       if (response.status === 200 ) {
   //         setSpecies(response.data.data);
   //       }
   //     })
@@ -142,7 +142,7 @@ const EditPatient: NextPage<{ patientId: string }> = ({ patientId }) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setShowModal(true);
         } else {
           setLoading(false);

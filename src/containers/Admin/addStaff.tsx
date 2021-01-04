@@ -100,7 +100,7 @@ const AddStaff: React.FunctionComponent = () => {
     requestClient.get('roles')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setRole(response.data.data);
         }
       })
@@ -129,7 +129,7 @@ const AddStaff: React.FunctionComponent = () => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 201 ) {
           // setResponse(response.data.message);
           setShowModal(true);
           Router.push({

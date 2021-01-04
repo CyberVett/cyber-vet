@@ -49,7 +49,7 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
     requestClient.get(`clients/${clientId.clientId}`)
       .then(response => {        
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setClientInput(response.data.data);
         }
       })
@@ -75,7 +75,7 @@ const EditClient: NextPage<{ clientId: string }> = (clientId) => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setResponse(response.data.message);
           setTimeout(() => {
             Router.push({

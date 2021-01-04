@@ -59,7 +59,7 @@ const AddClient: React.FunctionComponent = () => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 201) {
           setResponse(response.data.message);
           const { id } = response.data.data;
           Router.push({

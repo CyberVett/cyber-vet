@@ -23,7 +23,7 @@ const HospitalList: React.FunctionComponent = () => {
     requestClient.get('staff')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setData(response.data.data);
         }
       })

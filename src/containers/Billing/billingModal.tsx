@@ -96,7 +96,7 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setMessage(response.data.message);
         } else {
           setLoading(false);
@@ -117,7 +117,7 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     requestClient.get('/billings/departments')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           setDepartment(response.data.data);
         }
       })

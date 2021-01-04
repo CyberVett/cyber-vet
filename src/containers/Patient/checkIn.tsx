@@ -81,7 +81,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .get(`billings/services`)
       .then((response) => {
         // setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           setBillingServices(response.data.data);
         }
       })
@@ -96,7 +96,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .get(`billings/medical-bill/${checkinId}`)
       .then((response) => {
 
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           // console.log(response.data);
           const data = response.data.data;          
           setCheckInMedicalBill(data);
@@ -276,7 +276,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .get(`/patients/${patientId}`)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           setPatientData(response.data.data);
           const checkins = response.data.data.checkins;
           setCheckinDataIndex(0);
@@ -353,7 +353,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .put(`/patients/${patientId}/physical-examination`, data)
       .then(async (response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           // const json = response.data.data;
           // setPhysicalExaminationResult({
           //   ...physicalResult,
@@ -403,7 +403,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .post(`/patients/${patientId}/physical-examination`, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           setCheckedIn(true);
           setPhysicalExaminationResult(data);
           setShowModal(false);
@@ -435,7 +435,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .put(`/patients/${id}/check-out`)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200 ) {
           Router.push(`/app/dashboard`);
         }
       })
@@ -599,8 +599,8 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
       .then((response: any) => {
         // setLoading(false);
         if (
-          (response.status === 200 && response.statusText === "OK") ||
-          (response.status === 201 && response.statusText === "Created")
+          (response.status === 200 ) ||
+          (response.status === 201)
         ) {
           setModalLoading(false);
           if (field !== "Medical Bill") {
@@ -1050,7 +1050,7 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                         <li key={index}>
                                           <span>{service.name}</span>
                                           <span>
-                                            ₦{service.amount || service.charge}
+                                            ₦{new Intl.NumberFormat().format(service.amount || service.charge)}
                                           </span>
                                         </li>
                                       );
@@ -1059,56 +1059,76 @@ const PatientCheckIn: NextPage<{ patientId: string }> = ({ patientId }) => {
                                 }
                                 <li style={{ marginTop: "1rem" }}>
                                   <span>
-                                    <strong>Paid in Checkin</strong>
+                                    <strong>Total Bill</strong>
                                   </span>
                                   <span style={{ color: "#1E638F" }}>
                                     <strong>
                                       ₦
                                       {
                                         // @ts-ignore
-                                        checkInMedicalBill.totalAmountPaidInCheckin
+                                        
+                                        new Intl.NumberFormat().format(checkInMedicalBill.totalAmountInCheckin)
                                       }
                                     </strong>
                                   </span>
                                 </li>
-                                <li>
-                                  <span>
-                                    <strong>To Balance in Checkin</strong>
-                                  </span>
-                                  <span style={{ color: "#F2761D" }}>
-                                    <strong>
-                                      ₦
-                                      {
-                                        // @ts-ignore
-                                        checkInMedicalBill.amountToBalanceInCheckin
-                                      }
-                                    </strong>
-                                  </span>
-                                </li>
+
                                 <li style={{ marginTop: "1rem" }}>
                                   <span>
-                                    <strong>Lifetime Paid</strong>
+                                    <strong>Amount Paid In Checkin</strong>
                                   </span>
                                   <span style={{ color: "#1E638F" }}>
                                     <strong>
                                       ₦
                                       {
                                         // @ts-ignore
-                                        checkInMedicalBill.totalAmountPaidTillDate
+            
+                                        new Intl.NumberFormat().format(checkInMedicalBill.totalAmountPaidInCheckin)
                                       }
                                     </strong>
                                   </span>
                                 </li>
                                 <li>
                                   <span>
-                                    <strong>Lifetime To Balance</strong>
+                                    <strong>Amount To Balance In Checkin</strong>
                                   </span>
                                   <span style={{ color: "#F2761D" }}>
                                     <strong>
                                       ₦
                                       {
                                         // @ts-ignore
-                                        checkInMedicalBill.amountToBalanceTillDate
+                                        
+                                        new Intl.NumberFormat().format(checkInMedicalBill.amountToBalanceInCheckin)
+                                        
+                                      }
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li style={{ marginTop: "2rem" }}>
+                                  <span>
+                                    <strong>Amount Paid Till Date</strong>
+                                  </span>
+                                  <span style={{ color: "#1E638F" }}>
+                                    <strong>
+                                      ₦ 
+                                      {
+                                        // @ts-ignore
+                                        new Intl.NumberFormat().format(checkInMedicalBill.totalAmountPaidTillDate)
+                                      }
+                                    </strong>
+                                  </span>
+                                </li>
+                                <li>
+                                  <span>
+                                    <strong>Amount To Balance Till Date</strong>
+                                  </span>
+                                  <span style={{ color: "#F2761D" }}>
+                                    <strong>
+                                      ₦
+                                      {
+                                        // @ts-ignore
+                        
+                                        new Intl.NumberFormat().format(checkInMedicalBill.amountToBalanceTillDate)
                                       }
                                     </strong>
                                   </span>

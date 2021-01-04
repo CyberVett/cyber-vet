@@ -63,7 +63,7 @@ const Dashboard: React.FunctionComponent = () => {
     requestClient.put(`/patients/${id}/check-in`)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           Router.push(`/app/patient/checkin/${id}`);
         }
       })
@@ -80,7 +80,7 @@ const Dashboard: React.FunctionComponent = () => {
   //       console.log(response);
 
   //       setLoading(false);
-  //       if (response.status === 200 && response.statusText === 'OK') {
+  //       if (response.status === 200 ) {
   //         Router.push(`/app/dashboard`);
   //       }
   //     })
@@ -111,7 +111,7 @@ const Dashboard: React.FunctionComponent = () => {
                       <td>{row.id}</td>
                       <td>
                         {row.client.title}. {row.client.firstName}{" "}
-                        {row.client.firstName}
+                        {row.client.lastName}
                       </td>
                       <td>{row.name}</td>
                       <td>{row.specie}</td>

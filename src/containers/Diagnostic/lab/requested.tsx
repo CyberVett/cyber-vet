@@ -40,7 +40,7 @@ const RequestedLab: React.FunctionComponent = () => {
     requestClient.get('laboratory/requested')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           const { data: { data: { microbiology, rtk, parasitology, pathology } } } = response;
           // @ts-ignore
           let newArray: any = [...microbiology, ...rtk, ...parasitology, ...pathology];

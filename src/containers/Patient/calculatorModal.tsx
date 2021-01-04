@@ -20,8 +20,11 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
   useEffect(() => {
     let volume = 0;
     // @ts-ignore
-    volume = weight * dose / concentration;
-    setVolume(volume || 0);
+    volume = ((weight * dose) / concentration).toFixed(2);
+    if(concentration == 0 || !volume || isNaN(volume)){
+      setVolume(0);
+    }else
+        setVolume(volume || 0);
   }, [weight, concentration, dose]);
 
   const resetFields = () => {
@@ -47,7 +50,7 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
               name="weight"
               onChange={(e) => setWeight(parseFloat(e.target.value))}
               step="0.01"
-              type="text"
+              type="number"
               value={weight}
             />
             <Input
@@ -63,8 +66,8 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
               className={styles.width500}
               name="dosage"
               onChange={(e) => setDose(parseFloat(e.target.value))}
-              step=".01"
-              type="text"
+              step="0.01"
+              type="number"
               value={dose}
             />
             <Input
@@ -80,8 +83,8 @@ export const CalculatorModal: React.FC<ICalculator> = ({ closeModal, visible }) 
               className={styles.width500}
               name="concentration"
               onChange={(e) => setConcentration(parseFloat(e.target.value))}
-              step=".01"
-              type="text"
+              step="0.01"
+              type="number"
               value={concentration}
             />
             <Input

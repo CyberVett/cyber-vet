@@ -42,7 +42,7 @@ const CompletedLab: React.FunctionComponent = () => {
     requestClient.get('laboratory/completed')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200 ) {
           const { data: { data: { microbiology, rtk, parasitology, pathology } } } = response;
           let newResult: any = [...microbiology, ...rtk, ...parasitology, ...pathology]
           setData(newResult);

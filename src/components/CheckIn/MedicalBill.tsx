@@ -99,7 +99,7 @@ const VacinationReport = (props: {
     // @ts-ignore
     method: "",
     services: [],
-    amountPaid: 0,
+    amountPaid: "0",
     amountToBalance: "",
     paymentMethod: PaymentMethod.cash,
     // services: props.data,
