@@ -14,7 +14,6 @@ import { FormErrors } from 'components/Input/input';
 import { IAppointment, IAppointmentArray } from 'types/user';
 import { formatDate } from 'lib/utils';
 
-
 const Appointment: React.FC<IAppointment> = ({
   patientNo,
   appointments,
@@ -25,6 +24,7 @@ const Appointment: React.FC<IAppointment> = ({
   const [responseModal, toggleResponseModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [data, setData] = useState<IAppointmentArray[]>(appointments);
   const [rowData, setRowData] = useState<IAppointmentArray>();
 
   const handleReview = (row: any) => {    
@@ -39,6 +39,9 @@ const Appointment: React.FC<IAppointment> = ({
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
           toggleResponseModal(true);
+          setData(() => {
+            return data.filter((singleData) => singleData.id !== id);
+         })
         } else {
           setError(response.data.message);
         }
@@ -63,11 +66,11 @@ const Appointment: React.FC<IAppointment> = ({
           loading ? <Loader /> :
             <>
               {
-                appointments?.length > 0 ?
+                data?.length > 0 ?
                   <>
                     <FormErrors errors={error} />
                     <Table
-                      data={appointments}
+                      data={data}
                       headers={AppointmentHeaders}
                       renderRow={(row) => (
                         <tr key={row.id}>
@@ -88,12 +91,10 @@ const Appointment: React.FC<IAppointment> = ({
               }
             </>
         }
-
       </Card>
       <Modal
         closeModal={() => {
           toggleResponseModal(false);
-          window.location.reload();
         }}
         subtitle="Patient's appointment has been deleted successfully"
         title="Appointment Deleted"

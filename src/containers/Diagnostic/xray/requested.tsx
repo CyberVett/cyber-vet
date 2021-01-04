@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import Card from 'components/Card/card';
 import { Input } from 'components/Input/input';
 import { XRayRequestHeaders } from 'config/constants';

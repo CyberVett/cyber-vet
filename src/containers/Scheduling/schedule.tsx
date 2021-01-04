@@ -44,7 +44,9 @@ const AppointmentList: React.FunctionComponent = () => {
       .then(response => {
         setLoading(false);
         if (response.status === 200 && response.statusText === 'OK') {
-          // toggleResponseModal(true);
+         setData(() => {
+            return data.filter((singleData) => singleData.id !== id);
+         })
         } else {
           // setError(response.data.message);
         }
@@ -54,7 +56,6 @@ const AppointmentList: React.FunctionComponent = () => {
       })
       .catch(error => {
         console.log(error);
-        
         setLoading(false);
         // setError(error.response.data.message)
       })

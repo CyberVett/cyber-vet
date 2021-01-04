@@ -54,7 +54,6 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log(appointment);
     requestClient.post(`patients/${patientNo}/appointment`, {
       "allDay": appointment.allDay || false,
       // @ts-ignore
@@ -121,10 +120,7 @@ const AppointmentModal: React.FC<IModalProps> = ({ visible, closeModal, patientN
     } else {
       submitForm(e);
     }
-  }
-
-  console.log(otherReason);
-  
+  }  
 
   return (
     <Modal
