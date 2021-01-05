@@ -5,7 +5,7 @@ import Router, { useRouter } from 'next/router';
 import Button, { ButtonTypes } from '../Button/button';
 import { composeClasses } from '../../lib/utils';
 
-//import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
+import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
 import { ReactComponent as AnimalFoot } from 'assets/icons/paw.svg';
 //import { ReactComponent as HomeIcon } from 'assets/icons/home.svg';
 //import { ReactComponent as BarChart } from 'assets/icons/chart.svg';
@@ -17,7 +17,7 @@ import { ReactComponent as LogoIcon } from 'assets/icons/logo-small.svg';
 import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg';
 import { ReactComponent as DropDownIcon } from 'assets/icons/downArrow.svg';
 import { ReactComponent as DashboardIcon } from 'assets/icons/dashboard.svg';
-//import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg';
+import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg';
 import { ReactComponent as RightArrow } from 'assets/icons/rightArrow.svg';
 
 import styles from './layout.module.scss';
@@ -35,6 +35,8 @@ const TopNav = () => {
       </div>
       <div className={styles.navRight}>
         <Button type={ButtonTypes.outline}>{hospital?.name}</Button>
+        <NotificationIcon />
+        <HelpIcon />
         <AvatarIcon />
         <div className={styles.userSection} onClick={() => setShowDropdown(!showDropdown)}>
           <span>{staff?.firstName} {staff?.lastName}</span>

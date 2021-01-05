@@ -34,7 +34,7 @@ const Dashboard: React.FunctionComponent = () => {
       .get("patients")
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setPatientData(response.data.data);
         }
       })
@@ -49,7 +49,7 @@ const Dashboard: React.FunctionComponent = () => {
       .get("appointments")
       .then((response) => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setAppointmentData(response.data.data);
         }
       })

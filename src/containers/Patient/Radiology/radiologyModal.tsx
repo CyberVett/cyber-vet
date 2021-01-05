@@ -78,7 +78,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 201) {
           setMessage(response.data.message);
         } else {
           setLoading(false);
@@ -119,7 +119,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200) {
           setMessage(response.data.message);
         } else {
           setLoading(false);
@@ -161,7 +161,7 @@ const RadiologyModal: React.FC<IModalProps> = ({ visible, closeModal, checkInDat
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 200 && response.statusText === 'OK') {
+        if (response.status === 200) {
           setMessage(response.data.message);
         } else {
           setLoading(false);

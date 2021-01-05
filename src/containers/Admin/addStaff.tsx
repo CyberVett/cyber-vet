@@ -129,7 +129,7 @@ const AddStaff: React.FunctionComponent = () => {
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 ) {
+        if (response.status === 201) {
           // setResponse(response.data.message);
           setShowModal(true);
           Router.push({

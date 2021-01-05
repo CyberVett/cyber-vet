@@ -167,8 +167,7 @@ const LaboratoryTab = ({
       .then((response) => {
         setModalLoading(false);
         if (
-          [201, 200].includes(response.status) &&
-          ["Created", "OK"].includes(response.statusText)
+          [201, 200].includes(response.status)
         ) {
           setTogglePathology(false);
 
@@ -218,8 +217,7 @@ const LaboratoryTab = ({
       .then((response: any) => {
         setModalLoading(false);
         if (
-          [201, 200].includes(response.status) &&
-          ["Created", "OK"].includes(response.statusText)
+          [201, 200].includes(response.status)
         ) {
           setToggleParasitology(false);
           // @ts-ignore
@@ -268,8 +266,7 @@ const LaboratoryTab = ({
       .then((response) => {
         setModalLoading(false);
         if (
-          [201, 200].includes(response.status) &&
-          ["Created", "OK"].includes(response.statusText)
+          [201, 200].includes(response.status)
         ) {
           setToggleMicrobiology(false);
           // @ts-ignore
@@ -317,8 +314,7 @@ const LaboratoryTab = ({
       .then((response) => {
         setModalLoading(false);
         if (
-          [201, 200].includes(response.status) &&
-          ["Created", "OK"].includes(response.statusText)
+          [201, 200].includes(response.status)
         ) {
           // @ts-ignore
           _data.createdAt = Date.now();

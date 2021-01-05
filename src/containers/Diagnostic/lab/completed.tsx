@@ -82,7 +82,7 @@ const CompletedLab: React.FunctionComponent = () => {
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setTogglePathology(false);
         }
       })
@@ -118,7 +118,7 @@ const CompletedLab: React.FunctionComponent = () => {
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setToggleParasitology(false);
         }
       })
@@ -153,7 +153,7 @@ const CompletedLab: React.FunctionComponent = () => {
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setToggleMicrobiology(false);
         }
       })
@@ -189,7 +189,7 @@ const CompletedLab: React.FunctionComponent = () => {
     requestClient[requestMethod](url, _data)
       .then((response) => {
         setModalLoading(false);
-        if (response.status === 200 && response.statusText === "OK") {
+        if (response.status === 200) {
           setToggleRapidtest(false);
         }
       })

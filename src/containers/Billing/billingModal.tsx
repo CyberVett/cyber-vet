@@ -67,7 +67,7 @@ const BillingModal: React.FC<IModalProps> = ({ visible, closeModal, billingId, m
     })
       .then(response => {
         setLoading(false);
-        if (response.status === 201 && response.statusText === 'Created') {
+        if (response.status === 201) {
           setMessage(response.data.message);
         } else {
           setLoading(false);

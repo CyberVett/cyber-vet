@@ -29,7 +29,7 @@ const BillingList: React.FunctionComponent = () => {
     requestClient.get('/billings/services')
       .then(response => {
         setLoading(false);
-        if (response.status === 200 ) {
+        if (response.status === 200) {
           setData(response.data.data);
         }
       })
@@ -44,7 +44,7 @@ const BillingList: React.FunctionComponent = () => {
     requestClient.delete(`/billings/services/${id}`)
       .then(response => {
         setLoading(false);
-        if (response.status === 200 ) {
+        if (response.status === 200) {
           toggleResponseModal(true);
         } else {
           setError(response.data.message);
