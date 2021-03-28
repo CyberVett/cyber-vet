@@ -58,7 +58,8 @@ const ClientList: React.FunctionComponent = () => {
                         <td>{row.title}. {row.firstName} {row.lastName}</td>
                         <td className={styles.address}>{row.address}</td>
                         <td>{row.phoneNumber}</td>
-                        <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
+                        <td><Button href={`/app/client/edit/${row.id}`} type={ButtonTypes.grey}>edit</Button></td>
+                        <td> <Button type={ButtonTypes.orange} href={`/app/client/${row.id}`} >Open</Button></td>
                       </tr>
                     )} />
                   : <h2 style={{ textAlign: 'center' }}>No clients found</h2>

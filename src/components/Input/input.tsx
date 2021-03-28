@@ -262,7 +262,7 @@ export const FormErrors: React.FC<{
               ? errors.map(err => (
                 <span
                   className={styles.formErrorItem}
-                  key={err.message}
+                  key={err?.message}
                 >{err}
                 </span>
               ))

@@ -72,7 +72,7 @@ const Login: React.FunctionComponent = () => {
       .catch(error => {
         setLoading(false);
         // TODO: handle resposnse if it is a 400
-        setError(['Login Failed!', error.data.message]);
+        setError(['Login Failed!', error?.data?.message]);
       })
   };
 
